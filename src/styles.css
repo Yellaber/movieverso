@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+@layer base {
+  @font-face {
+    font-family: 'Montserrat';
+    font-weight: normal;
+    src: url('../public/fonts/montserrat-regular.woff2') format('woff2');
+  }
+
+  .red-color {
+    color: #ed1c24;
+  }
+
+  .yellow-color {
+    color: #ffcb05;
+  }
+
+  .bg-blue-color {
+    background-color: #00638d;
+  }
+
+  .bg-yellow-color {
+    background-color: #ffcb05;
+  }
+}
+
+@theme {
+  --font-monteserrat: 'Montserrat';
+}
