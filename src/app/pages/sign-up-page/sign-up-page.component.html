@@ -1,0 +1,60 @@
+<section class="flex justify-center items-center py-5">
+  <form [formGroup]="signUpForm" class="w-lg border-1 border-stone-500 rounded-sm px-5 py-10">
+    <div class="flex flex-col md:flex-row gap-5 mb-5">
+      <div class="flex flex-col w-full">
+        <label for="name" class="block text-xs lg:text-sm text-white mb-2">Nombre</label>
+        <input formControlName="name" type="text" id="name" class="bg-stone-50 text-stone-900 text-xs lg:text-sm rounded-sm focus:outline-none w-full p-2.5" required />
+        @if(this.isValidField('name')) {
+          <small class="red-color mt-2">El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
+        }
+      </div>
+      <div class="flex flex-col w-full">
+        <label for="last-name" class="block text-xs lg:text-sm text-white mb-2">Apellidos</label>
+        <input formControlName="lastName" type="text" id="last-name" class="bg-stone-50 text-stone-900 text-xs lg:text-sm rounded-sm focus:outline-none w-full p-2.5" required />
+        @if(this.isValidField('lastName')) {
+          <small class="red-color mt-2">El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
+        }
+      </div>
+    </div>
+    <div class="w-full mb-5">
+      <label for="email" class="block text-xs lg:text-sm text-white mb-2">Email</label>
+      <input formControlName="email" type="email" id="email" class="bg-stone-50 text-stone-900 text-xs lg:text-sm rounded-sm focus:outline-none w-full p-2.5" required />
+      @if(this.isValidField('email')) {
+        <small class="red-color mt-2">El email no tiene un formato válido.</small>
+      }
+    </div>
+    <div class="flex flex-col md:flex-row gap-5 mb-5">
+      <div class="w-full">
+        <label for="password" class="block text-xs lg:text-sm text-white mb-2">Contraseña</label>
+        <input formControlName="password" type="password" id="password" class="bg-stone-50 text-stone-900 text-xs lg:text-sm rounded-sm focus:outline-none w-full p-2.5" required />
+        @if(this.isValidField('password')) {
+          <small class="red-color mt-2">La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y un caracter especial.</small>
+        }
+      </div>
+      <div class="w-full">
+        <label for="repeat-password" class="block text-xs lg:text-sm text-white mb-2">Repetir contraseña</label>
+        <input formControlName="repeatPassword" type="password" id="repeat-password" class="bg-stone-50 text-stone-900 text-xs lg:text-sm rounded-sm focus:outline-none w-full p-2.5" required />
+        @if(this.passwordsMatch()) {
+          <small class="red-color mt-2">Las contraseñas no coinciden.</small>
+        }
+      </div>
+    </div>
+    <div class="flex flex-col items-center mb-5">
+      <div class="flex gap-2">
+        <div class="h-5">
+          <input formControlName="agree" id="agree" type="checkbox" checked class="w-4 h-4 border border-stone-300 rounded-sm bg-stone-50 focus:outline-none" required />
+        </div>
+        <small>He leído y acepto la <a class="yellow-color underline" routerLink="/politica-de-privacidad" target="_blank">política de privacidad</a> y los <a class="yellow-color underline" routerLink="/terminos-y-condiciones" target="_blank">términos y condiciones</a> del sitio.</small>
+      </div>
+      @if(this.isValidField('agree')) {
+        <small class="red-color mt-2">Debes aceptar nuestra pólítica de privacidad y los términos y condiciones para continuar.</small>
+      }
+    </div>
+    <button type="submit" [disabled]="signUpForm.invalid" class="text-stone-900 font-semibold bg-yellow-color focus:outline-none hover:cursor-pointer disabled:bg-stone-500 rounded-sm text-xs lg:text-sm text-center w-full px-3 py-2">Registrar</button>
+    <div class="flex justify-between mt-5">
+      <small>¿Ya tienes una cuenta?</small>
+      <small class="yellow-color"><a class="underline"
+      routerLink="/iniciar-sesion">Inicia sesión aquí</a></small>
+    </div>
+  </form>
+</section>
