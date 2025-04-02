@@ -1,7 +1,12 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AbstractControl, FormBuilder, ReactiveFormsModule,
-         ValidationErrors, Validators } from '@angular/forms'
+         ValidationErrors, Validators } from '@angular/forms';
+
+enum typeInput {
+  Password = 'password',
+  Text = 'text'
+}
 
 @Component({
   imports: [
@@ -13,6 +18,12 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule,
 export default class SignUpPageComponent {
   isHiddenPassword = signal<boolean>(true);
   isHiddenRepeatPassword = signal<boolean>(true);
+  typeInPassword = computed<string>(() =>
+    this.isHiddenPassword()? typeInput.Password: typeInput.Text
+  );
+  typeInRepeatPassword = computed<string>(() =>
+    this.isHiddenRepeatPassword()? typeInput.Password: typeInput.Text
+  );
   private formBuilder = inject(FormBuilder);
   signUpForm = this.formBuilder.group({
     name: [
@@ -81,26 +92,12 @@ export default class SignUpPageComponent {
   }
 
   onHideField(field: string) {
-    if(field === 'password') {
-      this.isHiddenPassword.set(!this.isHiddenPassword());
-      return;
+    switch(field) {
+      case 'password':
+        this.isHiddenPassword.set(!this.isHiddenPassword());
+        break;
+      case 'repeatPassword':
+        this.isHiddenRepeatPassword.set(!this.isHiddenRepeatPassword());
     }
-
-    if(field === 'repeatPassword') {
-      this.isHiddenRepeatPassword.set(!this.isHiddenRepeatPassword());
-      return;
-    }
-  }
-
-  getType(field: string): string | undefined {
-    if(field === 'password') {
-      return this.isHiddenPassword()? 'password': 'text';
-    }
-
-    if(field === 'repeatPassword') {
-      return this.isHiddenRepeatPassword()? 'password': 'text';
-    }
-
-    return;
   }
 }
