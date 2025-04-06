@@ -1,0 +1,25 @@
+<section class="flex flex-col gap-5 pt-10 pb-15">
+  <carrusel-title [carruselTitle]="carruselTitle()"/>
+  <div class="relative overflow-hidden" #carouselContainer>
+    <div class="flex transition-transform duration-500 ease-in-out gap-4"
+    [style.transform]="'translateX(-' + scrollStep() + 'px)'">
+      @for(movie of movies(); track movie.id; let index = $index) {
+        <carrusel-card-movies [posterPath]="movie.poster_path"/>
+      }
+    </div>
+    @if(scrollStep() > 0) {
+      <button (click)="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 bg-stone-50/80 hover:bg-stone-50 hover:cursor-pointer h-full bg-linear-to-r from-stone-900 to-stone-900/80 z-10 px-0.5">
+        <svg class="w-6 h-6 lg:w-10 lg:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 320 512">
+          <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+        </svg>
+      </button>
+    }
+    @if(scrollStep() < totalScrollStep()) {
+      <button (click)="next()" class="absolute right-0 top-1/2 -translate-y-1/2 bg-stone-50/80 hover:bg-stone-50 hover:cursor-pointer h-full bg-linear-to-l from-stone-900 to-stone-900/80 z-10 px-0.5">
+        <svg class="w-6 h-6 lg:w-10 lg:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 320 512">
+          <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+        </svg>
+      </button>
+    }
+  </div>
+</section>
