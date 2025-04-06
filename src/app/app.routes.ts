@@ -6,6 +6,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home-page/home-page.component')
   },
   {
+    path: 'detalle-pelicula/:id',
+    loadComponent: () => import('./pages/detail-movie/detail-movie.component')
+  },
+  {
     path: 'nuevo',
     loadComponent: () => import('./pages/new-page/new-page.component')
   },
