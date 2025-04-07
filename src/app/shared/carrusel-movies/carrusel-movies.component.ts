@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, computed, ElementRef,
          input, signal, ViewChild } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Movie } from '../../interfaces/movie-response.interface';
-import { CarruselTitleComponent } from "./carrusel-title/carrusel-title.component";
-import { CarruselCardMoviesComponent } from "./carrusel-card-movies/carrusel-card-movies.component";
+import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
+import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
 
 const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
 
@@ -10,13 +12,16 @@ const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
   selector: 'carrusel-movies',
   imports: [
     CarruselTitleComponent,
-    CarruselCardMoviesComponent
+    CarruselCardMoviesComponent,
+    FontAwesomeModule
   ],
   templateUrl: './carrusel-movies.component.html'
 })
 export class CarruselMoviesComponent implements AfterViewInit {
   @ViewChild('carouselContainer', { static: true })
   carouselContainer!: ElementRef;
+  faAngleLeft = faAngleLeft;
+  faAngleRight = faAngleRight;
   carruselTitle = input.required<string>();
   movies = input.required<Movie[]>();
   carruselContainerWidth = signal<number>(0);
