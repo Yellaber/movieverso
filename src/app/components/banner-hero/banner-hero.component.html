@@ -1,0 +1,22 @@
+<section class="flex items-center md:gap-10 lg:gap-6 pt-10 pb-15">
+  <div class="flex flex-col w-full md:w-1/2 gap-5">
+    <div class="flex justify-between">
+      <tag [type]="heroType()" text="Más popular"/>
+      <div class="flex items-center gap-4">
+        <popularity [popularity]="movie().popularity"/>
+        <vote [vote]="movie().vote_average"/>
+      </div>
+    </div>
+    <h2 class="text-xl md:text-3xl lg:text-5xl font-semibold">{{ movie().title }}</h2>
+    <p class="text-xs lg:text-sm leading-relaxed">{{ movie().overview }}</p>
+    <div class="flex items-center">
+      <genre-list [genreList]="genresPopularMovie()"/>
+    </div>
+    <div class="flex">
+      <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/detalle-pelicula', movie().id]">Explorar</a>
+    </div>
+  </div>
+  <div class="hidden md:flex md:w-1/2 justify-end rounded-md">
+    <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
+  </div>
+</section>
