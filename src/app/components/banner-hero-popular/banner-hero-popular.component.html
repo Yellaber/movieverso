@@ -1,4 +1,4 @@
-<section class="flex justify-center items-center gap-16 pt-10 pb-15">
+<section class="flex items-center md:gap-10 lg:gap-6 pt-10 pb-15">
   <div class="flex flex-col w-full md:w-1/2 gap-5">
     <div class="flex justify-between">
       <tag type="popularity" text="Más popular"/>
@@ -16,7 +16,7 @@
       <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/detalle-pelicula', movie().id]">Explorar</a>
     </div>
   </div>
-  <div class="hidden md:flex md:object-cover md:object-center">
+  <div class="hidden md:flex md:w-1/2 justify-end rounded-md">
     <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
   </div>
 </section>
