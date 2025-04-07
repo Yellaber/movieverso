@@ -1,0 +1,15 @@
+<div class="flex flex-col min-w-[200px] max-w-[200px] rounded-md shadow-md">
+  <a [routerLink]="['/detalle-pelicula', movie().id]">
+    <img class="w-full h-72 rounded-t-md object-cover object-center"
+    [src]="'https://image.tmdb.org/t/p/w185/' + movie().poster_path">
+  </a>
+  <div class="flex justify-between items-center bg-stone-800 rounded-b-md p-3">
+    <svg class="w-3 lg:w-4 yellow-color" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 384 512">
+      <path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/>
+    </svg>
+    <div class="flex gap-3">
+      <popularity [popularity]="movie().popularity"/>
+      <vote [vote]="movie().vote_average"/>
+    </div>
+  </div>
+</div>
