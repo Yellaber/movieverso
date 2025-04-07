@@ -1,0 +1,13 @@
+<div class="flex">
+  <div class="flex items-center rounded-full bg-stone-800 yellow-color gap-2 px-3 py-2">
+    @switch(type()) {
+      @case('popularity') {
+        <fa-icon [icon]="faFire"></fa-icon>
+      }
+      @case('vote') {
+        <fa-icon [icon]="faStar"></fa-icon>
+      }
+    }
+    <h1 class="text-xs lg:text-sm">{{ text() }}</h1>
+  </div>
+</div>
