@@ -2,16 +2,20 @@ import { NgClass } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'search-bar',
   imports: [
     NgClass,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   templateUrl: './search-bar.component.html'
 })
 export class SearchBarComponent {
+  faMagnifyingGlass = faMagnifyingGlass;
   layoutClass = input.required<string>();
   private formBuilder = inject(FormBuilder);
   searchingForm = this.formBuilder.group({
