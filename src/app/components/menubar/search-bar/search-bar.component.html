@@ -4,9 +4,7 @@
       <input type="search" formControlName="search" class="w-full lg:w-90 text-xs lg:text-sm text-stone-300 bg-stone-800 rounded-l-sm focus:outline-none p-2.5" placeholder="Buscar peliculas" required />
       <button class="text-xs lg:text-sm font-medium h-full text-stone-50 bg-blue-color rounded-e-sm focus:outline-none hover:cursor-pointer disabled:bg-stone-500 disabled:cursor-not-allowed p-3"
       [disabled]="searchingForm.invalid" (click)="navigateToSearch()">
-        <svg class="w-3 h-3 lg:w-4 lg:h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-        </svg>
+        <fa-icon class="w-3 lg:w-4" [icon]="faMagnifyingGlass"></fa-icon>
       </button>
     </div>
   </form>
