@@ -11,7 +11,6 @@ import { FooterSiteComponent } from "./components/footer-site/footer-site.compon
     FooterSiteComponent
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'MovieVerso';
