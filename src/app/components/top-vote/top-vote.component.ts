@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { TmdbService } from '../../services/tmdb.service';
+import { TmdbService } from '../../services/tmdb-service/tmdb.service';
 import { Movie } from '../../interfaces/movie-response.interface';
 import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
 
