@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFire, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faFire, faStar, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'tag',
@@ -12,4 +12,5 @@ export class TagComponent {
   type = input<string>('');
   faFire = faFire;
   faStar = faStar;
+  faCalendarCheck = faCalendarCheck;
 }
