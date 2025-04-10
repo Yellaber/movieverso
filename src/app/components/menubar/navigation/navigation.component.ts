@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { routes } from '../../../app.routes';
 import { NgClass, TitleCasePipe } from '@angular/common';
@@ -19,7 +19,8 @@ import { NgClass, TitleCasePipe } from '@angular/common';
         </li>
       }
     </ul>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
   layoutClass = input.required<string>();

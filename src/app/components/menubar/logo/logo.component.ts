@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.developments';
 
@@ -6,9 +6,9 @@ import { environment } from '../../../environments/environment.developments';
   selector: 'logo',
   imports: [ RouterLink ],
   templateUrl: './logo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LogoComponent {
-  appNamePre = environment.appNamePre;
-  appNamePost = environment.appNamePost;
+  appName = environment.appName;
   slogan = environment.slogan;
 }
