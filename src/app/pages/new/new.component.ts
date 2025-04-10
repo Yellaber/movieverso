@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'politica-privacidad',
+  selector: 'new',
   imports: [],
-  templateUrl: './politica-privacidad.component.html',
+  templateUrl: './new.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class PoliticaPrivacidadComponent { }
+export default class NewComponent { }
