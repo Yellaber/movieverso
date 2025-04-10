@@ -1,22 +1,6 @@
-<section class="flex items-center md:gap-10 lg:gap-20 pt-10 pb-15">
-  <div class="flex flex-col w-full md:w-1/2 lg:w-2/3 gap-5">
-    <div class="flex justify-between">
-      <tag [type]="heroType()" [text]="heroTitle()"/>
-      <div class="flex items-center gap-4">
-        <popularity [popularity]="movie().popularity"/>
-        <vote [vote]="movie().vote_average"/>
-      </div>
-    </div>
-    <h2 class="text-xl md:text-3xl lg:text-5xl font-semibold">{{ movie().title }}</h2>
-    <p class="text-xs lg:text-sm leading-relaxed">{{ movie().overview }}</p>
-    <div class="flex items-center">
-      <badge-list [badgeList]="genresPopularMovie()"/>
-    </div>
-    <div class="flex">
-      <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/detalle-pelicula', movie().id]">Explorar</a>
-    </div>
-  </div>
-  <div class="hidden md:flex md:w-1/2 justify-end rounded-md">
-    <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
-  </div>
+<section class="relative flex items-center bg-cover bg-center rounded-md shadow-md md:gap-10 lg:gap-20 p-10" [style.background-image]="'url(' + getBackdropImageUrl() + ')'">
+  <short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"
+  [genres]="genres()"/>
+  <div class="absolute inset-0 bg-stone-900/80"></div>
+  <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
 </section>
