@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, ElementRef,
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
          input, signal, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,8 @@ const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
     CarruselCardMoviesComponent,
     FontAwesomeModule
   ],
-  templateUrl: './carrusel-movies.component.html'
+  templateUrl: './carrusel-movies.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarruselMoviesComponent implements AfterViewInit {
   @ViewChild('carouselContainer', { static: true })

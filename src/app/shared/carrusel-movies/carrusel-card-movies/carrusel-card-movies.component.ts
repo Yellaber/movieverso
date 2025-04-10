@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,8 @@ import { environment } from '../../../environments/environment.developments';
     VoteComponent,
     FontAwesomeModule
 ],
-  templateUrl: './carrusel-card-movies.component.html'
+  templateUrl: './carrusel-card-movies.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarruselCardMoviesComponent {
   faBokmark = faBookmark;

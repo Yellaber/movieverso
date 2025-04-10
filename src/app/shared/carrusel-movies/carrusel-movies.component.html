@@ -3,7 +3,7 @@
   <div class="relative overflow-hidden" #carouselContainer>
     <div class="flex transition-transform duration-500 ease-in-out gap-4"
     [style.transform]="'translateX(-' + scrollStep() + 'px)'">
-      @for(movie of movies(); track movie.id; let index = $index) {
+      @for(movie of movies(); track $index) {
         <carrusel-card-movies [movie]="movie"/>
       }
     </div>
