@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenubarComponent } from "./components/menubar/menubar.component";
 import { FooterSiteComponent } from "./components/footer-site/footer-site.component";
@@ -11,6 +11,7 @@ import { FooterSiteComponent } from "./components/footer-site/footer-site.compon
     FooterSiteComponent
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'MovieVerso';
