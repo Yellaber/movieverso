@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFire } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +15,7 @@ import { faFire } from '@fortawesome/free-solid-svg-icons';
       <small>{{ popularity() | number: '1.1-1' }}</small>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PopularityComponent {
   faFire = faFire;
