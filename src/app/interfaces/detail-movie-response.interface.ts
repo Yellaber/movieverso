@@ -1,3 +1,5 @@
+import { Genre } from "./genre-movies-response.interface";
+
 export interface DetailMovieResponse {
   adult: boolean;
   backdrop_path: string;
@@ -25,11 +27,6 @@ export interface DetailMovieResponse {
   video: boolean;
   vote_average: number;
   vote_count: number;
-}
-
-export interface Genre {
-  id: number;
-  name: string;
 }
 
 export interface ProductionCompany {
