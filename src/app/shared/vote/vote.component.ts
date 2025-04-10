@@ -1,5 +1,5 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,7 +14,8 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
       <fa-icon  class="yellow-color" [icon]="faStar"></fa-icon>
       <small>{{ vote() | number: '1.1-1' }}/10</small>
     </div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VoteComponent {
   faStar = faStar;
