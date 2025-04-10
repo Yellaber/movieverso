@@ -1,56 +1,30 @@
-<section class="relative flex items-center bg-cover bg-center rounded-md shadow-md p-10"
-[style.background-image]="'url(' + backdropImage() + ')'">
-  <div class="flex flex-col rounded-md z-10">
-    <div class="w-52 bg-cover bg-center shadow-sm">
-      <img class="rounded-t-md" [src]="posterImage()" [alt]="movie().original_title">
-    </div>
-    <div class="flex justify-start items-center bg-stone-900 yellow-color md:text-sm lg:text-lg rounded-b-md gap-4 px-3 py-2">
-      <fa-icon [icon]="faBookmark"></fa-icon>
-      <fa-icon [icon]="faHeart"></fa-icon>
-      <fa-icon [icon]="faThumbsUp"></fa-icon>
-    </div>
-  </div>
-  <div class="absolute inset-0 bg-stone-900/70"></div>
-  <div class="relative text-stone-50 z-10 pl-20">
-    <tag type="calendar" [text]="movie().release_date.toString()"/>
-    <h2 class="text-xl md:text-3xl lg:text-5xl yellow-color font-semibold my-3">{{ movie().title }}</h2>
-    @if(movie().tagline) {
-      <span class="text-xs lg:text-sm font-semibold">{{ movie().tagline }}</span>
-    }
-    <p class="text-xs lg:text-sm leading-relaxed mt-10 mb-5">{{ movie().overview }}</p>
-    <div class="flex gap-4">
-      <badge-list [badgeList]="movie().genres"/>
-      <div class="flex items-center gap-4">
-        <popularity [popularity]="movie().popularity"/>
-        <vote [vote]="movie().vote_average"/>
-      </div>
-    </div>
-  </div>
-</section>
+<banner-detail [movieDetail]="movieDetail()"/>
 <section class="flex gap-5 mt-5">
   <div class="flex flex-col w-1/4 rounded-md shadow-md bg-stone-800 gap-8 p-10">
     <div class="flex flex-col gap-3">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">País de origen:</span>
-      <div class="flex items-center gap-3">
-        <img class="w-10 bg-cover bg-center" [src]="flagCountry()" alt="">
-        <span class="text-xs lg:text-sm">{{ movie().production_countries[0].name }}</span>
-      </div>
+      <span class="text-xs lg:text-sm yellow-color font-semibold">Paises productores:</span>
+      @for (productionCountry of movieDetail().production_countries; track $index) {
+        <div class="flex items-center gap-3">
+          <img class="w-10 bg-cover bg-center" [src]="getFlagCountry(productionCountry.iso_3166_1)" alt="">
+          <span class="text-xs lg:text-sm">{{ productionCountry.name }}</span>
+        </div>
+      }
     </div>
     <div class="flex flex-col gap-4">
       <span class="text-xs lg:text-sm yellow-color font-semibold">Idiomas:</span>
-      <badge-list [badgeList]="movie().spoken_languages"/>
+      <badge-list [badgeList]="movieDetail().spoken_languages"/>
     </div>
     <div class="flex items-center gap-3">
       <span class="text-xs lg:text-sm yellow-color font-semibold">Estado:</span>
-      <span class="text-xs lg:text-sm">{{ movie().status }}</span>
+      <span class="text-xs lg:text-sm">{{ movieDetail().status }}</span>
     </div>
     <div class="flex items-center gap-3">
       <span class="text-xs lg:text-sm yellow-color font-semibold">Presupuesto:</span>
-      <span class="text-xs lg:text-sm">{{ movie().budget | currency:'US' }}</span>
+      <span class="text-xs lg:text-sm">{{ movieDetail().budget | currency:'US' }}</span>
     </div>
     <div class="flex items-center gap-3">
       <span class="text-xs lg:text-sm yellow-color font-semibold">Ingresos:</span>
-      <span class="text-xs lg:text-sm">{{ movie().revenue| currency:'US' }}</span>
+      <span class="text-xs lg:text-sm">{{ movieDetail().revenue| currency:'US' }}</span>
     </div>
     <div class="flex flex-col gap-4">
       <span class="text-xs lg:text-sm yellow-color font-semibold">Palabras clave:</span>
@@ -61,4 +35,4 @@
 
   </div>
 </section>
-<pre>{{ movie() | json }}</pre>
+<pre>{{ movieDetail() | json }}</pre>
