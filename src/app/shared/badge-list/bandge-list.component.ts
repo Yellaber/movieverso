@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Genre } from '../../interfaces/genre-movies-response.interface';
 import { Keyword } from '../../interfaces/movie-keyword-response';
 import { SpokenLanguage } from '../../interfaces/detail-movie-response.interface';
@@ -15,6 +15,7 @@ type typeBadges = Genre[] | Keyword[] | SpokenLanguage[]
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BadgeListComponent {
   badgeList = input.required<typeBadges>();
