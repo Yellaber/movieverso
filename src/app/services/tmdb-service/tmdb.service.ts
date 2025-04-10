@@ -18,7 +18,7 @@ const language = 'es';
 export class TmdbService {
   private httpClient = inject(HttpClient);
 
-  getGenreMovieList(): Observable<Genre[]> {
+  getGenreMovieList(genreIds: number[]): Observable<Genre[]> {
     const url = `${ environment.tmdbApiUrl }/genre/movie/list`;
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
@@ -26,7 +26,7 @@ export class TmdbService {
         language: 'es'
       }
     }).pipe(
-      map(({ genres }) => genres)
+      map(({genres}) => genres.filter(genre => genreIds.includes(genre.id)))
     );
   }
 
@@ -39,7 +39,7 @@ export class TmdbService {
         page: 1
       }
     }).pipe(
-      map(({ results }) => limit? results.slice(0, limit): results)
+      map(({ results }) => limit? results.slice(0, limit): results),
     );
   }
 
