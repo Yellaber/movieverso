@@ -1,0 +1,17 @@
+@if(movieDetail().release_date) {
+  <tag type="calendar" [text]="movieDetail().release_date.toString()"/>
+}
+<h2 class="text-xl md:text-3xl lg:text-5xl yellow-color font-semibold my-3">{{ movieDetail().title }}</h2>
+@if(movieDetail().tagline) {
+  <span class="text-xs lg:text-sm font-semibold">{{ movieDetail().tagline }}</span>
+}
+@if(movieDetail().overview) {
+  <p class="text-xs lg:text-sm leading-relaxed mt-10 mb-5">{{ movieDetail().overview }}</p>
+}
+<div class="flex gap-4">
+  <badge-list [badgeList]="movieDetail().genres"/>
+  <div class="flex items-center gap-4">
+    <popularity [popularity]="movieDetail().popularity"/>
+    <vote [vote]="movieDetail().vote_average"/>
+  </div>
+</div>
