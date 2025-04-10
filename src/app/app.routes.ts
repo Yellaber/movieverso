@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages/home-page/home-page.component')
+    loadComponent: () => import('./pages/home/home.component')
   },
   {
     path: 'detalle-pelicula/:id',
@@ -11,27 +11,27 @@ export const routes: Routes = [
   },
   {
     path: 'nuevo',
-    loadComponent: () => import('./pages/new-page/new-page.component')
+    loadComponent: () => import('./pages/new/new.component')
   },
   {
     path: 'popular',
-    loadComponent: () => import('./pages/popular-page/popular-page.component')
+    loadComponent: () => import('./pages/popular/popular.component')
   },
   {
     path: 'listado',
-    loadComponent: () => import('./pages/list-page/list-page.component')
+    loadComponent: () => import('./pages/list/list.component')
   },
   {
     path: 'buscar',
-    loadComponent: () => import('./pages/search-page/search-page.component')
+    loadComponent: () => import('./pages/search/search.component')
   },
   {
     path: 'iniciar-sesion',
-    loadComponent: () => import('./pages/sign-in-page/sign-in-page.component')
+    loadComponent: () => import('./pages/sign-in/sign-in.component')
   },
   {
     path: 'registro',
-    loadComponent: () => import('./pages/sign-up-page/sign-up-page.component')
+    loadComponent: () => import('./pages/sign-up/sign-up.component')
   },
   {
     path: 'politica-de-privacidad',
