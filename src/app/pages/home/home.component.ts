@@ -6,6 +6,7 @@ import { TopVoteComponent } from '../../components/top-vote/top-vote.component';
 import { TmdbService } from '../../services/tmdb-service/tmdb.service';
 import { Movie } from '../../interfaces/movie-response.interface';
 import { Genre } from '../../interfaces/genre-movies-response.interface';
+import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
 
 @Component({
   selector: 'home',
@@ -23,8 +24,10 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   genresPopularMovie = signal<Genre[]>([]);
   genresRatedMovie = signal<Genre[]>([]);
   private tmdbService = inject(TmdbService);
+  private seoFriendlyService = inject(SeoFriendlyService);
 
   ngOnInit(): void {
+    this.seoFriendlyService.setMetaTags('Home', 'Esta es la página de inicio');
     this.getPopularMovies();
     this.getTopRatedMovies();
   }
