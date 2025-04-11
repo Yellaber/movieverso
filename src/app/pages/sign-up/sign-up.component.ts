@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule,
-         ValidationErrors, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors,
+         Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
 
 enum typeInput {
   Password = 'password',
@@ -17,7 +18,7 @@ enum typeInput {
   templateUrl: './sign-up.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class SignUpComponent {
+export default class SignUpComponent implements OnInit {
   isHiddenPassword = signal<boolean>(true);
   isHiddenRepeatPassword = signal<boolean>(true);
   typeInPassword = computed<string>(() =>
@@ -26,6 +27,7 @@ export default class SignUpComponent {
   typeInRepeatPassword = computed<string>(() =>
     this.isHiddenRepeatPassword()? typeInput.Password: typeInput.Text
   );
+  private seoFriendlyService = inject(SeoFriendlyService);
   private formBuilder = inject(FormBuilder);
   signUpForm = this.formBuilder.group({
     name: [
@@ -71,6 +73,10 @@ export default class SignUpComponent {
       [ Validators.required ]
     ]
   }, { validators: [this.passwordsMatchValidator] });
+
+  ngOnInit(): void {
+    this.seoFriendlyService.setMetaTags('Sign up', 'Esta es la página para el registro de usuarios');
+  }
 
   private passwordsMatchValidator(form: AbstractControl): ValidationErrors | null {
     const password = <string>form.get('password')?.value;
