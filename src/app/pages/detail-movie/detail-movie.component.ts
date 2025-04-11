@@ -7,6 +7,7 @@ import { DetailMovieResponse } from '../../interfaces/detail-movie-response.inte
 import { BadgeListComponent } from '../../shared/badge-list/bandge-list.component';
 import { Keyword } from '../../interfaces/movie-keyword-response';
 import { BannerDetailComponent } from '../../components/banner-detail/banner-detail.component';
+import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
 
 const flagCdnUrl = 'https://flagcdn.com/w80/';
 
@@ -25,10 +26,12 @@ const flagCdnUrl = 'https://flagcdn.com/w80/';
 export default class DetailMovieComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private tmdbService = inject(TmdbService);
+  private seoFriendlyService = inject(SeoFriendlyService);
   movieDetail = signal<DetailMovieResponse>(Object.create({}));
   movieKeywords = signal<Keyword[]>([]);
 
   ngOnInit(): void {
+    this.seoFriendlyService.setMetaTags('Detail', 'Esta es la página que muestrala información de cada película');
     this.route.paramMap.subscribe(params => {
       if(params.get('id')) {
         const idMovie = +params.get('id')!;
