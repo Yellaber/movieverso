@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
 
 @Component({
   selector: 'sign-in',
@@ -11,8 +12,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   templateUrl: './sign-in.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class SignInComponent {
+export default class SignInComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
+  private seoFriendlyService = inject(SeoFriendlyService);
   signInForm = this.formBuilder.group({
     email: [
       '',
@@ -30,6 +32,10 @@ export default class SignInComponent {
       ]
     ]
   });
+
+  ngOnInit(): void {
+    this.seoFriendlyService.setMetaTags('Sign in', 'Esta es la página para iniciar sesión');
+  }
 
   isValidField(field: string): boolean | undefined {
     const isValid = this.signInForm.get(field)?.invalid;
