@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
 
 @Component({
   selector: 'new',
@@ -6,4 +7,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './new.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class NewComponent { }
+export default class NewComponent implements OnInit {
+  private seoFriendlyService = inject(SeoFriendlyService);
+
+  ngOnInit(): void {
+    this.seoFriendlyService.setMetaTags('New', 'Esta es la página para las películas nuevas');
+  }
+}
