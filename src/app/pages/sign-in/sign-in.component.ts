@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
+import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 
 @Component({
   selector: 'sign-in',
