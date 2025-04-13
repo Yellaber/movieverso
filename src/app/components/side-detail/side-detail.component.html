@@ -1,0 +1,9 @@
+<production-countries [productionCountries]="movieDetail().production_countries" />
+<hr class="text-stone-700">
+<badge-section titleSection="Idiomas:" [badges]="movieDetail().spoken_languages"/>
+<hr class="text-stone-700">
+<info-item label="Estado:" [value]="movieDetail().status"/>
+<info-item label="Presupuesto:" [isCurrency]="true" [value]="movieDetail().budget"/>
+<info-item label="Ingresos:" [isCurrency]="true" [value]="movieDetail().revenue"/>
+<hr class="text-stone-700">
+<badge-section titleSection="Palabras clave:" [badges]="movieKeywords()"/>
