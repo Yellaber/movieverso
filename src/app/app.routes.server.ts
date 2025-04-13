@@ -6,7 +6,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
-    path: 'detalle-pelicula/:id',
+    path: 'pelicula/:id',
     renderMode: RenderMode.Client
   }
 ];
