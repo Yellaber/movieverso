@@ -1,38 +1,22 @@
-<banner-detail [movieDetail]="movieDetail()"/>
-<section class="flex gap-5 mt-5">
-  <div class="flex flex-col w-1/4 rounded-md shadow-md bg-stone-800 gap-8 p-10">
-    <div class="flex flex-col gap-3">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Paises productores:</span>
-      @for (productionCountry of movieDetail().production_countries; track $index) {
-        <div class="flex items-center gap-3">
-          <img class="w-10 bg-cover bg-center" [src]="getFlagCountry(productionCountry.iso_3166_1)" alt="">
-          <span class="text-xs lg:text-sm">{{ productionCountry.name }}</span>
-        </div>
-      }
-    </div>
-    <div class="flex flex-col gap-4">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Idiomas:</span>
-      <badge-list [badgeList]="movieDetail().spoken_languages"/>
-    </div>
-    <div class="flex items-center gap-3">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Estado:</span>
-      <span class="text-xs lg:text-sm">{{ movieDetail().status }}</span>
-    </div>
-    <div class="flex items-center gap-3">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Presupuesto:</span>
-      <span class="text-xs lg:text-sm">{{ movieDetail().budget | currency:'US' }}</span>
-    </div>
-    <div class="flex items-center gap-3">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Ingresos:</span>
-      <span class="text-xs lg:text-sm">{{ movieDetail().revenue| currency:'US' }}</span>
-    </div>
-    <div class="flex flex-col gap-4">
-      <span class="text-xs lg:text-sm yellow-color font-semibold">Palabras clave:</span>
-      <badge-list [badgeList]="movieKeywords()"/>
-    </div>
-  </div>
-  <div class="flex flex-col w-3/4 rounded-md shadow-md bg-stone-800 gap-5 p-5">
+@if(movieDetail().id) {
+  <banner-detail [movieDetail]="movieDetail()"/>
+  <section class="flex gap-5 mt-5">
+    <side-detail [movieDetail]="movieDetail()" [movieKeywords]="movieKeywords()"/>
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-5 p-5">
 
+    </div>
+  </section>
+} @else if(!errorMovie()) {
+  <banner-detail-skeleton/>
+  <section class="flex gap-5 mt-5">
+    <side-detail-skeleton/>
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-5 p-5">
+
+    </div>
+  </section>
+} @else {
+  <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+    <span class="font-semibold">¡Ha ocurrido un error!</span> No fué posible encontrar el ID de esta película.
   </div>
-</section>
+}
 <pre>{{ movieDetail() | json }}</pre>
