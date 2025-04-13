@@ -1,15 +1,17 @@
-<div class="flex justify-between">
-  <tag [type]="heroType()" [text]="heroTitle()"/>
-  <div class="flex items-center gap-4">
-    <popularity [popularity]="movie().popularity"/>
-    <vote [vote]="movie().vote_average"/>
+@if(movie()) {
+  <div class="flex justify-between">
+    <tag [type]="heroType()" [text]="heroTitle()"/>
+    <div class="flex items-center gap-4">
+      <popularity [popularity]="movie().popularity"/>
+      <vote [vote]="movie().vote_average"/>
+    </div>
   </div>
-</div>
-<h2 class="text-xl md:text-3xl lg:text-5xl yellow-color font-semibold">{{ movie().title }}</h2>
-<p class="text-xs lg:text-sm leading-relaxed">{{ movie().overview }}</p>
-<div class="flex items-center">
-  <badge-list [badgeList]="genres()"/>
-</div>
-<div class="flex">
-  <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/detalle-pelicula', movie().id]">Explorar</a>
-</div>
+  <h2 class="text-xl md:text-3xl lg:text-5xl yellow-color font-semibold">{{ movie().title }}</h2>
+  <p class="text-xs lg:text-sm leading-relaxed">{{ movie().overview }}</p>
+  <div class="flex items-center">
+    <badge-list [badgeList]="genres()"/>
+  </div>
+  <div class="flex">
+    <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/detalle-pelicula', movie().id]">Explorar</a>
+  </div>
+}

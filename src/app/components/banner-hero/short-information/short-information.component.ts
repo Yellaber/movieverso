@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TagComponent } from '../../../shared/tag/tag.component';
 import { PopularityComponent } from '../../../shared/popularity/popularity.component';
 import { VoteComponent } from '../../../shared/vote/vote.component';
-import { BadgeListComponent } from '../../../shared/badge-list/bandge-list.component';
+import { BadgeListComponent } from '../../../shared/badge-list/badge-list.component';
 import { Movie } from '../../../interfaces/movie-response.interface';
 import { Genre } from '../../../interfaces/genre-movies-response.interface';
 
