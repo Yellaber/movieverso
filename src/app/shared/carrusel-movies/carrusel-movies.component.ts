@@ -16,7 +16,8 @@ const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
     FontAwesomeModule
   ],
   templateUrl: './carrusel-movies.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'flex flex-col gap-5 py-7 lg:pt-10 lg:pb-15' }
 })
 export class CarruselMoviesComponent implements AfterViewInit {
   @ViewChild('carouselContainer', { static: true })
