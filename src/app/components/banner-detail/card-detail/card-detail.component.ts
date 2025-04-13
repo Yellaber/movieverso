@@ -7,7 +7,7 @@ import { faBookmark, faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-ico
   imports: [ FontAwesomeModule ],
   templateUrl: './card-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col rounded-md z-10' }
+  host: { class: 'hidden md:flex flex-col rounded-md z-10' }
 })
 export class CardDetailComponent {
   faBookmark = faBookmark;

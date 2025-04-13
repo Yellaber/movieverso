@@ -1,6 +1,6 @@
-<section class="relative flex items-center bg-cover bg-center rounded-md shadow-md p-10"
+<section class="relative flex items-center bg-cover bg-center rounded-md shadow-md p-5 md:p-10 mt-5"
 [style.background-image]="'url(' + backdropImage() + ')'">
   <card-detail [posterImageUrl]="posterImage()" [titleMovie]="movieDetail().original_title"/>
-  <div class="absolute inset-0 bg-stone-900/70"></div>
+  <div class="absolute inset-0 bg-stone-900/80"></div>
   <short-detail [movieDetail]="movieDetail()"/>
 </section>
