@@ -1,6 +1,13 @@
-<banner-hero heroType="popularity" heroTitle="Más popular" [movie]="popularMovies()[0]"
-[genres]="genresPopularMovie()"/>
-<top-popular/>
-<banner-hero heroType="rated" heroTitle="Mejor valorada" [movie]="ratedMovies()[0]"
-[genres]="genresRatedMovie()"/>
-<top-vote/>
+@if(popularMovies()[0] && ratedMovies()[0]) {
+  <banner-hero heroType="popularity" heroTitle="Más popular" [movie]="popularMovies()[0]"
+  [genres]="genresPopularMovie()"/>
+  <carrusel-movies carruselTitle="Top 10 - Más populares" [movies]="popularMovies()"/>
+  <banner-hero heroType="rated" heroTitle="Mejor valorada" [movie]="ratedMovies()[0]"
+  [genres]="genresRatedMovie()"/>
+  <carrusel-movies carruselTitle="Top 10 - Mejor valoradas" [movies]="ratedMovies()"/>
+} @else {
+  <banner-hero-skeleton/>
+  <carrusel-movies-skeleton/>
+  <banner-hero-skeleton/>
+  <carrusel-movies-skeleton/>
+}

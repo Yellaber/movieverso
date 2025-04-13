@@ -1,19 +1,21 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject,
          OnInit, signal } from '@angular/core';
 import { BannerHeroComponent } from '../../components/banner-hero/banner-hero.component';
-import { TopPopularComponent } from '../../components/top-popular/top-popular.component';
-import { TopVoteComponent } from '../../components/top-vote/top-vote.component';
-import { TmdbService } from '../../services/tmdb-service/tmdb.service';
+import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
 import { Movie } from '../../interfaces/movie-response.interface';
 import { Genre } from '../../interfaces/genre-movies-response.interface';
-import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
+import { BannerHeroSkeletonComponent } from '../../components/banner-hero-skeleton/banner-hero-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '../../components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { TmdbService } from '../../services/tmdb-service/tmdb.service';
+import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 
 @Component({
   selector: 'home',
   imports: [
     BannerHeroComponent,
-    TopPopularComponent,
-    TopVoteComponent
+    CarruselMoviesComponent,
+    BannerHeroSkeletonComponent,
+    CarruselMoviesSkeletonComponent
 ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,14 +29,14 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   private seoFriendlyService = inject(SeoFriendlyService);
 
   ngOnInit(): void {
-    this.seoFriendlyService.setMetaTags('Home', 'Esta es la página de inicio');
+    this.seoFriendlyService.setMetaTags('Inicio', 'Esta es la página de inicio');
     this.getPopularMovies();
     this.getTopRatedMovies();
   }
 
   ngAfterViewInit(): void {
-    this.getGenresPopularMovie();
-    this.getGenresRatedMovie();
+    if(this.popularMovies()[0]) { this.getGenresPopularMovie(); }
+    if(this.ratedMovies()[0]) { this.getGenresRatedMovie(); }
   }
 
   getPopularMovies() {
