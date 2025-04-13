@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors,
          Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SeoFriendlyService } from '../../services/seo-friendly/SeoFriendly.service';
+import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 
 enum typeInput {
   Password = 'password',
