@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TagComponent } from '../../../shared/tag/tag.component';
 import { PopularityComponent } from '../../../shared/popularity/popularity.component';
 import { VoteComponent } from '../../../shared/vote/vote.component';
-import { BadgeListComponent } from '../../../shared/badge-list/badge-list.component';
+import { BadgeListComponent } from '../../../shared/badge-list/bandge-list.component';
 import { Movie } from '../../../interfaces/movie-response.interface';
 import { Genre } from '../../../interfaces/genre-movies-response.interface';
+import { SlugifyService } from '../../../services/slugify/slugify.service';
 
 @Component({
   selector: 'short-information',
@@ -25,4 +26,9 @@ export class ShortInformationComponent {
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
   genres = input.required<Genre[]>();
+  private slugifyService = inject(SlugifyService);
+
+  slugify(title: string): string {
+    return this.slugifyService.getSlug(title);
+  }
 }

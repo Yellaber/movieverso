@@ -12,6 +12,6 @@
     <badge-list [badgeList]="genres()"/>
   </div>
   <div class="flex">
-    <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/pelicula', movie().id]">Explorar</a>
+    <a class="bg-yellow-color rounded-sm text-xs lg:text-sm text-stone-900 font-semibold px-3 py-2" [routerLink]="['/pelicula', movie().id + '-' + slugify(movie().title)]">Explorar</a>
   </div>
 }
