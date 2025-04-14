@@ -9,7 +9,7 @@ import { Keyword } from '../../interfaces/movie-keyword-response';
 import { BannerDetailComponent } from '../../components/banner-detail/banner-detail.component';
 import { SideDetailComponent } from '../../components/side-detail/side-detail.component';
 import { BannerDetailSkeletonComponent } from '../../components/banner-detail-skeleton/banner-detail-skeleton.component';
-import { TmdbService } from '../../services/tmdb-service/tmdb.service';
+import { TmdbService } from '../../services/tmdb/tmdb.service';
 import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 import { SideDetailSkeletonComponent } from '../../components/side-detail-skeleton/side-detail-skeleton.component';
 import { environment } from '../../environments/environment.developments';
@@ -35,25 +35,21 @@ export default class DetailMovieComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   movieDetail = signal<DetailMovieResponse>(Object.create({}));
   movieKeywords = signal<Keyword[]>([]);
-  idMovie = toSignal<number>(
-              this.route.paramMap
-                .pipe(
-                  map(params => params.get('id')?? ''),
-                  map(id => isNaN(+id)? 0: +id)
-                )
-              );
+  idMovie = signal<number>(0);
   errorMovie = signal<boolean>(false);
 
   ngOnInit(): void {
+    const idSlug = this.route.snapshot.paramMap.get('id-slug') || '';
+    this.idMovie.set(+idSlug.split('-')[0]);
     this.getMovieById();
     this.getMovieKeywords();
   }
 
   getMovieById() {
-    this.tmdbService.getMovieById(this.idMovie()!)
+    this.tmdbService.getMovieById(this.idMovie())
       .pipe(
         tap(detailMovie =>
-          this.seoFriendlyService.setMetaTags(`${ detailMovie.title }`, `Esta página muestra la información de ${ detailMovie.title }.`, `${ environment.imageUrl }${ detailMovie.backdrop_path }`)
+          this.seoFriendlyService.setMetaTags(`${ detailMovie.title }`, `Esta página muestra la información de la película ${ detailMovie.title }.`, `${ environment.imageUrl }${ detailMovie.backdrop_path }`)
         ))
       .subscribe({
           next: detailMovie => this.movieDetail.set(detailMovie),
@@ -62,7 +58,7 @@ export default class DetailMovieComponent implements OnInit {
   }
 
   getMovieKeywords() {
-    this.tmdbService.getMovieKeywords(this.idMovie()!)
+    this.tmdbService.getMovieKeywords(this.idMovie())
       .subscribe(movieKeywords => this.movieKeywords.set(movieKeywords));
   }
 
