@@ -48,9 +48,11 @@ export default class DetailMovieComponent implements OnInit {
   getMovieById() {
     this.tmdbService.getMovieById(this.idMovie())
       .pipe(
-        tap(detailMovie =>
-          this.seoFriendlyService.setMetaTags(`${ detailMovie.title }`, `Esta página muestra la información de la película ${ detailMovie.title }.`, `${ environment.imageUrl }${ detailMovie.backdrop_path }`)
-        ))
+        tap(detailMovie => {
+          const movieYear = detailMovie.release_date.toString().split('-')[0];
+          this.seoFriendlyService.setMetaTags(`${ detailMovie.title } (${ movieYear })`, `Detalles, sinopsis, reparto y más sobre la película ${ detailMovie.title }.`,
+          `${ environment.imageUrl }${ detailMovie.backdrop_path }`)
+        }))
       .subscribe({
           next: detailMovie => this.movieDetail.set(detailMovie),
           error: () => this.errorMovie.set(true)
