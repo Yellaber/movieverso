@@ -6,7 +6,7 @@ import { Movie } from '../../interfaces/movie-response.interface';
 import { Genre } from '../../interfaces/genre-movies-response.interface';
 import { BannerHeroSkeletonComponent } from '../../components/banner-hero-skeleton/banner-hero-skeleton.component';
 import { CarruselMoviesSkeletonComponent } from '../../components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
-import { TmdbService } from '../../services/tmdb-service/tmdb.service';
+import { TmdbService } from '../../services/tmdb/tmdb.service';
 import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 
 @Component({
