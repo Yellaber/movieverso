@@ -10,7 +10,7 @@ import { MovieTrailerResponse, Trailer } from '../../interfaces/movie-trailer-re
 import { MovieWatchProviderResponse } from '../../interfaces/movie-watch-provider-response.interface';
 import { Keyword, MovieKeywordResponse } from '../../interfaces/movie-keyword-response';
 
-const language = 'es';
+const language = 'es-ES';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class TmdbService {
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: 'es'
+        language
       }
     }).pipe(
       map(({genres}) => genres.filter(genre => genreIds.includes(genre.id)))
