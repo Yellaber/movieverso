@@ -7,10 +7,6 @@
     src: url('../public/fonts/montserrat-regular.woff2') format('woff2');
   }
 
-  .red-color {
-    color: #ed1c24;
-  }
-
   .yellow-color {
     color: #ffcb05;
   }
