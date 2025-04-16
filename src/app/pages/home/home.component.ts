@@ -35,8 +35,10 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if(this.popularMovies()[0]) { this.getGenresPopularMovie(); }
-    if(this.ratedMovies()[0]) { this.getGenresRatedMovie(); }
+    this.getGenresPopularMovie();
+    this.getGenresRatedMovie();
+    /*if(this.popularMovies()[0]) { this.getGenresPopularMovie(); }
+    if(this.ratedMovies()[0]) { this.getGenresRatedMovie(); }*/
   }
 
   getPopularMovies() {
