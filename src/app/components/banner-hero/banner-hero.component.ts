@@ -24,9 +24,6 @@ export class BannerHeroComponent {
   genres = input.required<Genre[]>();
 
   getBackdropImageUrl(): string {
-    if(!this.movie() || !this.movie().backdrop_path) {
-      return '';
-    }
-    return environment.imageUrl + this.movie().backdrop_path;
+    return environment.imageUrl + this.movie().backdrop_path || '';
   }
 }
