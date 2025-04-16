@@ -1,8 +1,7 @@
-<section class="relative flex items-center bg-cover bg-center rounded-md shadow-md md:gap-10 lg:gap-20 p-5 md:p-10 mt-5" [style.background-image]="'url(' + getBackdropImageUrl() + ')'">
-  <short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"
-  [genres]="genres()"/>
-  <div class="absolute inset-0 bg-stone-900/80"></div>
-  @if(movie()) {
-    <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
-  }
-</section>
+<img class="absolute inset-0 w-full h-full object-cover rounded-md" [src]="getBackdropImageUrl()" >
+<short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"
+[genres]="genres()"/>
+<div class="absolute inset-0 bg-stone-900/80"></div>
+@if(movie()) {
+  <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
+}
