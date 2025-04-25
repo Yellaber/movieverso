@@ -28,7 +28,7 @@ export class NavigationComponent {
 
   constructor() {
     this.routes = routes.filter(route =>
-      route.path === 'nuevo' || route.path === 'popular' || route.path === 'listado'
+      route.path === 'estrenos' || route.path === 'populares' || route.path === 'listado'
     );
   };
 }
