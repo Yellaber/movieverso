@@ -15,6 +15,11 @@
     return moviesResponse['results'].slice(0, 10);
   }
 
+  const getTopReleased = async() => {
+    const moviesResponse = await fetch(`${ API_URL }/movie/upcoming?api_key=${ API_KEY }&language=es-ES`).then(response => response.json());
+    return moviesResponse['results'].slice(0, 10);
+  }
+
   const slugify = (title) => {
     return title.toLowerCase().normalize('NFD')
             .replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-');
@@ -22,7 +27,8 @@
 
   const moviesTopPopular = await getTopPopular();
   const moviesTopRated = await getTopRated();
-  let movies = [...moviesTopPopular, ...moviesTopRated];
+  const moviesTopReleased = await getTopReleased();
+  let movies = [...moviesTopPopular, ...moviesTopRated, ...moviesTopReleased];
   movies = movies.filter((movie, index, selfArray) =>
               index === selfArray.findIndex(selfMovie => selfMovie.id === movie.id)
            );
