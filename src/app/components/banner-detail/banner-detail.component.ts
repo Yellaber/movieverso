@@ -16,6 +16,5 @@ import { ShortDetailComponent } from './short-detail/short-detail.component';
 })
 export class BannerDetailComponent {
   movieDetail = input.required<DetailMovieResponse>();
-  posterImage = computed(() => environment.imageUrl + this.movieDetail().poster_path);
   backdropImage = computed(() => environment.imageUrl + this.movieDetail().backdrop_path);
 }
