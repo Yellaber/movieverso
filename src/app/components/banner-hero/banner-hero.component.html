@@ -1,8 +1,5 @@
-<span>{{ genres().length }}</span>
 <img class="absolute inset-0 w-full h-full object-cover rounded-md" [src]="getBackdropImageUrl()" >
 <short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"
 [genres]="genres()"/>
 <div class="absolute inset-0 bg-stone-900/80"></div>
-<!--@if(movie()) {-->
-  <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
-<!--}-->
+<backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>

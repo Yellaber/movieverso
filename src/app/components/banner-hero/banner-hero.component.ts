@@ -5,7 +5,7 @@ import { Genre } from '../../interfaces/genre-movies-response.interface';
 import { BackdropImageComponent } from './backdrop-image/backdrop-image.component';
 import { ShortInformationComponent } from './short-information/short-information.component';
 
-type typeTag = 'popularity' | 'rated' | '';
+type typeTag = 'popularity' | 'rated' | 'trending' | '';
 
 @Component({
   selector: 'banner-hero',
