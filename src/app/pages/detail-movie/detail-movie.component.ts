@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DetailMovieResponse } from '../../interfaces/detail-movie-response.interface';
 import { Keyword } from '../../interfaces/movie-keyword-response';
@@ -25,7 +24,7 @@ const flagCdnUrl = 'https://flagcdn.com/w80/';
     SideDetailComponent,
     BannerDetailSkeletonComponent,
     SideDetailSkeletonComponent
-],
+  ],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
