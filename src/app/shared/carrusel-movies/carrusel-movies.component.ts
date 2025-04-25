@@ -25,6 +25,7 @@ export class CarruselMoviesComponent implements AfterViewInit {
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
   carruselTitle = input.required<string>();
+  route = input.required<string>();
   movies = input.required<Movie[]>();
   carruselContainerWidth = signal<number>(0);
   scrollStep = signal<number>(0);
