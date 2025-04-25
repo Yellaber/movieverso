@@ -1,11 +1,25 @@
-@if(popularMovies()[0] && ratedMovies()[0]) {
+@if(popularMovies()[0] && ratedMovies()[0] && trendingMovies()[0] && upcommingMovies()[0]) {
+  <banner-hero heroType="popularity" heroTitle="Más reciente" [movie]="upcommingMovies()[0]"
+  [genres]="genresUpcommingMovie()"/>
+  <carrusel-movies carruselTitle="Top 10 - Más recientes" route="/estrenos"
+  [movies]="upcommingMovies()"/>
   <banner-hero heroType="popularity" heroTitle="Más popular" [movie]="popularMovies()[0]"
   [genres]="genresPopularMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - Más populares" [movies]="popularMovies()"/>
+  <carrusel-movies carruselTitle="Top 10 - Más populares" route="/populares"
+  [movies]="popularMovies()"/>
   <banner-hero heroType="rated" heroTitle="Mejor valorada" [movie]="ratedMovies()[0]"
   [genres]="genresRatedMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - Mejor valoradas" [movies]="ratedMovies()"/>
+  <carrusel-movies carruselTitle="Top 10 - Mejor valoradas" route="/valoradas"
+  [movies]="ratedMovies()"/>
+  <banner-hero heroType="trending" heroTitle="En tendencia" [movie]="trendingMovies()[0]"
+  [genres]="genresTrendingMovie()"/>
+  <carrusel-movies carruselTitle="Top 10 - En tendencia" route="/tendencia"
+  [movies]="trendingMovies()"/>
 } @else {
+  <banner-hero-skeleton/>
+  <carrusel-movies-skeleton/>
+  <banner-hero-skeleton/>
+  <carrusel-movies-skeleton/>
   <banner-hero-skeleton/>
   <carrusel-movies-skeleton/>
   <banner-hero-skeleton/>
