@@ -30,29 +30,60 @@ export class TmdbService {
     );
   }
 
-  getPopularMovies(limit?: number): Observable<Movie[]> {
+  getPopularMovies(limit?: number, page?: number): Observable<Movie[]> {
     const url = `${ environment.tmdbApiUrl }/movie/popular`;
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
         language,
-        page: 1
+        page: page || 1
       }
     }).pipe(
       map(({ results }) => limit? results.slice(0, limit): results),
     );
   }
 
-  getTopRatedMovies(limit?: number): Observable<Movie[]> {
+  getTopRatedMovies(limit?: number, page?: number): Observable<Movie[]> {
     const url = `${ environment.tmdbApiUrl }/movie/top_rated`;
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
         language,
-        page: 1
+        page: page || 1
       }
     }).pipe(
       map(({ results }) => limit? results.slice(0, limit): results)
+    );
+  }
+
+  getTrendingMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/trending/movie/day`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe(
+      map(({ results }) => limit? results.slice(0, limit): results)
+    );
+  }
+
+  getUpcommingMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/movie/upcoming`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe(
+      map(({ results }) => limit? results.slice(0, limit): results),
+      map(movies => movies.sort((movie1, movie2) => {
+        const dateMovie1 = new Date(movie1.release_date);
+        const dateMovie2 = new Date(movie2.release_date);
+        return dateMovie2.getTime() - dateMovie1.getTime()
+      }))
     );
   }
 
