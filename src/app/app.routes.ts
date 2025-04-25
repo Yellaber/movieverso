@@ -10,12 +10,20 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/detail-movie/detail-movie.component')
   },
   {
-    path: 'nuevo',
-    loadComponent: () => import('./pages/new/new.component')
+    path: 'estrenos',
+    loadComponent: () => import('./pages/released/released.component')
   },
   {
-    path: 'popular',
+    path: 'populares',
     loadComponent: () => import('./pages/popular/popular.component')
+  },
+  {
+    path: 'valoradas',
+    loadComponent: () => import('./pages/rated/rated.component')
+  },
+  {
+    path: 'tendencia',
+    loadComponent: () => import('./pages/trending/trending.component')
   },
   {
     path: 'listado',
