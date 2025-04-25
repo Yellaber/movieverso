@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-ssr:build:production"
+              "buildTarget": "movieverso:build:production"
             },
             "development": {
-              "buildTarget": "angular-ssr:build:development"
+              "buildTarget": "movieverso:build:development"
             }
           },
           "defaultConfiguration": "development"
