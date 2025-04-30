@@ -30,13 +30,9 @@ export class CarruselMoviesComponent implements AfterViewInit {
   carruselContainerWidth = signal<number>(0);
   scrollStep = signal<number>(0);
   totalScrollStep = signal<number>(0);
-  visibleMovies = computed(() => Math.floor(this.carruselContainerWidth() / CARD_MOVIE_SIZE));
+  visibleMovies = computed(() => this.carruselContainerWidth() / CARD_MOVIE_SIZE);
 
   ngAfterViewInit(): void {
-    this.updateContainerWidth();
-  }
-
-  updateContainerWidth() {
     if(this.carouselContainer?.nativeElement) {
       this.carruselContainerWidth.set(this.carouselContainer.nativeElement.offsetWidth);
       this.totalScrollStep.set(this.movies().length * CARD_MOVIE_SIZE - this.visibleMovies() * CARD_MOVIE_SIZE);
@@ -47,7 +43,7 @@ export class CarruselMoviesComponent implements AfterViewInit {
     if(this.scrollStep() + this.visibleMovies() * CARD_MOVIE_SIZE < this.totalScrollStep()) {
       this.scrollStep.update(value => value + this.visibleMovies() * CARD_MOVIE_SIZE);
     } else {
-      this.scrollStep.set(this.totalScrollStep());
+      this.scrollStep.set(this.totalScrollStep() - 16);
     }
   }
 
