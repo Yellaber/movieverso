@@ -1,27 +1,13 @@
-@if(popularMovies()[0] && ratedMovies()[0] && trendingMovies()[0] && upcommingMovies()[0]) {
-  <banner-hero heroType="popularity" heroTitle="Más reciente" [movie]="upcommingMovies()[0]"
-  [genres]="genresUpcommingMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - Más recientes" route="/estrenos"
-  [movies]="upcommingMovies()"/>
-  <banner-hero heroType="popularity" heroTitle="Más popular" [movie]="popularMovies()[0]"
-  [genres]="genresPopularMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - Más populares" route="/populares"
-  [movies]="popularMovies()"/>
-  <banner-hero heroType="rated" heroTitle="Mejor valorada" [movie]="ratedMovies()[0]"
-  [genres]="genresRatedMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - Mejor valoradas" route="/valoradas"
-  [movies]="ratedMovies()"/>
-  <banner-hero heroType="trending" heroTitle="En tendencia" [movie]="trendingMovies()[0]"
-  [genres]="genresTrendingMovie()"/>
-  <carrusel-movies carruselTitle="Top 10 - En tendencia" route="/tendencia"
-  [movies]="trendingMovies()"/>
+@if(isDataLoaded()) {
+  @for(section of sections; track $index) {
+    <banner-hero [heroType]="section.heroType" [heroTitle]="section.heroTitle"
+                 [movie]="section.movie" [genres]="section.genres"/>
+    <carrusel-movies [carruselTitle]="section.carruselTitle" [route]="section.route"
+                     [movies]="section.movies"/>
+  }
 } @else {
-  <banner-hero-skeleton/>
-  <carrusel-movies-skeleton/>
-  <banner-hero-skeleton/>
-  <carrusel-movies-skeleton/>
-  <banner-hero-skeleton/>
-  <carrusel-movies-skeleton/>
-  <banner-hero-skeleton/>
-  <carrusel-movies-skeleton/>
+  @for(skeleton of [1, 2, 3, 4]; track $index) {
+    <banner-hero-skeleton/>
+    <carrusel-movies-skeleton/>
+  }
 }

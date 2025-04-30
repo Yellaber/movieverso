@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, effect, signal,
+         computed } from '@angular/core';
 import { BannerHeroComponent } from '../../components/banner-hero/banner-hero.component';
 import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
 import { BannerHeroSkeletonComponent } from '../../components/banner-hero-skeleton/banner-hero-skeleton.component';
@@ -8,6 +9,18 @@ import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.ser
 import { Movie } from '../../interfaces/movie-response.interface';
 import { Genre } from '../../interfaces/genre-movies-response.interface';
 
+type typeTag = 'popularity' | 'rated' | 'trending' | 'upcomming';
+
+interface section {
+  heroType: typeTag,
+  heroTitle: string,
+  carruselTitle: string,
+  route: string,
+  movie: Movie,
+  genres: Genre[],
+  movies: Movie[]
+}
+
 @Component({
   selector: 'home',
   imports: [
@@ -15,7 +28,7 @@ import { Genre } from '../../interfaces/genre-movies-response.interface';
     CarruselMoviesComponent,
     BannerHeroSkeletonComponent,
     CarruselMoviesSkeletonComponent,
-],
+  ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -28,25 +41,21 @@ export default class HomeComponent implements OnInit {
   genresRatedMovie = signal<Genre[]>([]);
   genresTrendingMovie = signal<Genre[]>([]);
   genresUpcommingMovie = signal<Genre[]>([]);
+  sections: section[] = [];
+  readonly isDataLoaded = computed(() => this.areAllDataLoaded());
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
 
   constructor() {
-    effect(() => {
-      this.getGenresUpcommingMovie();
-    });
+    effect(() => { this.getGenresUpcommingMovie(); });
 
-    effect(() => {
-      this.getGenresPopularMovie();
-    });
+    effect(() => { this.getGenresPopularMovie(); });
 
-    effect(() => {
-      this.getGenresRatedMovie();
-    });
+    effect(() => { this.getGenresRatedMovie(); });
 
-    effect(() => {
-      this.getGenresTrendingMovie();
-    });
+    effect(() => { this.getGenresTrendingMovie(); });
+
+    effect(() => { if(this.areAllDataLoaded()) { this.loadSections(); } });
   }
 
   ngOnInit(): void {
@@ -55,6 +64,56 @@ export default class HomeComponent implements OnInit {
     this.getPopularMovies();
     this.getTopRatedMovies();
     this.getTrendingMovies();
+  }
+
+  areAllDataLoaded() {
+    return (
+      this.popularMovies()[0] &&
+      this.ratedMovies()[0] &&
+      this.trendingMovies()[0] &&
+      this.upcommingMovies()[0]
+    );
+  }
+
+  loadSections() {
+    this.sections = [
+      {
+        heroType: 'upcomming',
+        heroTitle: 'Estrenos',
+        carruselTitle: 'Top 10 - Estrenos',
+        route: '/estrenos',
+        movie: this.upcommingMovies()[0],
+        genres: this.genresUpcommingMovie(),
+        movies: this.upcommingMovies()
+      },
+      {
+        heroType: 'popularity',
+        heroTitle: 'Más popular',
+        carruselTitle: 'Top 10 - Más populares',
+        route: '/populares',
+        movie: this.popularMovies()[0],
+        genres: this.genresPopularMovie(),
+        movies: this.popularMovies()
+      },
+      {
+        heroType: 'rated',
+        heroTitle: 'Más valorada',
+        carruselTitle: 'Top 10 - Más valoradas',
+        route: '/valoradas',
+        movie: this.ratedMovies()[0],
+        genres: this.genresRatedMovie(),
+        movies: this.ratedMovies()
+      },
+      {
+        heroType: 'trending',
+        heroTitle: 'En tendencia',
+        carruselTitle: 'Top 10 - En tendencia',
+        route: '/tendencia',
+        movie: this.trendingMovies()[0],
+        genres: this.genresTrendingMovie(),
+        movies: this.trendingMovies()
+      }
+    ];
   }
 
   getUpcommingMovies() {
