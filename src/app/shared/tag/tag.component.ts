@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFire, faStar, faCalendarCheck, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
+import { faFire, faStar, faCalendarCheck, faArrowTrendUp,
+         faFilm } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'tag',
@@ -15,4 +16,5 @@ export class TagComponent {
   faStar = faStar;
   faCalendarCheck = faCalendarCheck;
   faArrowTrendUp = faArrowTrendUp;
+  faFilm = faFilm;
 }
