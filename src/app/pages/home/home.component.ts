@@ -52,7 +52,6 @@ export default class HomeComponent implements OnInit {
       this.getPopularMovies();
       this.getTopRatedMovies();
       this.getTrendingMovies();
-      //if(this.areAllDataLoaded()) { this.loadSections(); }
       if(this.isDataLoaded()) { this.loadSections(); }
     });
   }
