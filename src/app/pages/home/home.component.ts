@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, effect, signal,
          computed } from '@angular/core';
 import { BannerHeroComponent } from '../../components/banner-hero/banner-hero.component';
-import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
 import { BannerHeroSkeletonComponent } from '../../components/banner-hero-skeleton/banner-hero-skeleton.component';
 import { CarruselMoviesSkeletonComponent } from '../../components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
 import { TmdbService } from '../../services/tmdb/tmdb.service';
 import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
 import { Movie } from '../../interfaces/movie-response.interface';
@@ -47,27 +47,22 @@ export default class HomeComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
 
   constructor() {
-    effect(() => { this.getGenresUpcommingMovie(); });
-
-    effect(() => { this.getGenresPopularMovie(); });
-
-    effect(() => { this.getGenresRatedMovie(); });
-
-    effect(() => { this.getGenresTrendingMovie(); });
-
-    effect(() => { if(this.areAllDataLoaded()) { this.loadSections(); } });
+    effect(() => {
+      this.getUpcommingMovies();
+      this.getPopularMovies();
+      this.getTopRatedMovies();
+      this.getTrendingMovies();
+      //if(this.areAllDataLoaded()) { this.loadSections(); }
+      if(this.isDataLoaded()) { this.loadSections(); }
+    });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.seoFriendlyService.setMetaTags('Inicio', 'Esta es la página de inicio');
-    this.getUpcommingMovies();
-    this.getPopularMovies();
-    this.getTopRatedMovies();
-    this.getTrendingMovies();
   }
 
   areAllDataLoaded() {
-    return (
+    return !!(
       this.popularMovies()[0] &&
       this.ratedMovies()[0] &&
       this.trendingMovies()[0] &&
@@ -119,45 +114,37 @@ export default class HomeComponent implements OnInit {
   getUpcommingMovies() {
     this.tmdbService.getUpcommingMovies(10)
       .subscribe(upcommingMovies => this.upcommingMovies.set(upcommingMovies));
-  }
 
-  getPopularMovies() {
-    this.tmdbService.getPopularMovies(10)
-      .subscribe(popularMovies => this.popularMovies.set(popularMovies));
-  }
-
-  getTopRatedMovies() {
-    this.tmdbService.getTopRatedMovies(10)
-      .subscribe(ratedMovies => this.ratedMovies.set(ratedMovies));
-  }
-
-  getTrendingMovies() {
-    this.tmdbService.getTrendingMovies(10)
-      .subscribe(trendingMovies => this.trendingMovies.set(trendingMovies));
-  }
-
-  getGenresUpcommingMovie() {
-    if(this.upcommingMovies()[0]) {
+      if(this.upcommingMovies()[0]) {
       this.tmdbService.getGenreMovieList(this.upcommingMovies()[0].genre_ids)
         .subscribe(genres => this.genresUpcommingMovie.set(genres));
     }
   }
 
-  getGenresPopularMovie() {
+  getPopularMovies() {
+    this.tmdbService.getPopularMovies(10)
+      .subscribe(popularMovies => this.popularMovies.set(popularMovies));
+
     if(this.popularMovies()[0]) {
       this.tmdbService.getGenreMovieList(this.popularMovies()[0].genre_ids)
         .subscribe(genres => this.genresPopularMovie.set(genres));
     }
   }
 
-  getGenresRatedMovie() {
+  getTopRatedMovies() {
+    this.tmdbService.getTopRatedMovies(10)
+      .subscribe(ratedMovies => this.ratedMovies.set(ratedMovies));
+
     if(this.ratedMovies()[0]) {
       this.tmdbService.getGenreMovieList(this.ratedMovies()[0].genre_ids)
         .subscribe(genres => this.genresRatedMovie.set(genres));
     }
   }
 
-  getGenresTrendingMovie() {
+  getTrendingMovies() {
+    this.tmdbService.getTrendingMovies(10)
+      .subscribe(trendingMovies => this.trendingMovies.set(trendingMovies));
+
     if(this.trendingMovies()[0]) {
       this.tmdbService.getGenreMovieList(this.trendingMovies()[0].genre_ids)
         .subscribe(genres => this.genresTrendingMovie.set(genres));
