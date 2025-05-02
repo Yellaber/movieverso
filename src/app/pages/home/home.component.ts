@@ -33,6 +33,7 @@ interface section {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class HomeComponent implements OnInit {
+  sections: section[] = [];
   upcommingMovies = signal<Movie[]>([]);
   popularMovies = signal<Movie[]>([]);
   ratedMovies = signal<Movie[]>([]);
@@ -41,32 +42,25 @@ export default class HomeComponent implements OnInit {
   genresRatedMovie = signal<Genre[]>([]);
   genresTrendingMovie = signal<Genre[]>([]);
   genresUpcommingMovie = signal<Genre[]>([]);
-  sections: section[] = [];
   readonly isDataLoaded = computed(() => this.areAllDataLoaded());
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
 
   constructor() {
-    effect(() => {
-      this.getUpcommingMovies();
-      this.getPopularMovies();
-      this.getTopRatedMovies();
-      this.getTrendingMovies();
-      if(this.isDataLoaded()) { this.loadSections(); }
-    });
+    effect(() => { if(this.isDataLoaded()) { this.loadSections(); } });
   }
 
   ngOnInit() {
     this.seoFriendlyService.setMetaTags('Inicio', 'Esta es la página de inicio');
+    this.getUpcommingMovies();
+    this.getPopularMovies();
+    this.getTopRatedMovies();
+    this.getTrendingMovies();
   }
 
   areAllDataLoaded() {
-    return !!(
-      this.popularMovies()[0] &&
-      this.ratedMovies()[0] &&
-      this.trendingMovies()[0] &&
-      this.upcommingMovies()[0]
-    );
+    return !!( this.popularMovies()[0] && this.ratedMovies()[0] && this.trendingMovies()[0] &&
+               this.upcommingMovies()[0] );
   }
 
   loadSections() {
@@ -114,7 +108,7 @@ export default class HomeComponent implements OnInit {
     this.tmdbService.getUpcommingMovies(10)
       .subscribe(upcommingMovies => this.upcommingMovies.set(upcommingMovies));
 
-      if(this.upcommingMovies()[0]) {
+    if(this.upcommingMovies()[0]) {
       this.tmdbService.getGenreMovieList(this.upcommingMovies()[0].genre_ids)
         .subscribe(genres => this.genresUpcommingMovie.set(genres));
     }
