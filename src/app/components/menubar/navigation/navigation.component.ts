@@ -3,6 +3,8 @@ import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { routes } from '../../../app.routes';
 import { NgClass, TitleCasePipe } from '@angular/common';
 
+const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ];
+
 @Component({
   selector: 'navigation-bar',
   imports: [
@@ -13,9 +15,9 @@ import { NgClass, TitleCasePipe } from '@angular/common';
   ],
   template: `
     <ul [ngClass]="layoutClass()">
-      @for (route of routes; track $index) {
+      @for(route of routes; track $index) {
         <li>
-          <a [routerLink]="[route.path]" routerLinkActive="yellow-color" class="text-xs lg:text-sm transition-colors duration-300">{{ route.path | titlecase }}</a>
+          <a [routerLink]="[route.path]" routerLinkActive="text-yellow-500" class="text-xs lg:text-sm text-stone-300 hover:text-yellow-500 transition-colors duration-300">{{ route.path | titlecase }}</a>
         </li>
       }
     </ul>
@@ -27,8 +29,6 @@ export class NavigationComponent {
   routes: Route[] = [];
 
   constructor() {
-    this.routes = routes.filter(route =>
-      route.path === 'estrenos' || route.path === 'populares' || route.path === 'listado'
-    );
+    this.routes = routes.filter(route => menuItems.includes(route.path!));
   };
 }

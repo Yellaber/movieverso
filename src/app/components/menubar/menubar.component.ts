@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LogoComponent } from './logo/logo.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
+//import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
   imports: [
     LogoComponent,
     NavigationComponent,
-    SearchBarComponent,
+    /*SearchBarComponent,*/
     SignInComponent
   ],
   templateUrl: './menubar.component.html',
