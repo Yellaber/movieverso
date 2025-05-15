@@ -18,58 +18,8 @@ const language = 'es-ES';
 export class TmdbService {
   private httpClient = inject(HttpClient);
 
-  getGenreMovieList(genreIds: number[]): Observable<Genre[]> {
-    const url = `${ environment.tmdbApiUrl }/genre/movie/list`;
-    return this.httpClient.get<GenreMoviesResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language
-      }
-    }).pipe(
-      map(({genres}) => genres.filter(genre => genreIds.includes(genre.id)))
-    );
-  }
-
-  getPopularMovies(limit?: number, page?: number): Observable<Movie[]> {
-    const url = `${ environment.tmdbApiUrl }/movie/popular`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language,
-        page: page || 1
-      }
-    }).pipe(
-      map(({ results }) => limit? results.slice(0, limit): results),
-    );
-  }
-
-  getTopRatedMovies(limit?: number, page?: number): Observable<Movie[]> {
-    const url = `${ environment.tmdbApiUrl }/movie/top_rated`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language,
-        page: page || 1
-      }
-    }).pipe(
-      map(({ results }) => limit? results.slice(0, limit): results)
-    );
-  }
-
-  getTrendingMovies(limit?: number, page?: number): Observable<Movie[]> {
-    const url = `${ environment.tmdbApiUrl }/trending/movie/day`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language,
-        page: page || 1
-      }
-    }).pipe(
-      map(({ results }) => limit? results.slice(0, limit): results)
-    );
-  }
-
   getUpcommingMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const currentDate = new Date();
     const url = `${ environment.tmdbApiUrl }/movie/upcoming`;
     return this.httpClient.get<MovieResponse>(url, {
       params: {
@@ -82,10 +32,75 @@ export class TmdbService {
       map(movies => movies.sort((movie1, movie2) => {
         const dateMovie1 = new Date(movie1.release_date);
         const dateMovie2 = new Date(movie2.release_date);
-        return dateMovie2.getTime() - dateMovie1.getTime()
+        return dateMovie1.getTime() - dateMovie2.getTime();
+      })),
+      map(movies => movies.filter(movie => {
+        const dateMovie = new Date(movie.release_date);
+        return (currentDate < dateMovie) && movie;
       }))
     );
-  }
+  };
+
+  getNowPlayingMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/movie/now_playing`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe(
+      map(({ results }) => limit? results.slice(0, limit): results),
+      map(movies => movies.sort((movie1, movie2) => {
+        const dateMovie1 = new Date(movie1.release_date);
+        const dateMovie2 = new Date(movie2.release_date);
+        return dateMovie2.getTime() - dateMovie1.getTime();
+      }))
+    );
+  };
+
+  getPopularMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/movie/popular`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe( map(({ results }) => limit? results.slice(0, limit): results) );
+  };
+
+  getTopRatedMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/movie/top_rated`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe( map(({ results }) => limit? results.slice(0, limit): results) );
+  };
+
+  getTrendingMovies(limit?: number, page?: number): Observable<Movie[]> {
+    const url = `${ environment.tmdbApiUrl }/trending/movie/day`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language,
+        page: page || 1
+      }
+    }).pipe( map(({ results }) => limit? results.slice(0, limit): results) );
+  };
+
+  getGenreMovieList(genreIds: number[]): Observable<Genre[]> {
+    const url = `${ environment.tmdbApiUrl }/genre/movie/list`;
+    return this.httpClient.get<GenreMoviesResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language
+      }
+    }).pipe( map(({ genres }) => genres.filter( genre => genreIds.includes(genre.id) )) );
+  };
 
   getMovieById(id: number): Observable<DetailMovieResponse> {
     const url = `${ environment.tmdbApiUrl }/movie/${ id }`;
@@ -95,7 +110,7 @@ export class TmdbService {
         language
       }
     });
-  }
+  };
 
   getMovieCredits(movieId: number): Observable<Cast[]> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/credits`;
@@ -104,10 +119,8 @@ export class TmdbService {
         api_key: environment.tmdbApiKey,
         language
       }
-    }).pipe(
-      map(({ cast }) => cast)
-    );
-  }
+    }).pipe( map(({ cast }) => cast) );
+  };
 
   getMovieRecommendations(movieId: number, page: number): Observable<MovieResponse[]> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/recommendations`;
@@ -118,7 +131,7 @@ export class TmdbService {
         page
       }
     });
-  }
+  };
 
   getMovieSimilar(movieId: number, page: number): Observable<MovieResponse[]> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/similar`;
@@ -129,7 +142,7 @@ export class TmdbService {
         page
       }
     });
-  }
+  };
 
   getMovieTrailers(movieId: number): Observable<Trailer[]> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/videos`;
@@ -138,10 +151,8 @@ export class TmdbService {
         api_key: environment.tmdbApiKey,
         language
       }
-    }).pipe(
-      map(({ trailers }) => trailers)
-    );
-  }
+    }).pipe( map(({ trailers }) => trailers) );
+  };
 
   getMovieWatchProviders(movieId: number): Observable<MovieWatchProviderResponse> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/watch/providers`;
@@ -150,7 +161,7 @@ export class TmdbService {
         api_key: environment.tmdbApiKey
       }
     });
-  }
+  };
 
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
     const url = `${ environment.tmdbApiUrl }/movie/${ movieId }/keywords`;
@@ -158,8 +169,6 @@ export class TmdbService {
       params: {
         api_key: environment.tmdbApiKey
       }
-    }).pipe(
-      map(({ keywords }) => keywords)
-    );
-  }
-}
+    }).pipe( map(({ keywords }) => keywords) );
+  };
+};
