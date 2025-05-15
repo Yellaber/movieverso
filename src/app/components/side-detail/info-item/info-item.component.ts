@@ -5,8 +5,11 @@ import { CurrencyPipe } from '@angular/common';
   selector: 'info-item',
   imports: [ CurrencyPipe ],
   template: `
-    <span class="text-xs lg:text-sm yellow-color font-semibold">{{ label() }}</span>
-    <span class="text-xs lg:text-sm">{{ isCurrency()? (value() | currency:'US'): value() }}</span>
+    @if(value()) {
+      <span class="text-xs lg:text-sm text-yellow-600 font-semibold">{{ label() }}</span>
+      <span class="text-xs lg:text-sm
+      text-stone-300">{{ isCurrency()? (value() | currency:'US'): value() }}</span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-wrap items-center gap-3' }

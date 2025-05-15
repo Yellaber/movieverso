@@ -9,7 +9,7 @@ type typeBadges = Keyword[] | SpokenLanguage[]
   selector: 'badge-section',
   imports: [ BadgeListComponent ],
   template: `
-    <span class="text-xs lg:text-sm yellow-color font-semibold">{{ titleSection() }}</span>
+    <span class="text-xs lg:text-sm text-yellow-600 font-semibold">{{ titleSection() }}</span>
     <badge-list [badgeList]="badges()"/>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
