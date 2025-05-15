@@ -1,8 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CardMovieSkeletonComponent } from './card-movie-skeleton/card-movie-skeleton.component';
+import { CarruselTitleSkeletonComponent } from "./carrusel-title-skeleton/carrusel-title-skeleton.component";
 
 @Component({
   selector: 'carrusel-movies-skeleton',
-  imports: [],
+  imports: [
+    CarruselTitleSkeletonComponent,
+    CardMovieSkeletonComponent
+  ],
   templateUrl: './carusel-movies-skeleton.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col animate-pulse gap-5 py-7 lg:pt-10 lg:pb-15' }
