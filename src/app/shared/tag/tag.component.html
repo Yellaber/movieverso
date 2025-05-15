@@ -1,22 +1,6 @@
 <div class="flex">
-  <div class="flex items-center rounded-full bg-stone-800 yellow-color gap-2 px-3 py-2">
-    @switch(type()) {
-      @case('popularity') {
-        <fa-icon [icon]="faFire"></fa-icon>
-      }
-      @case('rated') {
-        <fa-icon [icon]="faStar"></fa-icon>
-      }
-      @case('calendar') {
-        <fa-icon [icon]="faCalendarCheck"></fa-icon>
-      }
-      @case('trending') {
-        <fa-icon [icon]="faArrowTrendUp"></fa-icon>
-      }
-      @case('upcomming') {
-        <fa-icon [icon]="faFilm"></fa-icon>
-      }
-    }
+  <div class="flex items-center rounded-full bg-stone-800 text-yellow-600 gap-2 px-3 py-2">
+    <fa-icon [icon]="getIcon()!.faIcon"></fa-icon>
     <span class="text-xs lg:text-sm">{{ text() }}</span>
   </div>
 </div>
