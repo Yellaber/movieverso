@@ -11,8 +11,8 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
   ],
   template: `
     <div class="flex items-center gap-2">
-      <fa-icon  class="yellow-color" [icon]="faStar"></fa-icon>
-      <small>{{ vote() | number: '1.1-1' }}/10</small>
+      <fa-icon class="text-yellow-600" [icon]="faStar"></fa-icon>
+      <small class="text-stone-300">{{ vote() | number: '1.1-1' }}/10</small>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
