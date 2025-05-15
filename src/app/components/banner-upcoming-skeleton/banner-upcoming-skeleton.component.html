@@ -1,0 +1,11 @@
+<div class="hidden lg:flex lg:flex-col lg:gap-5">
+  <carrusel-title-skeleton/>
+  <div class="flex justify-center gap-20">
+    @for(upcommingMovie of [1, 2, 3, 4]; track $index) {
+      <card-movie-skeleton/>
+    }
+  </div>
+</div>
+<div class="block lg:hidden">
+  <carrusel-movies-skeleton/>
+</div>
