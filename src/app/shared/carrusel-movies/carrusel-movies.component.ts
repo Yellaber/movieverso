@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
-         input, signal, ViewChild } from '@angular/core';
+         input, OnInit, signal, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { Movie } from '../../interfaces/movie-response.interface';
 import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
+import { Movie } from '../../interfaces/movie-response.interface';
 
 const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
 
@@ -33,10 +33,8 @@ export class CarruselMoviesComponent implements AfterViewInit {
   visibleMovies = computed(() => this.carruselContainerWidth() / CARD_MOVIE_SIZE);
 
   ngAfterViewInit(): void {
-    if(this.carouselContainer?.nativeElement) {
-      this.carruselContainerWidth.set(this.carouselContainer.nativeElement.offsetWidth);
-      this.totalScrollStep.set(this.movies().length * CARD_MOVIE_SIZE - this.visibleMovies() * CARD_MOVIE_SIZE);
-    }
+    this.carruselContainerWidth.set(this.carouselContainer.nativeElement.offsetWidth);
+    this.totalScrollStep.set(this.movies().length * CARD_MOVIE_SIZE - this.visibleMovies() * CARD_MOVIE_SIZE);
   }
 
   next() {
