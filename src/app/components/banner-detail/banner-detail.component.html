@@ -1,4 +1,7 @@
-<img class="absolute inset-0 w-full h-full object-cover rounded-md" [src]="backdropImage()" >
-<card-detail [movieDetail]="movieDetail()"/>
-<short-detail [movieDetail]="movieDetail()"/>
-<div class="absolute inset-0 bg-stone-900/80 z-0"></div>
+@if(movieDetail()) {
+  <img class="absolute inset-0 w-full h-full object-cover rounded-md"
+  [src]="backdropImage()" loading="lazy">
+  <card-detail [movieDetail]="movieDetail()"/>
+  <short-detail [movieDetail]="movieDetail()"/>
+  <div class="absolute inset-0 bg-stone-900/80 z-0"></div>
+}
