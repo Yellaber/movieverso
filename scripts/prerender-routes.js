@@ -5,6 +5,7 @@
   const fs = require( 'fs' );
 
   const getUpComing = async() => {
+    const currentDate = new Date();
     const moviesResponse = await fetch( `${ API_URL }/movie/upcoming?api_key=${ API_KEY }&language=es-ES` ).then( response => response.json() );
     const moviesResponseSliced = moviesResponse[ 'results' ].slice(0, 10);
     const moviesResponseOrdered = moviesResponseSliced.sort(( movie1, movie2 ) => {
