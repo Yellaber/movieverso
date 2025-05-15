@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/detail-movie/detail-movie.component')
   },
   {
+    path: 'proximamente',
+    loadComponent: () => import('./pages/upcoming/upcoming.component')
+  },
+  {
     path: 'estrenos',
     loadComponent: () => import('./pages/released/released.component')
   },
