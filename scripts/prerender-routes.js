@@ -53,8 +53,8 @@
   const moviesTopPopular = await getTopPopular();
   const moviesTopRated = await getTopRated();
   const moviesTopTrending = await getTopTrending();
-  let movies = [ ...moviesTopNowPlaying, ...moviesTopPopular,
-                 ...moviesTopRated, ...moviesTopTrending, ...moviesUpcoming ];
+  let movies = [ ...moviesUpcoming, ...moviesTopNowPlaying, ...moviesTopPopular,
+                 ...moviesTopRated, ...moviesTopTrending ];
   movies = movies.filter( (movie, index, selfArray) =>
               index === selfArray.findIndex( selfMovie => selfMovie.id === movie.id ) );
   let fileContent = movies.map( movie =>
