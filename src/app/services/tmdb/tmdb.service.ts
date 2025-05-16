@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../environments/environment.developments';
-import { Genre, GenreMoviesResponse } from '../../interfaces/genre-movies-response.interface';
-import { Movie, MovieResponse } from '../../interfaces/movie-response.interface';
-import { DetailMovieResponse } from '../../interfaces/detail-movie-response.interface';
-import { Cast, MovieCreditResponse } from '../../interfaces/movie-credit-response.interface';
-import { MovieTrailerResponse, Trailer } from '../../interfaces/movie-trailer-response.interface';
-import { MovieWatchProviderResponse } from '../../interfaces/movie-watch-provider-response.interface';
-import { Keyword, MovieKeywordResponse } from '../../interfaces/movie-keyword-response';
+import { environment } from 'src/app/environments/environment.developments';
+import { Movie, MovieResponse } from '@interfaces/movie-response.interface';
+import { Genre, GenreMoviesResponse } from '@interfaces/genre-movies-response.interface';
+import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
+import { Cast, MovieCreditResponse } from '@interfaces/movie-credit-response.interface';
+import { MovieTrailerResponse, Trailer } from '@interfaces/movie-trailer-response.interface';
+import { MovieWatchProviderResponse } from '@interfaces/movie-watch-provider-response.interface';
+import { Keyword, MovieKeywordResponse } from '@interfaces/movie-keyword-response';
 
 const language = 'es-ES';
 
