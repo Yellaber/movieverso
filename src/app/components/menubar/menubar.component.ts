@@ -1,18 +1,22 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { LogoComponent } from './logo/logo.component';
-import { NavigationComponent } from './navigation/navigation.component';
-//import { SearchBarComponent } from './search-bar/search-bar.component';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { NavigationComponent } from '@shared/navigation/navigation.component';
+import { SignInButtonComponent } from '@shared/auth/sign-in-button/sign-in-button.component';
+import { ScrollableMenuComponent } from '@shared/scrollable-menu/scrollable-menu.component';
+
+const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ];
 
 @Component({
   selector: 'menubar',
   imports: [
     LogoComponent,
     NavigationComponent,
-    /*SearchBarComponent,*/
-    SignInComponent
+    ScrollableMenuComponent,
+    SignInButtonComponent
   ],
   templateUrl: './menubar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenubarComponent { }
+export class MenubarComponent {
+  items = signal<string[]>(menuItems);
+}
