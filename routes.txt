@@ -10,7 +10,7 @@
 /pelicula/950387-una-pelicula-de-minecraft
 /pelicula/1197306-a-working-man
 /pelicula/447273-blancanieves
-/pelicula/324544-tierras-perdidas
+/pelicula/1094473-bambi-una-vida-en-el-bosque
 /pelicula/897160-mujer-valiente
 /pelicula/1359977-expediente-bryson-conjuring-the-cult
 /pelicula/278-cadena-perpetua
@@ -24,6 +24,4 @@
 /pelicula/497-la-milla-verde
 /pelicula/496243-parasitos
 /pelicula/1061474-superman
-/pelicula/822119-capitan-america-brave-new-world
-/pelicula/1011477-karate-kid-legends
 /pelicula/1233413-los-pecadores
