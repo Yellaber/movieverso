@@ -1,19 +1,19 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
-         input, OnInit, signal, ViewChild } from '@angular/core';
+         input, signal, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
-import { Movie } from '../../interfaces/movie-response.interface';
+import { Movie } from '@interfaces/movie-response.interface';
 
-const CARD_MOVIE_SIZE = 216; //200px(card movie size) + gap-4(16px)
+const CARD_MOVIE_SIZE = 216; //200px(card size movie) + gap-4(16px)
 
 @Component({
   selector: 'carrusel-movies',
   imports: [
+    FontAwesomeModule,
     CarruselTitleComponent,
     CarruselCardMoviesComponent,
-    FontAwesomeModule
   ],
   templateUrl: './carrusel-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

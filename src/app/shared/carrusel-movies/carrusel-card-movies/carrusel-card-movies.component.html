@@ -1,12 +1,14 @@
 <div class="flex flex-col min-w-[200px] max-w-[200px] rounded-md shadow-md">
   <a [routerLink]="['/pelicula', movie().id + '-' + slugify(movie().title)]">
-    <img class="w-full h-72 rounded-t-md object-cover object-center" [src]="srcImage()">
+    <img class="w-full h-72 rounded-t-md object-cover object-center" [src]="srcImage()" loading="lazy">
   </a>
   <div class="flex justify-between items-center bg-stone-800 rounded-b-md p-3">
-    <fa-icon class="text-yellow-600" [icon]="faBokmark"></fa-icon>
+    <a href="#">
+      <fa-icon class="text-yellow-600" [icon]="faBokmark"></fa-icon>
+    </a>
     <div class="flex gap-3">
-      <popularity [popularity]="movie().popularity"/>
-      <vote [vote]="movie().vote_average"/>
+      <rating type="popularity" [value]="movie().popularity"/>
+      <rating type="vote" [value]="movie().vote_average"/>
     </div>
   </div>
 </div>

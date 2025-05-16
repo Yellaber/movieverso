@@ -2,19 +2,17 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
-import { PopularityComponent } from '../../popularity/popularity.component';
-import { Movie } from '../../../interfaces/movie-response.interface';
-import { VoteComponent } from '../../vote/vote.component';
-import { environment } from '../../../environments/environment.developments';
-import { SlugifyService } from '../../../services/slugify/slugify.service';
+import { RatingComponent } from '@shared/rating/rating.component';
+import { environment } from 'src/app/environments/environment.developments';
+import { SlugifyService } from '@services/slugify/slugify.service';
+import { Movie } from '@interfaces/movie-response.interface';
 
 @Component({
   selector: 'carrusel-card-movies',
   imports: [
     RouterLink,
-    PopularityComponent,
-    VoteComponent,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RatingComponent
 ],
   templateUrl: './carrusel-card-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
