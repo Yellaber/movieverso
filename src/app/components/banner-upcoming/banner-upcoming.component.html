@@ -1,5 +1,7 @@
 @if(upcommingMovies().length > 0) {
-  <div class="hidden lg:flex lg:flex-col lg:gap-5">
+  <img class="absolute inset-0 w-full h-full object-cover rounded-md" src="/images/bg-upcoming.png" loading="lazy">
+  <div class="absolute inset-0 bg-stone-900/80 z-0"></div>
+  <div class="hidden lg:flex lg:flex-col z-10 lg:gap-5">
     <carrusel-title [carruselTitle]="section().carruselTitle" [route]="section().route"/>
     <div class="flex justify-center gap-20">
       @for(upcommingMovie of upcommingMovies(); track $index; let index = $index) {
@@ -8,9 +10,8 @@
       }
     </div>
   </div>
-  <div class="block lg:hidden">
-    <carrusel-movies carruselTitle="Próximamente" route="/listado"
-    [movies]="upcommingMovies()"/>
+  <div class="block lg:hidden z-10">
+    <carrusel-movies carruselTitle="Próximamente" route="/listado" [movies]="upcommingMovies()"/>
   </div>
 } @else {
   <banner-upcoming-skeleton/>
