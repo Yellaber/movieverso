@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
+import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
 
 @Component({
-  selector: 'search',
   imports: [],
   templateUrl: './search.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
