@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Genre } from '../../interfaces/genre-movies-response.interface';
-import { Keyword } from '../../interfaces/movie-keyword-response';
-import { SpokenLanguage } from '../../interfaces/detail-movie-response.interface';
+import { SpokenLanguage } from '@interfaces/detail-movie-response.interface';
+import { Genre } from '@interfaces/genre-movies-response.interface';
+import { Keyword } from '@interfaces/movie-keyword-response';
 
 type typeBadges = Genre[] | Keyword[] | SpokenLanguage[]
 
