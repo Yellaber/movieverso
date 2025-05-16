@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { BannerUpcomingComponent } from '../../components/banner-upcoming/banner-upcoming.component';
-import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
-import { SectionMovie } from '../../interfaces/sectionMovie.interface';
-import { SectionMovieComponent } from '../../components/section-movie/section-movie.component';
+import { BannerUpcomingComponent } from '@components/banner-upcoming/banner-upcoming.component';
+import { SectionMovieComponent } from '@components/section-movie/section-movie.component';
+import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
+import { SectionMovie } from '@interfaces/sectionMovie.interface';
 
 @Component({
-  selector: 'home',
   imports: [
     BannerUpcomingComponent,
     SectionMovieComponent
