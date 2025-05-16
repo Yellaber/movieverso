@@ -1,17 +1,15 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { TagComponent } from '../../../shared/tag/tag.component';
-import { DetailMovieResponse } from '../../../interfaces/detail-movie-response.interface';
-import { BadgeListComponent } from '../../../shared/badge-list/bandge-list.component';
-import { PopularityComponent } from '../../../shared/popularity/popularity.component';
-import { VoteComponent } from '../../../shared/vote/vote.component';
+import { TagComponent } from '@shared/tag/tag.component';
+import { BadgeListComponent } from '@shared/badge-list/bandge-list.component';
+import { RatingComponent } from '@shared/rating/rating.component';
+import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
 
 @Component({
   selector: 'short-detail',
   imports: [
     TagComponent,
     BadgeListComponent,
-    PopularityComponent,
-    VoteComponent
+    RatingComponent
   ],
   templateUrl: './short-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

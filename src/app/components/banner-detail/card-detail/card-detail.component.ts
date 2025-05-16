@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark, faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import { DetailMovieResponse } from '../../../interfaces/detail-movie-response.interface';
-import { environment } from '../../../environments/environment.developments';
+import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
+import { environment } from 'src/app/environments/environment.developments';
 
 @Component({
   selector: 'card-detail',
