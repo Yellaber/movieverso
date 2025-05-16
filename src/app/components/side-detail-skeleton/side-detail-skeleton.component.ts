@@ -9,7 +9,7 @@ import { InfoItemSkeletonComponent } from './info-item-skeleton/info-item-skelet
     ProductionCountriesSkeletonComponent,
     BadgeSectionSkeletonComponent,
     InfoItemSkeletonComponent
-],
+  ],
   templateUrl: './side-detail-skeleton.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'hidden lg:flex flex-col w-1/4 rounded-md shadow-md bg-stone-800 animate-pulse gap-8 p-10' }
