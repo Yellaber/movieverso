@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { environment } from '../../environments/environment.developments';
+import { environment } from 'src/app/environments/environment.developments';
 
 @Injectable({
   providedIn: 'root'
