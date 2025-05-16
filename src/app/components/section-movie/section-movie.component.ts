@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
-import { BannerHeroComponent } from '../banner-hero/banner-hero.component';
-import { CarruselMoviesComponent } from '../../shared/carrusel-movies/carrusel-movies.component';
-import { BannerHeroSkeletonComponent } from '../banner-hero-skeleton/banner-hero-skeleton.component';
-import { CarruselMoviesSkeletonComponent } from '../carrusel-movies-skeleton/carrusel-movies-skeleton.component';
-import { TmdbService } from '../../services/tmdb/tmdb.service';
-import { SectionMovie } from '../../interfaces/sectionMovie.interface';
-import { Movie } from '../../interfaces/movie-response.interface';
+import { BannerHeroComponent } from '@components/banner-hero/banner-hero.component';
+import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
+import { BannerHeroSkeletonComponent } from '@components/banner-hero-skeleton/banner-hero-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { TmdbService } from '@services/tmdb/tmdb.service';
+import { SectionMovie } from '@interfaces/sectionMovie.interface';
+import { Movie } from '@interfaces/movie-response.interface';
 
 @Component({
   selector: 'section-movie',
