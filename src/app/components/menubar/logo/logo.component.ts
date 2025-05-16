@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { environment } from '../../../environments/environment.developments';
+import { environment } from 'src/app/environments/environment.developments';
 
 @Component({
   selector: 'logo',
