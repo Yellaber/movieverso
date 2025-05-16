@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CarruselTitleSkeletonComponent } from '../carrusel-movies-skeleton/carrusel-title-skeleton/carrusel-title-skeleton.component';
-import { CardMovieSkeletonComponent } from '../carrusel-movies-skeleton/card-movie-skeleton/card-movie-skeleton.component';
-import { CarruselMoviesSkeletonComponent } from '../carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { CarruselTitleSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-title-skeleton/carrusel-title-skeleton.component';
+import { CardMovieSkeletonComponent } from '@components/carrusel-movies-skeleton/card-movie-skeleton/card-movie-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 
 @Component({
   selector: 'banner-upcoming-skeleton',
