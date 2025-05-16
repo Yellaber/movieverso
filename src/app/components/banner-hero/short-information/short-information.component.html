@@ -2,8 +2,8 @@
   <div class="flex justify-between">
     <tag [type]="heroType()" [text]="heroTitle()"/>
     <div class="flex items-center gap-4">
-      <popularity [popularity]="movie().popularity"/>
-      <vote [vote]="movie().vote_average"/>
+      <rating type="popularity" [value]="movie().popularity"/>
+      <rating type="vote" [value]="movie().vote_average"/>
     </div>
   </div>
   <h2 class="text-xl md:text-3xl lg:text-5xl text-yellow-600 font-semibold">{{ movie().title }}</h2>

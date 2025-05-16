@@ -1,20 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TagComponent } from '../../../shared/tag/tag.component';
-import { PopularityComponent } from '../../../shared/popularity/popularity.component';
-import { VoteComponent } from '../../../shared/vote/vote.component';
-import { BadgeListComponent } from '../../../shared/badge-list/bandge-list.component';
-import { Movie } from '../../../interfaces/movie-response.interface';
-import { Genre } from '../../../interfaces/genre-movies-response.interface';
-import { TmdbService } from '../../../services/tmdb/tmdb.service';
-import { SlugifyService } from '../../../services/slugify/slugify.service';
+import { BadgeListComponent } from '@shared/badge-list/bandge-list.component';
+import { RatingComponent } from '@shared/rating/rating.component';
+import { TagComponent } from '@shared/tag/tag.component';
+import { SlugifyService } from '@services/slugify/slugify.service';
+import { TmdbService } from '@services/tmdb/tmdb.service';
+import { Movie } from '@interfaces/movie-response.interface';
+import { Genre } from '@interfaces/genre-movies-response.interface';
 
 @Component({
   selector: 'short-information',
   imports: [
     TagComponent,
-    PopularityComponent,
-    VoteComponent,
+    RatingComponent,
     BadgeListComponent,
     RouterLink
   ],
