@@ -7,16 +7,17 @@
     src: url('../public/fonts/montserrat-regular.woff2') format('woff2');
   }
 
-  .yellow-color {
-    color: #ffcb05;
-  }
-
   .bg-blue-color {
     background-color: #00638d;
   }
 
-  .bg-yellow-color {
-    background-color: #ffcb05;
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
