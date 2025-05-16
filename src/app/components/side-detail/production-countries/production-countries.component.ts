@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ProductionCountry } from './../../../interfaces/detail-movie-response.interface';
+import { ProductionCountry } from '@interfaces/detail-movie-response.interface';
 
 const flagCdnUrl = 'https://flagcdn.com/w80/';
 
