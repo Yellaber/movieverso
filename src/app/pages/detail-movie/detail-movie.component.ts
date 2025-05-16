@@ -3,20 +3,19 @@ import { JsonPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { DetailMovieResponse } from '../../interfaces/detail-movie-response.interface';
-import { Keyword } from '../../interfaces/movie-keyword-response';
-import { BannerDetailComponent } from '../../components/banner-detail/banner-detail.component';
-import { SideDetailComponent } from '../../components/side-detail/side-detail.component';
-import { BannerDetailSkeletonComponent } from '../../components/banner-detail-skeleton/banner-detail-skeleton.component';
-import { TmdbService } from '../../services/tmdb/tmdb.service';
-import { SeoFriendlyService } from '../../services/seo-friendly/seo-friendly.service';
-import { SideDetailSkeletonComponent } from '../../components/side-detail-skeleton/side-detail-skeleton.component';
-import { environment } from '../../environments/environment.developments';
+import { BannerDetailComponent } from '@components/banner-detail/banner-detail.component';
+import { SideDetailComponent } from '@components/side-detail/side-detail.component';
+import { BannerDetailSkeletonComponent } from '@components/banner-detail-skeleton/banner-detail-skeleton.component';
+import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
+import { environment } from 'src/app/environments/environment.developments';
+import { TmdbService } from '@services/tmdb/tmdb.service';
+import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
+import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
+import { Keyword } from '@interfaces/movie-keyword-response';
 
 const flagCdnUrl = 'https://flagcdn.com/w80/';
 
 @Component({
-  selector: 'detail-movie',
   imports: [
     JsonPipe,
     FontAwesomeModule,
