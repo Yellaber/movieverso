@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'politica-privacidad',
   imports: [],
   templateUrl: './politica-privacidad.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
