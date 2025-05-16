@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ProductionCountriesComponent } from './production-countries/production-countries.component';
 import { BadgeSectionComponent } from './badge-section/badge-section.component';
-import { DetailMovieResponse } from '../../interfaces/detail-movie-response.interface';
-import { Keyword } from '../../interfaces/movie-keyword-response';
 import { InfoItemComponent } from './info-item/info-item.component';
+import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
+import { Keyword } from '@interfaces/movie-keyword-response';
 
 @Component({
   selector: 'side-detail',
