@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { BadgeListComponent } from '../../../shared/badge-list/bandge-list.component';
-import { Keyword } from '../../../interfaces/movie-keyword-response';
-import { SpokenLanguage } from '../../../interfaces/detail-movie-response.interface';
+import { SpokenLanguage } from '@interfaces/detail-movie-response.interface';
+import { Keyword } from '@interfaces/movie-keyword-response';
+import { BadgeListComponent } from '@shared/badge-list/bandge-list.component';
 
 type typeBadges = Keyword[] | SpokenLanguage[]
 
