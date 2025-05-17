@@ -3,7 +3,7 @@ import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { routes } from '../../app.routes';
+import { routes } from '@app/app.routes';
 
 @Component({
   selector: 'navigation',
