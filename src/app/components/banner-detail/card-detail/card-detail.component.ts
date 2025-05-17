@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark, faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { environment } from '@environments/environment.developments';
 import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
-import { environment } from 'src/app/environments/environment.developments';
 
 @Component({
   selector: 'card-detail',
@@ -17,6 +17,4 @@ export class CardDetailComponent {
   faThumbsUp = faThumbsUp;
   movieDetail = input.required<DetailMovieResponse>();
   posterImage = computed(() => environment.imageUrl + this.movieDetail().poster_path);
-  /*posterImageUrl = input.required<string>();
-  titleMovie = input.required<string>();*/
 }
