@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors,
          Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
+import { SeoFriendlyService } from '@services/seo-friendly.service';
 
 enum typeInput {
   Password = 'password',
@@ -73,8 +73,8 @@ export default class SignUpComponent implements OnInit {
     ]
   }, { validators: [this.passwordsMatchValidator] });
 
-  ngOnInit(): void {
-    this.seoFriendlyService.setMetaTags('Sign up', 'Esta es la página para el registro de usuarios');
+  ngOnInit() {
+    this.seoFriendlyService.setMetaTags('Registro', 'Esta es la página para el registro de usuarios');
   }
 
   private passwordsMatchValidator(form: AbstractControl): ValidationErrors | null {
