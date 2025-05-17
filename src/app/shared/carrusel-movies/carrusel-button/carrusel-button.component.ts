@@ -11,16 +11,8 @@ interface Direction {
 };
 
 const directions: Direction[] = [
-  {
-    label: 'previous',
-    faIcon: faAngleLeft,
-    class: 'left-0 bg-gradient-to-r'
-  },
-  {
-    label: 'next',
-    faIcon: faAngleRight,
-    class: 'right-0 bg-gradient-to-l'
-  }
+  { label: 'previous', faIcon: faAngleLeft, class: 'left-0 bg-gradient-to-r' },
+  { label: 'next', faIcon: faAngleRight, class: 'right-0 bg-gradient-to-l' }
 ];
 
 @Component({

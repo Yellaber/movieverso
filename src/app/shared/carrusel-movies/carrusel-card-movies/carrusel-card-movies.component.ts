@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { RatingComponent } from '@shared/rating/rating.component';
-import { environment } from 'src/app/environments/environment.developments';
-import { SlugifyService } from '@services/slugify/slugify.service';
+import { environment } from '@environments/environment.developments';
+import { SlugifyService } from '@services/slugify.service';
 import { Movie } from '@interfaces/movie-response.interface';
 
 @Component({
