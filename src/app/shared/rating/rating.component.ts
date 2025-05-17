@@ -9,14 +9,8 @@ interface Rating {
 }
 
 const ratings: Rating[] = [
-  {
-    type: 'popularity',
-    faIcon: faFire
-  },
-  {
-    type: 'vote',
-    faIcon: faStar
-  }
+  { type: 'popularity', faIcon: faFire },
+  { type: 'vote', faIcon: faStar }
 ];
 
 @Component({
