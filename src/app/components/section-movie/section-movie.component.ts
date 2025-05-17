@@ -3,9 +3,8 @@ import { BannerHeroComponent } from '@components/banner-hero/banner-hero.compone
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
 import { BannerHeroSkeletonComponent } from '@components/banner-hero-skeleton/banner-hero-skeleton.component';
 import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
-import { TmdbService } from '@services/tmdb/tmdb.service';
-import { SectionMovie } from '@interfaces/sectionMovie.interface';
-import { Movie } from '@interfaces/movie-response.interface';
+import { TmdbService } from '@services/tmdb.service';
+import { SectionMovie, Movie } from '@interfaces/';
 
 @Component({
   selector: 'section-movie',
