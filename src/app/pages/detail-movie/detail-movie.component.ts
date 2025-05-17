@@ -7,11 +7,9 @@ import { BannerDetailComponent } from '@components/banner-detail/banner-detail.c
 import { SideDetailComponent } from '@components/side-detail/side-detail.component';
 import { BannerDetailSkeletonComponent } from '@components/banner-detail-skeleton/banner-detail-skeleton.component';
 import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
-import { environment } from 'src/app/environments/environment.developments';
-import { TmdbService } from '@services/tmdb/tmdb.service';
-import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
-import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
-import { Keyword } from '@interfaces/movie-keyword-response';
+import { environment } from '@environments/environment.developments';
+import { TmdbService, SeoFriendlyService } from '@services/';
+import { DetailMovieResponse, Keyword } from '@interfaces/';
 
 const flagCdnUrl = 'https://flagcdn.com/w80/';
 
