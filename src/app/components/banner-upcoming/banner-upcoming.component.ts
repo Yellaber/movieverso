@@ -3,11 +3,9 @@ import { CarruselTitleComponent } from '@shared/carrusel-movies/carrusel-title/c
 import { CarruselCardMoviesComponent } from '@shared/carrusel-movies/carrusel-card-movies/carrusel-card-movies.component';
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
 import { BannerUpcomingSkeletonComponent } from '@components/banner-upcoming-skeleton/banner-upcoming-skeleton.component';
-import { environment } from 'src/app/environments/environment.developments';
-import { SlugifyService } from '@services/slugify/slugify.service';
-import { TmdbService } from '@services/tmdb/tmdb.service';
-import { SectionMovie } from '@interfaces/sectionMovie.interface';
-import { Movie } from '@interfaces/movie-response.interface';
+import { environment } from '@environments/environment.developments';
+import { TmdbService, SlugifyService } from '@services/';
+import { SectionMovie, Movie } from '@interfaces/';
 
 @Component({
   selector: 'banner-upcoming',
