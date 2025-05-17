@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CardDetailComponent } from './card-detail/card-detail.component';
 import { ShortDetailComponent } from './short-detail/short-detail.component';
+import { environment } from '@environments/environment.developments';
 import { DetailMovieResponse } from '@interfaces/detail-movie-response.interface';
-import { environment } from 'src/app/environments/environment.developments';
 
 @Component({
   selector: 'banner-detail',
