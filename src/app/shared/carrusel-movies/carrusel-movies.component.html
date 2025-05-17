@@ -7,13 +7,9 @@
     }
   </div>
   @if(scrollStep() > 0) {
-    <button (click)="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 hover:cursor-pointer h-full bg-linear-to-r from-stone-900 to-transparent z-10 px-2 lg:px-3">
-      <fa-icon class="text-2xl lg:text-3xl" [icon]="faAngleLeft"></fa-icon>
-    </button>
+    <carrusel-button direction="previous" (emitDirection)="onClick($event)"/>
   }
   @if(scrollStep() < totalScrollStep() - 16) {
-    <button (click)="next()" class="absolute right-0 top-1/2 -translate-y-1/2 hover:cursor-pointer h-full bg-linear-to-l from-stone-900 to-transparent z-10 px-2 lg:px-3">
-      <fa-icon class="text-2xl lg:text-3xl" [icon]="faAngleRight"></fa-icon>
-    </button>
+    <carrusel-button direction="next" (emitDirection)="onClick($event)"/>
   }
 </div>

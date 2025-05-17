@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
          input, signal, ViewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
 import { Movie } from '@interfaces/movie-response.interface';
+import { CarruselButtonComponent } from './carrusel-button/carrusel-button.component';
 
 const CARD_MOVIE_SIZE = 216; //200px(card size movie) + gap-4(16px)
 
@@ -14,6 +14,7 @@ const CARD_MOVIE_SIZE = 216; //200px(card size movie) + gap-4(16px)
     FontAwesomeModule,
     CarruselTitleComponent,
     CarruselCardMoviesComponent,
+    CarruselButtonComponent
   ],
   templateUrl: './carrusel-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,19 +23,28 @@ const CARD_MOVIE_SIZE = 216; //200px(card size movie) + gap-4(16px)
 export class CarruselMoviesComponent implements AfterViewInit {
   @ViewChild('carouselContainer', { static: true })
   carouselContainer!: ElementRef;
-  faAngleLeft = faAngleLeft;
-  faAngleRight = faAngleRight;
   carruselTitle = input.required<string>();
   route = input.required<string>();
   movies = input.required<Movie[]>();
   carruselContainerWidth = signal<number>(0);
   scrollStep = signal<number>(0);
   totalScrollStep = signal<number>(0);
-  visibleMovies = computed(() => this.carruselContainerWidth() / CARD_MOVIE_SIZE);
+  visibleMovies = computed<number>(() => this.carruselContainerWidth() / CARD_MOVIE_SIZE);
 
   ngAfterViewInit(): void {
     this.carruselContainerWidth.set(this.carouselContainer.nativeElement.offsetWidth);
     this.totalScrollStep.set(this.movies().length * CARD_MOVIE_SIZE - this.visibleMovies() * CARD_MOVIE_SIZE);
+  }
+
+  onClick(direction: string) {
+    if(direction === 'next') {
+      this.next();
+      return;
+    }
+    if(direction === 'previous') {
+      this.previous();
+      return;
+    }
   }
 
   next() {
@@ -45,7 +55,7 @@ export class CarruselMoviesComponent implements AfterViewInit {
     }
   }
 
-  prev() {
+  previous() {
     if(this.scrollStep() - this.visibleMovies() * CARD_MOVIE_SIZE > 0) {
       this.scrollStep.update(value => value - this.visibleMovies() * CARD_MOVIE_SIZE);
     } else {

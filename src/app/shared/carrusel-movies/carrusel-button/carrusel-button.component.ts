@@ -1,43 +1,55 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit, output } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 interface Direction {
   label: string,
-  faIcon: IconDefinition
-}
+  faIcon: IconDefinition,
+  class: string
+};
 
 const directions: Direction[] = [
   {
     label: 'previous',
-    faIcon: faAngleLeft
+    faIcon: faAngleLeft,
+    class: 'left-0 bg-gradient-to-r'
   },
   {
     label: 'next',
-    faIcon: faAngleRight
+    faIcon: faAngleRight,
+    class: 'right-0 bg-gradient-to-l'
   }
 ];
 
 @Component({
   selector: 'carrusel-button',
-  imports: [ FontAwesomeModule ],
+  imports: [
+    NgClass,
+    FontAwesomeModule
+  ],
   template: `
-    <button (click)="onClick()" class="absolute left-0 top-1/2 -translate-y-1/2 hover:cursor-pointer h-full bg-linear-to-r from-stone-900 to-transparent z-10 px-2 lg:px-3">
+    <button (click)="handleChangeScrollState()" [ngClass]="classButton">
       <fa-icon class="text-2xl lg:text-3xl" [icon]="getDirection()!.faIcon"></fa-icon>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarruselButtonComponent {
+export class CarruselButtonComponent implements OnInit {
+  classButton: string = '';
   direction = input.required<string>();
-  handle = input.required<() => void>();
+  emitDirection = output<string>();
 
-  onClick() {
-    this.handle();
+  ngOnInit() {
+    this.classButton = `absolute top-1/2 -translate-y-1/2 hover:cursor-pointer h-full ${ this.getDirection()!.class } from-stone-900 to-transparent z-10 px-2 lg:px-3`;
   }
 
   getDirection(): Direction | undefined {
     return directions.find(angle => (angle.label === this.direction()) && angle);
+  }
+
+  handleChangeScrollState() {
+    this.emitDirection.emit(this.direction());
   }
 }
