@@ -3,10 +3,8 @@ import { RouterLink } from '@angular/router';
 import { BadgeListComponent } from '@shared/badge-list/bandge-list.component';
 import { RatingComponent } from '@shared/rating/rating.component';
 import { TagComponent } from '@shared/tag/tag.component';
-import { SlugifyService } from '@services/slugify/slugify.service';
-import { TmdbService } from '@services/tmdb/tmdb.service';
-import { Movie } from '@interfaces/movie-response.interface';
-import { Genre } from '@interfaces/genre-movies-response.interface';
+import { TmdbService, SlugifyService } from '@services/';
+import { Movie, Genre } from '@interfaces/';
 
 @Component({
   selector: 'short-information',
@@ -28,7 +26,7 @@ export class ShortInformationComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private slugifyService = inject(SlugifyService);
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getGenresMovie();
   }
 

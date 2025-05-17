@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { BackdropImageComponent } from './backdrop-image/backdrop-image.component';
 import { ShortInformationComponent } from './short-information/short-information.component';
-import { environment } from 'src/app/environments/environment.developments';
+import { environment } from '@environments/environment.developments';
 import { Movie } from '@interfaces/movie-response.interface';
 
 @Component({
