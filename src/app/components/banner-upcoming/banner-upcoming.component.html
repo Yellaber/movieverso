@@ -1,5 +1,5 @@
 @if(upcommingMovies().length > 0) {
-  <img class="absolute inset-0 w-full h-full object-cover rounded-md" src="/images/bg-upcoming.png" loading="lazy">
+  <img class="absolute inset-0 w-full h-full object-cover rounded-md" src="/images/bg-upcoming.png" loading="eager">
   <div class="absolute inset-0 bg-stone-900/80 z-0"></div>
   <div class="hidden lg:flex lg:flex-col z-10 lg:gap-5">
     <carrusel-title [carruselTitle]="section().carruselTitle" [route]="section().route"/>
