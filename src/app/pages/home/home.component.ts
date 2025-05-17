@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { BannerUpcomingComponent } from '@components/banner-upcoming/banner-upcoming.component';
 import { SectionMovieComponent } from '@components/section-movie/section-movie.component';
-import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
+import { SeoFriendlyService } from '@services/seo-friendly.service';
 import { SectionMovie } from '@interfaces/sectionMovie.interface';
 
 @Component({
@@ -31,36 +31,15 @@ export default class HomeComponent implements OnInit {
 
   loadSections() {
     this.sections = [
-      {
-        heroType: 'upcoming',
-        heroTitle: '',
-        carruselTitle: 'Próximamente',
-        route: '/proximamente',
-      },
-      {
-        heroType: 'now_playing',
-        heroTitle: 'Estrenos',
-        carruselTitle: 'Top 10 - Estrenos',
-        route: '/estrenos',
-      },
-      {
-        heroType: 'popularity',
-        heroTitle: 'Más popular',
-        carruselTitle: 'Top 10 - Más populares',
-        route: '/populares',
-      },
-      {
-        heroType: 'rated',
-        heroTitle: 'Más valorada',
-        carruselTitle: 'Top 10 - Más valoradas',
-        route: '/valoradas',
-      },
-      {
-        heroType: 'trending',
-        heroTitle: 'En tendencia',
-        carruselTitle: 'Top 10 - En tendencia',
-        route: '/tendencia',
-      }
+      { heroType: 'upcoming', heroTitle: '', carruselTitle: 'Próximamente', route: '/proximamente' },
+      { heroType: 'now_playing', heroTitle: 'Estrenos', carruselTitle: 'Top 10 - Estrenos',
+        route: '/estrenos'},
+      { heroType: 'popularity', heroTitle: 'Más popular', carruselTitle: 'Top 10 - Más populares',
+        route: '/populares' },
+      { heroType: 'rated', heroTitle: 'Más valorada', carruselTitle: 'Top 10 - Más valoradas',
+        route: '/valoradas' },
+      { heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 10 - En tendencia',
+        route: '/tendencia' }
     ];
   }
 }
