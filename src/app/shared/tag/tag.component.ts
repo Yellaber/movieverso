@@ -18,26 +18,11 @@ export class TagComponent {
   text = input.required<string>();
   type = input<string>('');
   icons: Icon[] = [
-    {
-      text: 'now_playing',
-      faIcon: faFilm
-    },
-    {
-      text: 'popularity',
-      faIcon: faFire
-    },
-    {
-      text: 'rated',
-      faIcon: faStar
-    },
-    {
-      text: 'calendar',
-      faIcon: faCalendarCheck
-    },
-    {
-      text: 'trending',
-      faIcon: faArrowTrendUp
-    }
+    { text: 'now_playing', faIcon: faFilm },
+    { text: 'popularity', faIcon: faFire },
+    { text: 'rated', faIcon: faStar },
+    { text: 'calendar', faIcon: faCalendarCheck },
+    { text: 'trending', faIcon: faArrowTrendUp }
   ];
 
   getIcon(): Icon | undefined {
