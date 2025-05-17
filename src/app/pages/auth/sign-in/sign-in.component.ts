@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SeoFriendlyService } from '@services/seo-friendly/seo-friendly.service';
+import { SeoFriendlyService } from '@services/seo-friendly.service';
 
 @Component({
   imports: [
@@ -32,8 +32,8 @@ export default class SignInComponent implements OnInit {
     ]
   });
 
-  ngOnInit(): void {
-    this.seoFriendlyService.setMetaTags('Sign in', 'Esta es la página para iniciar sesión');
+  ngOnInit() {
+    this.seoFriendlyService.setMetaTags('Iniciar sesión', 'Esta es la página para iniciar sesión');
   }
 
   isValidField(field: string): boolean | undefined {
