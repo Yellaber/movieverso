@@ -6,3 +6,4 @@ export * from './movie-response.interface';
 export * from './movie-trailer-response.interface';
 export * from './movie-watch-provider-response.interface';
 export * from './sectionMovie.interface';
+export * from './user-geolocation.interface';
