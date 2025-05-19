@@ -36,6 +36,6 @@ export class RatingComponent {
   value = input.required<number>();
 
   getRating(): Rating | undefined {
-    return ratings.find(rating => (rating.type === this.type()) && rating);
+    return ratings.find(rating => rating.type === this.type());
   }
 }
