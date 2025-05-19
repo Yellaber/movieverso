@@ -26,6 +26,6 @@ export class TagComponent {
   ];
 
   getIcon(): Icon | undefined {
-    return this.icons.find(icon => icon.text === this.type() && icon);
+    return this.icons.find(icon => icon.text === this.type());
   }
 }
