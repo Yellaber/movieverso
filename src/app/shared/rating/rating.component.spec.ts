@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RatingComponent } from './rating.component';
 
-describe('Rating component', () => {
+describe('Rating Component:', () => {
   let component: RatingComponent;
   let fixture: ComponentFixture<RatingComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ RatingComponent ]
-    }).compileComponents;
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -20,15 +20,18 @@ describe('Rating component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getRating return a Rating object.', () => {
-    fixture.componentRef.setInput('type', 'popularity');
-    const rating = component.getRating();
-    expect(rating).toBeTruthy();
+  it('getRating return an undefined value.', () => {
+    fixture.componentRef.setInput('type', '');
+    expect(component.getRating()).toBeUndefined();
   });
 
-  it('getRating return an undefined value.', () => {
-    fixture.componentRef.setInput('type', 'rated');
-    const rating = component.getRating();
-    expect(rating).toBeUndefined();
+  it('getRating return a Rating object about popularity.', () => {
+    fixture.componentRef.setInput('type', 'popularity');
+    expect(component.getRating()).toBeTruthy();
+  });
+
+  it('getRating return a Rating object about vote.', () => {
+    fixture.componentRef.setInput('type', 'vote');
+    expect(component.getRating()).toBeTruthy();
   });
 });
