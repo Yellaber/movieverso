@@ -35,17 +35,6 @@ export class CarruselMoviesComponent implements AfterViewInit {
     this.totalScrollStep.set(this.movies().length * CARD_MOVIE_SIZE - this.visibleMovies() * CARD_MOVIE_SIZE);
   }
 
-  onClick(direction: string) {
-    if(direction === 'next') {
-      this.next();
-      return;
-    }
-    if(direction === 'previous') {
-      this.previous();
-      return;
-    }
-  }
-
   next() {
     if(this.scrollStep() + this.visibleMovies() * CARD_MOVIE_SIZE < this.totalScrollStep()) {
       this.scrollStep.update(value => value + this.visibleMovies() * CARD_MOVIE_SIZE);
@@ -59,6 +48,17 @@ export class CarruselMoviesComponent implements AfterViewInit {
       this.scrollStep.update(value => value - this.visibleMovies() * CARD_MOVIE_SIZE);
     } else {
       this.scrollStep.set(0);
+    }
+  }
+
+  onClick(direction: string) {
+    if(direction === 'next') {
+      this.next();
+      return;
+    }
+    if(direction === 'previous') {
+      this.previous();
+      return;
     }
   }
 }

@@ -13,9 +13,10 @@ import { Movie } from '@interfaces/movie-response.interface';
     RouterLink,
     FontAwesomeModule,
     RatingComponent
-],
+  ],
   templateUrl: './carrusel-card-movies.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'flex flex-col min-w-[200px] max-w-[200px] rounded-md shadow-md' }
 })
 export class CarruselCardMoviesComponent {
   faBokmark = faBookmark;

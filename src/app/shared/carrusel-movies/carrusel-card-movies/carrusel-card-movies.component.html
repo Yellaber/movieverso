@@ -1,4 +1,4 @@
-<div class="flex flex-col min-w-[200px] max-w-[200px] rounded-md shadow-md">
+@if(movie()) {
   <a [routerLink]="['/pelicula', movie().id + '-' + slugify(movie().title)]">
     <img class="w-full h-72 rounded-t-md object-cover object-center" [src]="srcImage()" loading="lazy">
   </a>
@@ -11,4 +11,4 @@
       <rating type="vote" [value]="movie().vote_average"/>
     </div>
   </div>
-</div>
+}
