@@ -38,7 +38,7 @@ export class TmdbService {
 
   getUserLanguage() {
     return this.userLocation().languages.includes(',')?
-           this.userLocation().languages.split(',')[0]: this.userLocation().languages
+           this.userLocation().languages.split(',')[0]: this.userLocation().languages;
   };
 
   getUserLocation(): Observable<UserGeolocation> {
