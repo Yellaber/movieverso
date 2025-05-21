@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
+         signal } from '@angular/core';
 import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { routes } from '@app/app.routes';
+import { RoutesService } from '@app/services/routes.service';
 
 @Component({
   selector: 'navigation',
@@ -15,7 +16,7 @@ import { routes } from '@app/app.routes';
   ],
   template: `
     <ul [ngClass]="layoutClass()">
-      @for(route of routes; track $index) {
+      @for(route of mainRoutes(); track $index) {
         <li>
           <a [routerLink]="[route.path]" routerLinkActive="text-yellow-500" class="text-xs lg:text-sm text-stone-300 hover:text-yellow-500 transition-colors duration-300">{{ route.title }}</a>
         </li>
@@ -28,12 +29,15 @@ import { routes } from '@app/app.routes';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent implements OnInit {
+  private routesService = inject(RoutesService);
   faMagnifyingGlass = faMagnifyingGlass;
   menuItems = input.required<string[]>();
   layoutClass = input.required<string>();
-  routes: Route[] = [];
+  menubarRoutes = signal<Route[]>([]);
+  mainRoutes = computed(() =>
+                this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
   ngOnInit() {
-    this.routes = routes.filter(route => this.menuItems()?.includes(route.path!));
+    this.menubarRoutes.set(this.routesService.getRoutes());
   }
 }
