@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MenubarComponent } from '@components/menubar/menubar.component';
 import { FooterSiteComponent } from '@components/footer-site/footer-site.component';
 import { RouterOutlet } from '@angular/router';
+import { RoutesService } from './services/routes.service';
+import { routes } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -14,5 +16,10 @@ import { RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
+  private routesService = inject(RoutesService);
   title = 'MovieVerso';
+
+  constructor() {
+    this.routesService.setRoutes(routes);
+  }
 }
