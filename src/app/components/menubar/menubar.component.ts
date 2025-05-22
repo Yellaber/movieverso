@@ -29,7 +29,8 @@ export class MenubarComponent implements OnInit {
   };
 
   initUserLocation() {
-    const userGeolocation = this.userGeolocationService.userGeolocation();
+    this.userGeolocationService.initUserLocation();
+    const userGeolocation = this.userGeolocationService.getUserGeolocation();
     if(userGeolocation) {
       const { location } = userGeolocation;
       this.userLocation.set(location);
