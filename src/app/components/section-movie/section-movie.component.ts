@@ -43,15 +43,15 @@ export class SectionMovieComponent implements OnInit {
           .subscribe(movies => this.movies.set(movies));
         break;
       case 'popularity':
-        this.tmdbService.getPopularMovies(10)
+        this.tmdbService.getMovies('/movie/popular', 10)
           .subscribe(movies => this.movies.set(movies));
         break;
       case 'rated':
-        this.tmdbService.getTopRatedMovies(10)
+        this.tmdbService.getMovies('/movie/top_rated', 10)
           .subscribe(movies => this.movies.set(movies));
         break;
       case 'trending':
-        this.tmdbService.getTrendingMovies(10)
+        this.tmdbService.getMovies('/trending/movie/day', 10)
           .subscribe(movies => this.movies.set(movies));
         break;
     };
