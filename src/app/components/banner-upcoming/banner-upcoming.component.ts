@@ -38,7 +38,7 @@ export class BannerUpcomingComponent implements OnInit {
   }
 
   getUpcommingMovies() {
-    this.tmdbService.getUpcommingMovies(10)
+    this.tmdbService.getUpcommingMovies(4)
       .subscribe(upcommingMovies => this.upcommingMovies.set(upcommingMovies));
   }
 }
