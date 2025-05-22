@@ -14,18 +14,14 @@ const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 export class UserGeolocationService {
   private platformId = inject(PLATFORM_ID);
   private httpClient = inject(HttpClient);
-  userGeolocation = signal<UserGeolocation | null>(null);
+  private userGeolocation = signal<UserGeolocation | undefined>(undefined);
 
-  constructor() {
-    isPlatformBrowser(this.platformId) && this.initUserLocation();
+  getUserGeolocation(): UserGeolocation | undefined {
+    return this.userGeolocation();
   };
 
-  private getLocation(): Observable<UserGeolocation> {
-    const url = API_URL_IPGEOLOCATION + '?apiKey=' + API_KEY_IPGEOLOCATION;
-    return this.httpClient.get<UserGeolocation>(url);
-  };
-
-  private initUserLocation() {
+  initUserLocation() {
+    if(!isPlatformBrowser(this.platformId)) return;
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
       this.userGeolocation.set(JSON.parse(userLocalLocation));
@@ -37,7 +33,8 @@ export class UserGeolocationService {
     });
   };
 
-  /*getUserLocation() {
-    return this.userGeolocation;
-  }*/
+  private getLocation(): Observable<UserGeolocation> {
+    const url = API_URL_IPGEOLOCATION + '?apiKey=' + API_KEY_IPGEOLOCATION;
+    return this.httpClient.get<UserGeolocation>(url);
+  };
 }
