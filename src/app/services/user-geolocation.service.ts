@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { UserGeolocation } from '@interfaces/';
@@ -14,7 +14,7 @@ const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 export class UserGeolocationService {
   private platformId = inject(PLATFORM_ID);
   private httpClient = inject(HttpClient);
-  private userGeolocation: UserGeolocation | null = null;
+  userGeolocation = signal<UserGeolocation | null>(null);
 
   constructor() {
     isPlatformBrowser(this.platformId) && this.initUserLocation();
@@ -28,15 +28,16 @@ export class UserGeolocationService {
   private initUserLocation() {
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
-      this.userGeolocation = JSON.parse(userLocalLocation);
+      this.userGeolocation.set(JSON.parse(userLocalLocation));
       return;
     }
     this.getLocation().subscribe(geolocation => {
-      localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation))
+      localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation));
+      this.userGeolocation.set(geolocation);
     });
   };
 
-  getUserLocation() {
+  /*getUserLocation() {
     return this.userGeolocation;
-  }
+  }*/
 }
