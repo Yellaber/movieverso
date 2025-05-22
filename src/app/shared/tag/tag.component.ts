@@ -19,7 +19,7 @@ const icons: Icon[] = [
   imports: [ FontAwesomeModule ],
   template: `
     @if(getIcon()) {
-      <div class="flex items-center rounded-full bg-stone-800 text-yellow-600 gap-2 px-3 py-2">
+      <div class="flex items-center rounded-full bg-yellow-900/50 text-yellow-600 gap-2 px-3 py-2">
         <fa-icon [icon]="getIcon()!.faIcon"></fa-icon>
         <span class="text-xs lg:text-sm">{{ text() }}</span>
       </div>
