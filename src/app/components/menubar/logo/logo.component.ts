@@ -14,8 +14,4 @@ export class LogoComponent {
   countryFlag = input.required<string | undefined>();
   appName = environment.appName;
   slogan = environment.slogan;
-
-  /*getFlagCountry() {
-    return this.flagcdnService.getFlagCountry(this.countryCode(), '40');
-  };*/
 }
