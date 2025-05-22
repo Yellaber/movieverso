@@ -29,7 +29,7 @@ export class MenubarComponent implements AfterViewInit {
   };
 
   initUserLocation() {
-    const userGeolocation = this.userGeolocationService.getUserLocation();
+    const userGeolocation = this.userGeolocationService.userGeolocation();
     if(userGeolocation) {
       const { location } = userGeolocation;
       this.userLocation.set(location);
