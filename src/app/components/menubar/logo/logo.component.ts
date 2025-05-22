@@ -11,7 +11,7 @@ import { environment } from '@environments/environment.developments';
 })
 export class LogoComponent {
   flagcdnService = inject(FlagCdnService);
-  countryFlag = input.required<string>();
+  countryFlag = input.required<string | undefined>();
   appName = environment.appName;
   slogan = environment.slogan;
 
