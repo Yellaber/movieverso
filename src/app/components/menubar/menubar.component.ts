@@ -21,18 +21,18 @@ const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tende
 })
 export class MenubarComponent implements AfterViewInit {
   private userGeolocationService = inject(UserGeolocationService);
-  userLocation = signal<Location | null>(null);
+  userLocation = signal<Location | undefined>(this.userGeolocationService.userGeolocation()?.location);
   items = signal<string[]>(menuItems);
 
   ngAfterViewInit() {
-    this.initUserLocation();
+    //this.initUserLocation();
   };
 
-  initUserLocation() {
+  /*initUserLocation() {
     const userGeolocation = this.userGeolocationService.userGeolocation();
     if(userGeolocation) {
       const { location } = userGeolocation;
       this.userLocation.set(location);
     }
-  };
+  };*/
 }
