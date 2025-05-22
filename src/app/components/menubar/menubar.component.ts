@@ -6,7 +6,7 @@ import { NavigationComponent } from '@shared/navigation/navigation.component';
 import { SignInButtonComponent } from '@shared/auth/sign-in-button/sign-in-button.component';
 import { ScrollableMenuComponent } from '@shared/scrollable-menu/scrollable-menu.component';
 import { UserGeolocationService } from '@services/user-geolocation.service';
-import { UserGeolocation } from '@interfaces/';
+import { Location, UserGeolocation } from '@interfaces/';
 
 const USER_LOCAL_LOCATION = 'userLocalLocation';
 const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ];
@@ -25,7 +25,7 @@ const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tende
 export class MenubarComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private userGeolocation = inject(UserGeolocationService);
-  userLocation = signal<UserGeolocation>(Object.create({}));
+  userLocation = signal<Location>(Object.create({}));
   items = signal<string[]>(menuItems);
 
   ngOnInit() {
@@ -35,7 +35,9 @@ export class MenubarComponent implements OnInit {
   initUserLocation() {
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
-      this.userLocation.set(JSON.parse(userLocalLocation));
+      const userGeoLocation: UserGeolocation = JSON.parse(userLocalLocation);
+      const { location } = userGeoLocation;
+      this.userLocation.set(location);
     } else {
       this.userGeolocation.getLocation().subscribe(geolocation => {
         localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation))
