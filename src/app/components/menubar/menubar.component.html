@@ -1,19 +1,17 @@
-@if(userLocation()) {
-  <div class="relative">
-    <nav class="hidden lg:flex lg:justify-between lg:items-center fixed top-0 left-0 w-full lg:py-3 z-50 lg:px-10">
-      <logo [countryCode]="userLocation()!.country_flag"/>
-      <navigation [menuItems]="items()" layoutClass="hidden lg:flex lg:items-center lg:gap-5"/>
-      <!--<search-bar layoutClass="hidden lg:flex"/>-->
-      <sign-in-button layoutClass="hidden lg:flex items-center gap-3"/>
-      <div class="pointer-events-none absolute top-0 left-0 w-full h-100 bg-gradient-to-b from-stone-900 to-transparent z-[-1]"></div>
-    </nav>
-  </div>
-  <nav class="flex flex-col lg:hidden justify-center bg-stone-900 fixed top-0 left-0 w-full shadow-lg z-40 py-3 px-5">
-    <div class="flex w-full justify-between items-center">
-      <logo [countryCode]="userLocation()!.country_flag"/>
-      <sign-in-button layoutClass="flex items-center gap-4"/>
-    </div>
-    <scrollable-menu [items]="items()"/>
-    <!--<search-bar layoutClass="flex w-full mt-5"/>-->
+<div class="relative">
+  <nav class="hidden lg:flex lg:justify-between lg:items-center fixed top-0 left-0 w-full lg:py-3 z-50 lg:px-10">
+    <logo [countryFlag]="userLocation()!.country_flag"/>
+    <navigation [menuItems]="items()" layoutClass="hidden lg:flex lg:items-center lg:gap-5"/>
+    <!--<search-bar layoutClass="hidden lg:flex"/>-->
+    <sign-in-button layoutClass="hidden lg:flex items-center gap-3"/>
+    <div class="pointer-events-none absolute top-0 left-0 w-full h-100 bg-gradient-to-b from-stone-900 to-transparent z-[-1]"></div>
   </nav>
-}
+</div>
+<nav class="flex flex-col lg:hidden justify-center bg-stone-900 fixed top-0 left-0 w-full shadow-lg z-40 py-3 px-5">
+  <div class="flex w-full justify-between items-center">
+    <logo [countryFlag]="userLocation()!.country_flag"/>
+    <sign-in-button layoutClass="flex items-center gap-4"/>
+  </div>
+  <scrollable-menu [items]="items()"/>
+  <!--<search-bar layoutClass="flex w-full mt-5"/>-->
+</nav>
