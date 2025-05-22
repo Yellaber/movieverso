@@ -33,11 +33,11 @@ export class NavigationComponent implements OnInit {
   faMagnifyingGlass = faMagnifyingGlass;
   menuItems = input.required<string[]>();
   layoutClass = input.required<string>();
-  menubarRoutes = signal<Route[]>([]);
+  menubarRoutes = signal<Route[]>(this.routesService.getRoutes());
   mainRoutes = computed(() =>
                 this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
   ngOnInit() {
-    this.menubarRoutes.set(this.routesService.getRoutes());
+    //this.menubarRoutes.set(this.routesService.getRoutes());
   }
 }
