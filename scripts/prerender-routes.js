@@ -1,36 +1,23 @@
 
 (async() => {
-  const API_URL = 'https://api.themoviedb.org/3';
-  const API_KEY = 'c6eb6487500a7727c7f8fec7a57eb1ab';
-  const countryCode = '';
-  const languages = '';
+  const API_URL_TMDB = 'https://api.themoviedb.org/3';
+  const API_KEY_TMDB = 'c6eb6487500a7727c7f8fec7a57eb1ab';
+  const API_URL_IPGEOLOCATION = 'https://api.ipgeolocation.io/v2/ipgeo';
+  const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
+  let countryCode = '';
+  let language = '';
   const fs = require( 'fs' );
 
-  /*const getUpComing = async() => {
-    const currentDate = new Date();
-    const moviesResponse = await fetch( `${ API_URL }/movie/upcoming?api_key=${ API_KEY }&language=es-ES` ).then( response => response.json() );
-    const moviesResponseSliced = moviesResponse[ 'results' ].slice(0, 10);
-    const moviesResponseOrdered = moviesResponseSliced.sort(( movie1, movie2 ) => {
-      const dateMovie1 = new Date( movie1.release_date );
-      const dateMovie2 = new Date( movie2.release_date );
-      return dateMovie1.getTime() - dateMovie2.getTime()
-    });
-    return moviesResponseOrdered.filter( movie => {
-      const dateMovie = new Date( movie.release_date );
-      return ( currentDate < dateMovie ) && movie;
-    } );
-  }*/
-
   const getUserLocation = async() => {
-    const userLocation = await fetch('https://ipapi.co/json/').then(response => response.json());
-    countryCode = userLocation['country_code'];
-    languages = userLocation['languages'];
+    const userLocation = await fetch(`${API_URL_IPGEOLOCATION}?apiKey=${API_KEY_IPGEOLOCATION}`)
+    .then(response => response.json());
+    const { location, country_metadata } = userLocation;
+    countryCode = location.country_code2;
+    language = country_metadata.languages[0];
   };
 
-  const getUserLanguage = () => languages.includes(',')? languages.split(',')[0]: languages;
-
   const getTopNowPlaying = async() => {
-    const moviesResponse = await fetch(`${API_URL}/movie/now_playing?api_key=${API_KEY}&region=${countryCode}&language=${getUserLanguage()}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/now_playing?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
     return moviesResponse['results'].slice(0, 10).sort((movie1, movie2) => {
       const dateMovie1 = new Date(movie1.release_date);
       const dateMovie2 = new Date(movie2.release_date);
@@ -39,17 +26,17 @@
   }
 
   const getTopPopular = async() => {
-    const moviesResponse = await fetch(`${API_URL}/movie/popular?api_key=${API_KEY}&region=${countryCode}&language=${getUserLanguage()}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/popular?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
     return moviesResponse['results'].slice(0, 10);
   }
 
   const getTopRated = async() => {
-    const moviesResponse = await fetch(`${API_URL}/movie/top_rated?api_key=${API_KEY}&region=${countryCode}&language=${getUserLanguage()}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/top_rated?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
     return moviesResponse['results'].slice(0, 10);
   }
 
   const getTopTrending = async() => {
-    const moviesResponse = await fetch(`${API_URL}/trending/movie/day?api_key=${API_KEY}&region=${countryCode}&language=${getUserLanguage()}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/trending/movie/day?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
     return moviesResponse['results'].slice(0, 10);
   }
 
