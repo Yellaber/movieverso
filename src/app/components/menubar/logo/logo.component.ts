@@ -11,11 +11,11 @@ import { environment } from '@environments/environment.developments';
 })
 export class LogoComponent {
   flagcdnService = inject(FlagCdnService);
-  countryCode = input.required<string>();
+  countryFlag = input.required<string>();
   appName = environment.appName;
   slogan = environment.slogan;
 
-  getFlagCountry() {
+  /*getFlagCountry() {
     return this.flagcdnService.getFlagCountry(this.countryCode(), '40');
-  };
+  };*/
 }
