@@ -8,7 +8,9 @@ type typeBadges = Genre[] | Keyword[] | SpokenLanguage[]
   imports: [],
   template: `
     @for(badge of badgeList(); track $index) {
-      <small class="bg-stone-100 rounded-full text-stone-900 font-semibold px-2.5 py-1.5">{{ badge.name }}</small>
+      @if(badge.name) {
+        <small class="bg-stone-100 rounded-full text-stone-900 font-semibold px-2.5 py-1.5">{{ badge.name }}</small>
+      }
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
