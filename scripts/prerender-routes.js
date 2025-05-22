@@ -13,7 +13,7 @@
     .then(response => response.json());
     const { location, country_metadata } = userLocation;
     countryCode = location.country_code2;
-    language = (country_metadata.languages[0].includes('es'))?country_metadata.languages[0]: 'en-US';
+    language = (country_metadata.languages[0].includes('es'))? country_metadata.languages[0]: 'en-US';
   };
 
   const getTopNowPlaying = async() => {
