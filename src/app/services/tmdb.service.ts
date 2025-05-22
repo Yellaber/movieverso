@@ -1,35 +1,31 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse,
          Cast, MovieCreditResponse, MovieTrailerResponse, Trailer, MovieWatchProviderResponse,
-         Keyword, MovieKeywordResponse, UserGeolocation } from '@interfaces/';
-
-const USER_LOCAL_LOCATION = 'userLocalLocation';
+         Keyword, MovieKeywordResponse } from '@interfaces/';
+import { UserGeolocationService } from './user-geolocation.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TmdbService {
-  private platformId = inject(PLATFORM_ID);
+  private userGeolocationService = inject(UserGeolocationService);
   private httpClient = inject(HttpClient);
-  userLocation = signal<UserGeolocation>(Object.create({}));
-  userLanguage = '';
   userCountryCode = '';
+  userLanguage = '';
 
   constructor() {
-    isPlatformBrowser(this.platformId) && this.initUserLocation();
+    this.initUserLocation();
   };
 
   initUserLocation() {
-    const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
-    if(userLocalLocation) {
-      this.userLocation.set(JSON.parse(userLocalLocation));
-      const { location, country_metadata } = this.userLocation();
-      this.userLanguage = country_metadata.languages[0];
+    const userGeolocation = this.userGeolocationService.getUserLocation();
+    if(userGeolocation) {
+      const { location, country_metadata } = userGeolocation;
       this.userCountryCode = location.country_code2;
+      this.userLanguage = country_metadata.languages[0];
     }
   };
 
