@@ -1,30 +1,39 @@
 export interface UserGeolocation {
   ip: string;
-  network: string;
-  version: string;
-  city: string;
-  region: string;
-  region_code: string;
-  country: string;
-  country_name: string;
-  country_code: string;
-  country_code_iso3: string;
-  country_capital: string;
-  country_tld: string;
-  continent_code: string;
-  in_eu: boolean;
-  postal: string;
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  utc_offset: string;
-  country_calling_code: string;
-  currency: string;
-  currency_name: string;
-  languages: string;
-  country_area: number;
-  country_population: number;
-  asn: string;
-  org: string;
+  location: Location;
+  country_metadata: CountryMetadata;
+  currency: Currency;
 }
 
+export interface CountryMetadata {
+  calling_code: string;
+  tld: string;
+  languages: string[];
+}
+
+export interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+}
+
+export interface Location {
+  continent_code: string;
+  continent_name: string;
+  country_code2: string;
+  country_code3: string;
+  country_name: string;
+  country_name_official: string;
+  country_capital: string;
+  state_prov: string;
+  state_code: string;
+  district: string;
+  city: string;
+  zipcode: string;
+  latitude: string;
+  longitude: string;
+  is_eu: boolean;
+  country_flag: string;
+  geoname_id: string;
+  country_emoji: string;
+}
