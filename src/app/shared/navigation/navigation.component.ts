@@ -28,7 +28,7 @@ import { RoutesService } from '@app/services/routes.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavigationComponent implements OnInit, AfterViewInit {
+export class NavigationComponent implements OnInit {
   private routesService = inject(RoutesService);
   faMagnifyingGlass = faMagnifyingGlass;
   menuItems = input.required<string[]>();
@@ -37,9 +37,7 @@ export class NavigationComponent implements OnInit, AfterViewInit {
   mainRoutes = computed(() =>
     this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
-  ngOnInit() {}
-
-  ngAfterViewInit() {
+  ngOnInit() {
     this.menubarRoutes.set(this.routesService.getRoutes());
   }
 }
