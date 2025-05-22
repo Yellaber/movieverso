@@ -1,7 +1,7 @@
 <span class="text-xs lg:text-sm text-yellow-600 font-semibold">Paises productores:</span>
 @for (productionCountry of productionCountries(); track $index) {
   <div class="flex items-center gap-3">
-    <img class="w-10 bg-cover bg-center" [src]="getFlagCountry(productionCountry.iso_3166_1)" alt="">
+    <img class="w-10 bg-cover bg-center" [src]="getFlagCountry(productionCountry.iso_3166_1)" loading="lazy">
     <span class="text-xs lg:text-sm">{{ productionCountry.name }}</span>
   </div>
 }

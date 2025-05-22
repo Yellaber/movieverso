@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ProductionCountry } from '@interfaces/detail-movie-response.interface';
-
-const flagCdnUrl = 'https://flagcdn.com/w80/';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { FlagCdnService } from '@services/';
+import { ProductionCountry } from '@interfaces/';
 
 @Component({
   selector: 'production-countries',
@@ -11,9 +10,10 @@ const flagCdnUrl = 'https://flagcdn.com/w80/';
   host: { class: 'flex flex-col gap-3' }
 })
 export class ProductionCountriesComponent {
+  private flagcdnService = inject(FlagCdnService);
   productionCountries = input.required<ProductionCountry[]>();
 
   getFlagCountry(iso31661Code: string): string {
-    return flagCdnUrl + iso31661Code.toLowerCase() + '.png';
+    return this.flagcdnService.getFlagCountry(iso31661Code, '80');
   }
 }
