@@ -26,23 +26,13 @@ export class TmdbService {
     if(userGeolocation) {
       const { location, country_metadata } = userGeolocation;
       this.userCountryCode = location.country_code2;
-      this.userLanguage = country_metadata.languages[0];
+      this.userLanguage = (country_metadata.languages[0].includes('es'))?
+      country_metadata.languages[0]: 'en_US';
     }
   };
 
-  /*getLocalDateFormatted(): string {
-    const formatter = new Intl.DateTimeFormat('en-CA', {
-      timeZone: this.userLocation().timezone,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-    return formatter.format(new Date());
-  }*/
-
   getUpcommingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
     const today = new Date().toISOString().split('T')[0];
-    //const today = this.getLocalDateFormatted();
     const params = new HttpParams()
     .set('api_key', environment.tmdbApiKey)
     .set('language', this.userLanguage)
