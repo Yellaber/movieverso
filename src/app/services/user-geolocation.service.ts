@@ -22,7 +22,6 @@ export class UserGeolocationService {
 
   initUserLocation() {
     if(!isPlatformBrowser(this.platformId)) return;
-    console.log('Desde servicio, leyendo localStorage:', localStorage.getItem(USER_LOCAL_LOCATION));
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
       this.userGeolocation.set(JSON.parse(userLocalLocation));
