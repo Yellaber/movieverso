@@ -6,7 +6,7 @@ import { ScrollableMenuComponent } from '@shared/scrollable-menu/scrollable-menu
 import { UserGeolocationService } from '@services/user-geolocation.service';
 import { Location } from '@interfaces/';
 
-//const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ];
+const menuItems = [ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ];
 
 @Component({
   selector: 'menubar',
@@ -21,8 +21,8 @@ import { Location } from '@interfaces/';
 })
 export class MenubarComponent implements OnInit {
   private userGeolocationService = inject(UserGeolocationService);
-  userLocation = signal<Location | null>(null);
-  items = signal<string[]>([ 'proximamente', 'estrenos', 'populares', 'valoradas', 'tendencia', 'listado' ]);
+  userLocation = signal<Location | undefined>(undefined);
+  items = signal<string[]>(menuItems);
 
   ngOnInit() {
     this.initUserLocation();
