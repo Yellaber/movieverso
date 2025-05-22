@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
          signal } from '@angular/core';
 import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
@@ -28,16 +28,18 @@ import { RoutesService } from '@app/services/routes.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, AfterViewInit {
   private routesService = inject(RoutesService);
   faMagnifyingGlass = faMagnifyingGlass;
   menuItems = input.required<string[]>();
   layoutClass = input.required<string>();
-  menubarRoutes = signal<Route[]>(this.routesService.getRoutes());
+  menubarRoutes = signal<Route[]>([]);
   mainRoutes = computed(() =>
-                this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
+    this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
-  ngOnInit() {
-    //this.menubarRoutes.set(this.routesService.getRoutes());
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.menubarRoutes.set(this.routesService.getRoutes());
   }
 }
