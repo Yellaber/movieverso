@@ -21,7 +21,7 @@ export class TmdbService {
   };
 
   initUserLocation() {
-    const userGeolocation = this.userGeolocationService.getUserLocation();
+    const userGeolocation = this.userGeolocationService.userGeolocation();
     if(userGeolocation) {
       const { location, country_metadata } = userGeolocation;
       this.userCountryCode = location.country_code2;
