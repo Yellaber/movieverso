@@ -17,6 +17,7 @@ export class TmdbService {
   private httpClient = inject(HttpClient);
   userLocation = signal<UserGeolocation>(Object.create({}));
   userLanguage = '';
+  userCountryCode = '';
 
   constructor() {
     isPlatformBrowser(this.platformId) && this.initUserLocation();
@@ -26,16 +27,13 @@ export class TmdbService {
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
       this.userLocation.set(JSON.parse(userLocalLocation));
-      this.userLanguage = this.getUserLanguage();
+      const { location, country_metadata } = this.userLocation();
+      this.userLanguage = country_metadata.languages[0];
+      this.userCountryCode = location.country_code2;
     }
   };
 
-  getUserLanguage() {
-    return this.userLocation().languages.includes(',')?
-           this.userLocation().languages.split(',')[0]: this.userLocation().languages;
-  };
-
-  getLocalDateFormatted(): string {
+  /*getLocalDateFormatted(): string {
     const formatter = new Intl.DateTimeFormat('en-CA', {
       timeZone: this.userLocation().timezone,
       year: 'numeric',
@@ -43,14 +41,15 @@ export class TmdbService {
       day: '2-digit'
     });
     return formatter.format(new Date());
-  }
+  }*/
 
   getUpcommingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
-    const today = this.getLocalDateFormatted();
+    const today = new Date().toISOString().split('T')[0];
+    //const today = this.getLocalDateFormatted();
     const params = new HttpParams()
     .set('api_key', environment.tmdbApiKey)
     .set('language', this.userLanguage)
-    .set('region', this.userLocation().country_code)
+    .set('region', this.userCountryCode)
     .set('sort_by', 'primary_release_date.asc')
     .set('page', page)
     .set('primary_release_date.gte', today);
@@ -67,7 +66,7 @@ export class TmdbService {
       params: {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage,
-        region: this.userLocation().country_code,
+        region: this.userCountryCode,
         page
       }
     }).pipe(
@@ -86,7 +85,7 @@ export class TmdbService {
       params: {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage,
-        region: this.userLocation().country_code,
+        region: this.userCountryCode,
         page
       }
     }).pipe(map(({results}) => limit? results.slice(0, limit): results));
