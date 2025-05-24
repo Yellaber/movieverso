@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
@@ -23,24 +23,19 @@ const directions: Direction[] = [
   ],
   template: `
     @if(getDirection()) {
-      <button (click)="handleChangeScrollState()" [ngClass]="classButton">
+      <button (click)="handleChangeScrollState()" [ngClass]="classButton()">
         <fa-icon class="text-2xl lg:text-3xl" [icon]="getDirection()!.faIcon"></fa-icon>
       </button>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarruselButtonComponent implements OnInit {
-  classButton: string = '';
+export class CarruselButtonComponent {
   direction = input.required<string>();
+  bgButton = input.required<string>();
   emitDirection = output<string>();
   getDirection = computed(() => directions.find(angle => angle.label === this.direction()));
-
-  ngOnInit() {
-    if(this.getDirection()) {
-      this.classButton = `absolute top-1/2 -translate-y-1/2 hover:cursor-pointer h-full ${ this.getDirection()!.class } from-stone-900 to-transparent z-10 px-2 lg:px-3`;
-    }
-  }
+  classButton = computed<string>(() => `absolute top-1/2 -translate-y-1/2 hover:cursor-pointer h-full ${this.getDirection()?.class} ${this.bgButton()} to-transparent z-10 px-2 lg:px-3`);
 
   handleChangeScrollState() {
     this.getDirection() && this.emitDirection.emit(this.getDirection()!.label);
