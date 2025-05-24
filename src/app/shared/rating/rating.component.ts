@@ -20,7 +20,7 @@ const ratings: Rating[] = [
   ],
   template: `
     @if(getRating()) {
-      <a class="flex items-center gap-2" href="#">
+      <a class="flex items-center gap-1" href="#">
         <fa-icon class="text-yellow-600" [icon]="getRating()!.faIcon"></fa-icon>
         @if(type() === 'popularity') {
           <small class="text-stone-300">{{ value() | number: '1.1-1' }}</small>
