@@ -1,3 +1,4 @@
+export * from './carousel-config.interface';
 export * from './detail-movie-response.interface';
 export * from './genre-movies-response.interface';
 export * from './movie-credit-response.interface';
