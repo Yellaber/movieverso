@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -10,18 +11,21 @@ import { Movie } from '@interfaces/movie-response.interface';
 @Component({
   selector: 'carrusel-card-movies',
   imports: [
+    NgClass,
     RouterLink,
     FontAwesomeModule,
     RatingComponent
   ],
   templateUrl: './carrusel-card-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col min-w-[200px] max-w-[200px] rounded-md shadow-md' }
+  host: { class: 'flex flex-col min-w-[160px] max-w-[160px] rounded-md shadow-md' }
 })
 export class CarruselCardMoviesComponent {
   faBokmark = faBookmark;
   movie = input.required<Movie>();
+  bgCardFooter = input.required<string>();
   srcImage = computed(() => environment.imageUrl + this.movie().poster_path);
+  bgClassCardFooter = computed<string>(() => `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`);
   private slugifyService = inject(SlugifyService);
 
   slugify(title: string): string {
