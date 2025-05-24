@@ -1,12 +1,12 @@
 @if(movie()) {
   <a [routerLink]="['/pelicula', movie().id + '-' + slugify(movie().title)]">
-    <img class="w-full h-72 rounded-t-md object-cover object-center" [src]="srcImage()" loading="lazy">
+    <img class="w-full h-60 rounded-t-md object-cover object-center" [src]="srcImage()" loading="lazy">
   </a>
-  <div class="flex justify-between items-center bg-stone-800 rounded-b-md p-3">
+  <div [ngClass]="bgClassCardFooter()">
     <a href="#">
       <fa-icon class="text-yellow-600" [icon]="faBokmark"></fa-icon>
     </a>
-    <div class="flex gap-3">
+    <div class="flex gap-2">
       <rating type="popularity" [value]="movie().popularity"/>
       <rating type="vote" [value]="movie().vote_average"/>
     </div>
