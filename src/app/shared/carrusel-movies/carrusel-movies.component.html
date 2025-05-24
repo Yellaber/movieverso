@@ -1,15 +1,19 @@
-<carrusel-title [carruselTitle]="carruselTitle()" [route]="route()"/>
+@if(carouselConfig().carouselTitle || carouselConfig().route) {
+  <carrusel-title [carruselTitle]="carouselConfig().carouselTitle" [route]="carouselConfig().route"/>
+}
 <div class="relative overflow-hidden" #carouselContainer>
   <div class="flex transition-transform duration-500 ease-in-out gap-4"
   [style.transform]="'translateX(-' + scrollStep() + 'px)'">
-    @for(movie of movies(); track $index) {
-      <carrusel-card-movies [movie]="movie"/>
+    @for(movie of carouselConfig().movies; track $index) {
+      <carrusel-card-movies [movie]="movie" [bgCardFooter]="carouselConfig().bgCardFooter"/>
     }
   </div>
   @if(scrollStep() > 0) {
-    <carrusel-button direction="previous" (emitDirection)="onClick($event)"/>
+    <carrusel-button direction="previous" (emitDirection)="onClick($event)"
+    [bgButton]="carouselConfig().bgButtons"/>
   }
-  @if(scrollStep() < totalScrollStep() - 16) {
-    <carrusel-button direction="next" (emitDirection)="onClick($event)"/>
+  @if(scrollStep() < totalScrollStep() - getPartNotVisible()) {
+    <carrusel-button direction="next" (emitDirection)="onClick($event)"
+    [bgButton]="carouselConfig().bgButtons"/>
   }
 </div>
