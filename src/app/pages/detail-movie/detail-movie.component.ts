@@ -7,11 +7,10 @@ import { BannerDetailComponent } from '@components/banner-detail/banner-detail.c
 import { SideDetailComponent } from '@components/side-detail/side-detail.component';
 import { BannerDetailSkeletonComponent } from '@components/banner-detail-skeleton/banner-detail-skeleton.component';
 import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
+import { MoviesDetailComponent } from '@components/movies-detail/movies-detail.component';
 import { environment } from '@environments/environment.developments';
 import { TmdbService, SeoFriendlyService } from '@services/';
 import { DetailMovieResponse, Keyword } from '@interfaces/';
-
-const flagCdnUrl = 'https://flagcdn.com/w80/';
 
 @Component({
   imports: [
@@ -20,7 +19,8 @@ const flagCdnUrl = 'https://flagcdn.com/w80/';
     BannerDetailComponent,
     SideDetailComponent,
     BannerDetailSkeletonComponent,
-    SideDetailSkeletonComponent
+    SideDetailSkeletonComponent,
+    MoviesDetailComponent
   ],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -46,8 +46,8 @@ export default class DetailMovieComponent implements OnInit {
       .pipe(
         tap(detailMovie => {
           const movieYear = detailMovie.release_date.toString().split('-')[0];
-          this.seoFriendlyService.setMetaTags(`${ detailMovie.title } (${ movieYear })`, `Detalles, sinopsis, reparto y más sobre la película ${ detailMovie.title }.`,
-          `${ environment.imageUrl }${ detailMovie.backdrop_path }`)
+          this.seoFriendlyService.setMetaTags(`${detailMovie.title} (${movieYear})`, `Detalles, sinopsis, reparto y más sobre la película ${detailMovie.title}.`,
+          `${environment.imageUrl}${detailMovie.backdrop_path}`)
         }))
       .subscribe({
           next: detailMovie => this.movieDetail.set(detailMovie),
@@ -58,9 +58,5 @@ export default class DetailMovieComponent implements OnInit {
   getMovieKeywords() {
     this.tmdbService.getMovieKeywords(this.idMovie())
       .subscribe(movieKeywords => this.movieKeywords.set(movieKeywords));
-  }
-
-  getFlagCountry(iso31661Code: string) {
-    return flagCdnUrl + iso31661Code.toLowerCase() + '.png';
   }
 }
