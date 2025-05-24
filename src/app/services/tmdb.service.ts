@@ -108,9 +108,9 @@ export class TmdbService {
     }).pipe(map(({cast}) => cast));
   };
 
-  getMovieRecommendations(movieId: number, page: number): Observable<MovieResponse[]> {
+  getMovieRecommendations(movieId: number, page: number): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/recommendations`;
-    return this.httpClient.get<MovieResponse[]>(url, {
+    return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage,
@@ -119,9 +119,9 @@ export class TmdbService {
     });
   };
 
-  getMovieSimilar(movieId: number, page: number): Observable<MovieResponse[]> {
+  getMovieSimilar(movieId: number, page: number): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/similar`;
-    return this.httpClient.get<MovieResponse[]>(url, {
+    return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage,
