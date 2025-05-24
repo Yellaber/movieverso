@@ -32,13 +32,13 @@ export default class HomeComponent implements OnInit {
   loadSections() {
     this.sections = [
       { heroType: 'upcoming', heroTitle: '', carruselTitle: 'Próximamente', route: '/proximamente' },
-      { heroType: 'now_playing', heroTitle: 'Estrenos', carruselTitle: 'Top 10 - Estrenos',
+      { heroType: 'now_playing', heroTitle: 'Estrenos', carruselTitle: 'Top 20 - Estrenos',
         route: '/estrenos'},
-      { heroType: 'popularity', heroTitle: 'Más popular', carruselTitle: 'Top 10 - Más populares',
+      { heroType: 'popularity', heroTitle: 'Más popular', carruselTitle: 'Top 20 - Más populares',
         route: '/populares' },
-      { heroType: 'rated', heroTitle: 'Más valorada', carruselTitle: 'Top 10 - Más valoradas',
+      { heroType: 'rated', heroTitle: 'Más valorada', carruselTitle: 'Top 20 - Más valoradas',
         route: '/valoradas' },
-      { heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 10 - En tendencia',
+      { heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 20 - En tendencia',
         route: '/tendencia' }
     ];
   }
