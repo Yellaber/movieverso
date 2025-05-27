@@ -8,52 +8,52 @@ export const routes: Routes = [
   },
   {
     title: 'Película',
-    path: 'pelicula/:id-slug',
+    path: 'movie/:id-slug',
     loadComponent: () => import('./pages/detail-movie/detail-movie.component')
   },
   {
     title: 'Próximamente',
-    path: 'proximamente',
+    path: 'upcoming',
     loadComponent: () => import('./pages/upcoming/upcoming.component')
   },
   {
     title: 'Estrenos',
-    path: 'estrenos',
+    path: 'now-playing',
     loadComponent: () => import('./pages/released/released.component')
   },
   {
     title: 'Populares',
-    path: 'populares',
+    path: 'populars',
     loadComponent: () => import('./pages/popular/popular.component')
   },
   {
     title: 'Más valoradas',
-    path: 'valoradas',
+    path: 'top-rated',
     loadComponent: () => import('./pages/rated/rated.component')
   },
   {
     title: 'En tendencia',
-    path: 'tendencia',
+    path: 'trending',
     loadComponent: () => import('./pages/trending/trending.component')
   },
   {
     title: 'Listado',
-    path: 'listado',
+    path: 'list',
     loadComponent: () => import('./pages/list/list.component')
   },
   {
     title: 'Buscar',
-    path: 'buscar',
+    path: 'search',
     loadComponent: () => import('./pages/search/search.component')
   },
   {
     title: 'Iniciar sesión',
-    path: 'auth/iniciar-sesion',
+    path: 'auth/sign-in',
     loadComponent: () => import('./pages/auth/sign-in/sign-in.component')
   },
   {
     title: 'Registro',
-    path: 'auth/registro',
+    path: 'auth/sign-up',
     loadComponent: () => import('./pages/auth/sign-up/sign-up.component')
   },
   {
