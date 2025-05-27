@@ -1,6 +1,6 @@
 export interface MovieTrailerResponse {
   id: number;
-  trailers: Trailer[];
+  results: Trailer[];
 }
 
 export interface Trailer {
