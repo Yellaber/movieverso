@@ -1,9 +1,9 @@
-import { Genre } from "./genre-movies-response.interface";
+import { Genre } from './genre-movies-response.interface';
 
 export interface DetailMovieResponse {
   adult: boolean;
   backdrop_path: string;
-  belongs_to_collection: null;
+  belongs_to_collection: BelongsToCollection;
   budget: number;
   genres: Genre[];
   homepage: string;
@@ -27,6 +27,13 @@ export interface DetailMovieResponse {
   video: boolean;
   vote_average: number;
   vote_count: number;
+}
+
+export interface BelongsToCollection {
+  id: number,
+  name: string,
+  poster_path: string,
+  backdrop_path: string
 }
 
 export interface ProductionCompany {
