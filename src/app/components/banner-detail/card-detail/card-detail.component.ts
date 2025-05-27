@@ -16,5 +16,6 @@ export class CardDetailComponent {
   faHeart = faHeart;
   faThumbsUp = faThumbsUp;
   movieDetail = input.required<DetailMovieResponse>();
-  posterImage = computed(() => environment.imageUrl + this.movieDetail().poster_path);
+  posterImage = computed(() =>
+    this.movieDetail().poster_path? environment.imageUrl + this.movieDetail().poster_path: '/images/no-poster.jpg');
 }
