@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
-         input, signal, viewChild } from '@angular/core';
+         input, OnInit, signal, viewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
@@ -20,7 +20,7 @@ const CARD_MOVIE_SIZE = 176; //200px(card size movie) + gap-4(16px)
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col gap-5' }
 })
-export class CarruselMoviesComponent implements AfterViewInit {
+export class CarruselMoviesComponent implements OnInit {
   carouselContainer = viewChild<ElementRef<HTMLDivElement>>('carouselContainer');
   carouselConfig = input.required<CarouselConfig>();
   carruselContainerWidth = signal<number>(0);
@@ -31,8 +31,8 @@ export class CarruselMoviesComponent implements AfterViewInit {
   getPartNotVisible = computed<number>(() =>
     (this.visibleMovies() - Math.floor(this.visibleMovies())) * CARD_MOVIE_SIZE + 16);
 
-  ngAfterViewInit() {
-    const { movies } = this.carouselConfig();
+  ngOnInit() {
+    const {movies} = this.carouselConfig();
     this.carruselContainerWidth.set(this.carouselContainer()!.nativeElement.offsetWidth);
     this.totalScrollStep.set(movies.length * CARD_MOVIE_SIZE - this.scrollVisibleMovies());
   }

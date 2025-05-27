@@ -1,6 +1,7 @@
 @if(movie()) {
-  <a [routerLink]="['/pelicula', movie().id + '-' + slugify(movie().title)]">
-    <img class="w-full h-60 rounded-t-md object-cover object-center" [src]="srcImage()" loading="lazy">
+  <a [routerLink]="['/movie', movie().id + '-' + slugify(movie().title)]">
+    <img class="w-full h-60 rounded-t-md object-cover object-center"
+    [src]="movie().poster_path? srcImage(): '/images/no-poster.jpg'" loading="lazy">
   </a>
   <div [ngClass]="bgClassCardFooter()">
     <a href="#">

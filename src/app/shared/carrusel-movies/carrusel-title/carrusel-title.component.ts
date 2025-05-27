@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   template: `
     @if(carruselTitle()) {
       <div class="rounded-full bg-yellow-900/50 px-4 py-2">
-        <h2 class="text-xl md:text-2xl lg:text-3xl">{{ carruselTitle() }}</h2>
+        <h2 class="text-xl lg:text-2xl">{{ carruselTitle() }}</h2>
       </div>
     }
     @if(route()) {
