@@ -25,21 +25,21 @@ export default class HomeComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
 
   ngOnInit() {
-    this.seoFriendlyService.setMetaTags('Inicio', 'Esta es la página de inicio');
+    this.seoFriendlyService.setMetaTags('Inicio', 'Descubre películas de forma rápida y divertida en MovieVerso. Explora por nombre, género o popularidad y accede a información detallada de tus películas favoritas. ¡Tu universo de cine comienza aquí!');
     this.loadSections();
   }
 
   loadSections() {
     this.sections = [
-      { heroType: 'upcoming', heroTitle: '', carruselTitle: 'Próximamente', route: '/proximamente' },
+      { heroType: 'upcoming', heroTitle: '', carruselTitle: 'Próximamente', route: '/upcoming' },
       { heroType: 'now_playing', heroTitle: 'Estrenos', carruselTitle: 'Top 20 - Estrenos',
-        route: '/estrenos'},
+        route: '/now-playing'},
       { heroType: 'popularity', heroTitle: 'Más popular', carruselTitle: 'Top 20 - Más populares',
-        route: '/populares' },
+        route: '/populars' },
       { heroType: 'rated', heroTitle: 'Más valorada', carruselTitle: 'Top 20 - Más valoradas',
-        route: '/valoradas' },
+        route: '/top-rated' },
       { heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 20 - En tendencia',
-        route: '/tendencia' }
+        route: '/trending' }
     ];
   }
 }
