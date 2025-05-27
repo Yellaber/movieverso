@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
          signal } from '@angular/core';
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
-import { BannerUpcomingSkeletonComponent } from '@components/banner-upcoming-skeleton/banner-upcoming-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '../carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 import { TmdbService } from '@services/';
 import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
 
@@ -9,7 +9,7 @@ import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
   selector: 'banner-upcoming',
   imports: [
     CarruselMoviesComponent,
-    BannerUpcomingSkeletonComponent
+    CarruselMoviesSkeletonComponent
   ],
   templateUrl: './banner-upcoming.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
