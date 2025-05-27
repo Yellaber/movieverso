@@ -7,11 +7,9 @@
   <hr class="text-stone-700">
 }
 <info-item label="Estado:" [value]="movieDetail().status"/>
-@if(movieDetail().budget) {
-  <info-item label="Presupuesto:" [isCurrency]="true" [value]="movieDetail().budget"/>
-}
-@if(movieDetail().revenue) {
-  <info-item label="Ingresos:" [isCurrency]="true" [value]="movieDetail().revenue"/>
+@if(movieDetail().production_companies.length > 0) {
+  <hr class="text-stone-700">
+  <badge-section titleSection="Compañias productoras:" [badges]="movieDetail().production_companies"/>
 }
 @if(movieKeywords().length > 0) {
   <hr class="text-stone-700">
