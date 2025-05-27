@@ -1,26 +1,30 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { JsonPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BannerDetailComponent } from '@components/banner-detail/banner-detail.component';
 import { SideDetailComponent } from '@components/side-detail/side-detail.component';
 import { BannerDetailSkeletonComponent } from '@components/banner-detail-skeleton/banner-detail-skeleton.component';
 import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
-import { MoviesDetailComponent } from '@components/movies-detail/movies-detail.component';
+import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { MovieListComponent } from '@components/movie-list/movie-list.component';
+import { NotificationComponent } from '@shared/notification/notification.component';
 import { environment } from '@environments/environment.developments';
 import { TmdbService, SeoFriendlyService } from '@services/';
-import { DetailMovieResponse, Keyword } from '@interfaces/';
+import { DetailMovieResponse, Keyword, Movie, Trailer } from '@interfaces/';
+import { YoutubeVideoComponent } from '@shared/youtube-video/youtube-video.component';
 
 @Component({
   imports: [
-    JsonPipe,
     FontAwesomeModule,
     BannerDetailComponent,
     SideDetailComponent,
     BannerDetailSkeletonComponent,
     SideDetailSkeletonComponent,
-    MoviesDetailComponent
+    MovieListComponent,
+    NotificationComponent,
+    CarruselMoviesSkeletonComponent,
+    YoutubeVideoComponent
   ],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -29,20 +33,36 @@ export default class DetailMovieComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
-  movieDetail = signal<DetailMovieResponse>(Object.create({}));
+  movieDetail = signal<DetailMovieResponse | null>(null);
   movieKeywords = signal<Keyword[]>([]);
-  idMovie = signal<number>(0);
+  movieTrailer = signal<Trailer[]>([]);
+  moviesRecomended = signal<Movie[]>([]);
+  moviesSimilars = signal<Movie[]>([]);
+  movieCollection = signal<Movie[]>([]);
+  idMovie = signal<number | null>(null);
   errorMovie = signal<boolean>(false);
 
-  ngOnInit(): void {
-    const idSlug = this.route.snapshot.paramMap.get('id-slug') || '';
-    this.idMovie.set(+idSlug.split('-')[0]);
-    this.getMovieById();
-    this.getMovieKeywords();
-  }
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const idSlug = params.get('id-slug') || '';
+      this.idMovie.set(+idSlug.split('-')[0]);
+      window.scrollTo({ top: 0 });
+      const id = this.idMovie();
+      if(!id) {
+        this.errorMovie.set(true);
+        return;
+      }
+      this.movieDetail.set(null);
+      this.getMovieById(id);
+      this.getMovieKeywords(id);
+      this.getMovieTrailer(id);
+      this.getMoviesRecommendations(id);
+      this.getMoviesSimilars(id);
+    });
+  };
 
-  getMovieById() {
-    this.tmdbService.getMovieById(this.idMovie())
+  getMovieById(id: number) {
+    this.tmdbService.getMovieById(id)
       .pipe(
         tap(detailMovie => {
           const movieYear = detailMovie.release_date.toString().split('-')[0];
@@ -50,13 +70,43 @@ export default class DetailMovieComponent implements OnInit {
           `${environment.imageUrl}${detailMovie.backdrop_path}`)
         }))
       .subscribe({
-          next: detailMovie => this.movieDetail.set(detailMovie),
+          next: detailMovie => {
+                  this.movieDetail.set(detailMovie);
+                  this.movieCollection.set([]);
+                  if(detailMovie.belongs_to_collection) {
+                    const {id} = detailMovie.belongs_to_collection;
+                    this.getMovieCollection(id);
+                  }
+                },
           error: () => this.errorMovie.set(true)
       });
+  };
+
+  getMovieKeywords(id: number) {
+    this.tmdbService.getMovieKeywords(id)
+      .subscribe(movieKeywords => this.movieKeywords.set(movieKeywords));
+  };
+
+  getMovieTrailer(id: number) {
+    this.tmdbService.getMovieTrailers(id)
+      .subscribe(trailer => this.movieTrailer.set(trailer));
   }
 
-  getMovieKeywords() {
-    this.tmdbService.getMovieKeywords(this.idMovie())
-      .subscribe(movieKeywords => this.movieKeywords.set(movieKeywords));
+  getMoviesRecommendations(id: number) {
+    this.tmdbService.getMovieRecommendations(id, 1)
+      .pipe(map(({results}) => results))
+      .subscribe(results => this.moviesRecomended.set(results));
   }
-}
+
+  getMoviesSimilars(id: number) {
+    this.tmdbService.getMovieSimilar(id, 1)
+      .pipe(map(({results}) => results))
+      .subscribe(results => this.moviesSimilars.set(results));
+  }
+
+  getMovieCollection(idCollection: number) {
+    this.tmdbService.getMovieCollectionById(idCollection)
+      .pipe(map(({parts}) => parts))
+      .subscribe(parts => this.movieCollection.set(parts));
+  };
+};

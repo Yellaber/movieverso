@@ -1,23 +1,28 @@
-@if(movieDetail().id) {
-  <banner-detail [movieDetail]="movieDetail()"/>
+@if(movieDetail()) {
+  <banner-detail [movieDetail]="movieDetail()!"/>
   <section class="flex gap-5 mt-5">
-    <side-detail [movieDetail]="movieDetail()" [movieKeywords]="movieKeywords()"/>
-    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 p-10">
-      <movies-detail [idMovie]="movieDetail().id" typeMoviesDetail="Recomendaciones"/>
-      <movies-detail [idMovie]="movieDetail().id" typeMoviesDetail="Similares"/>
+    <side-detail [movieDetail]="movieDetail()!" [movieKeywords]="movieKeywords()"/>
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-10 py-11">
+      @if(movieTrailer().length > 0) {
+        <youtube-video [idVideo]="movieTrailer()[0].key"/>
+      }
+      <movie-list [movies]="moviesRecomended()" typeMovieList="Recomendadas"/>
+      <movie-list [movies]="moviesSimilars()" typeMovieList="Similares"/>
+      <movie-list [movies]="movieCollection()" typeMovieList="Colección" [hasRoute]="false"/>
     </div>
   </section>
 } @else if(!errorMovie()) {
   <banner-detail-skeleton/>
   <section class="flex gap-5 mt-5">
     <side-detail-skeleton/>
-    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 px-10">
-
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 p-10">
+      <carrusel-movies-skeleton/>
+      <carrusel-movies-skeleton/>
+      <carrusel-movies-skeleton/>
     </div>
   </section>
 } @else {
-  <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
-    <span class="font-semibold">¡Ha ocurrido un error!</span> No fué posible encontrar el ID de esta película.
+  <div class="flex mt-10 lg:mt-15">
+    <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
   </div>
 }
-<pre>{{ movieDetail() | json }}</pre>
