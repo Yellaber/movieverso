@@ -54,7 +54,7 @@
   movies = movies.filter((movie, index, selfArray) =>
               index === selfArray.findIndex(selfMovie => selfMovie.id === movie.id));
   let fileContent = movies.map(movie =>
-    `/pelicula/${movie['id']}-${slugify(movie['title'])}`).join('\n');
+    `/movie/${movie['id']}-${slugify(movie['title'])}`).join('\n');
   fs.writeFileSync('routes.txt', fileContent);
   console.log('routes.txt file generated.');
 })();
