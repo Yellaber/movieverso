@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse,
          Cast, MovieCreditResponse, MovieTrailerResponse, Trailer, MovieWatchProviderResponse,
-         Keyword, MovieKeywordResponse } from '@interfaces/';
+         Keyword, MovieKeywordResponse, MovieCollectionResponse} from '@interfaces/';
 import { UserGeolocationService } from './user-geolocation.service';
 
 @Injectable({
@@ -137,7 +137,7 @@ export class TmdbService {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage,
       }
-    }).pipe(map(({trailers}) => trailers));
+    }).pipe(map(({results}) => results));
   };
 
   getMovieWatchProviders(movieId: number): Observable<MovieWatchProviderResponse> {
@@ -156,5 +156,15 @@ export class TmdbService {
         api_key: environment.tmdbApiKey
       }
     }).pipe(map(({keywords}) => keywords));
+  };
+
+  getMovieCollectionById(id: number): Observable<MovieCollectionResponse> {
+    const url = `${environment.tmdbApiUrl}/collection/${id}`;
+    return this.httpClient.get<MovieCollectionResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language: this.userLanguage,
+      }
+    });
   };
 };
