@@ -16,11 +16,11 @@ export class UserGeolocationService {
   private httpClient = inject(HttpClient);
   private userGeolocation = signal<UserGeolocation | undefined>(undefined);
 
-  getUserGeolocation(): UserGeolocation | undefined {
-    return this.userGeolocation();
+  constructor() {
+    this.initUserLocation();
   };
 
-  initUserLocation() {
+  private initUserLocation() {
     if(!isPlatformBrowser(this.platformId)) return;
     const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocalLocation) {
@@ -31,6 +31,10 @@ export class UserGeolocationService {
       localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation));
       this.userGeolocation.set(geolocation);
     });
+  };
+
+  getUserGeolocation(): UserGeolocation | undefined {
+    return this.userGeolocation();
   };
 
   private getLocation(): Observable<UserGeolocation> {
