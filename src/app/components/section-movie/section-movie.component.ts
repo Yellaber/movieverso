@@ -39,9 +39,7 @@ export class SectionMovieComponent implements OnInit {
   }));
   private tmdbService = inject(TmdbService);
 
-  ngOnInit() {
-    this.getDataSectionMovies();
-  }
+  ngOnInit() { this.getDataSectionMovies(); }
 
   getDataSectionMovies() {
     switch(this.section().heroType) {
