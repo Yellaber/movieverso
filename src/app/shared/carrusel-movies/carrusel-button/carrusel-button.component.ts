@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,13 +16,10 @@ const directions: Direction[] = [
 
 @Component({
   selector: 'carrusel-button',
-  imports: [
-    NgClass,
-    FontAwesomeModule
-  ],
+  imports: [ FontAwesomeModule ],
   template: `
     @if(getDirection()) {
-      <button (click)="handleChangeScrollState()" [ngClass]="classButton()">
+      <button (click)="handleChangeScrollState()" [class]="classButton()">
         <fa-icon class="text-2xl lg:text-3xl" [icon]="getDirection()!.faIcon"></fa-icon>
       </button>
     }

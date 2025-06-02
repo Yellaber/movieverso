@@ -3,7 +3,7 @@
     <img class="w-full h-60 rounded-t-md object-cover object-center"
     [src]="movie().poster_path? srcImage(): '/images/no-poster.jpg'" loading="lazy">
   </a>
-  <div [ngClass]="bgClassCardFooter()">
+  <div [class]="bgClassCardFooter()">
     <a href="#">
       <fa-icon class="text-yellow-600" [icon]="faBokmark"></fa-icon>
     </a>

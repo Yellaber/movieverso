@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +10,6 @@ import { Movie } from '@interfaces/movie-response.interface';
 @Component({
   selector: 'carrusel-card-movies',
   imports: [
-    NgClass,
     RouterLink,
     FontAwesomeModule,
     RatingComponent
@@ -30,5 +28,5 @@ export class CarruselCardMoviesComponent {
 
   slugify(title: string): string {
     return this.slugifyService.getSlug(title);
-  }
+  };
 }

@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef,
-         input, OnInit, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, input, OnInit, signal,
+         viewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
