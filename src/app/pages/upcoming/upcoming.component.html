@@ -1,1 +1,17 @@
-<p>upcoming works!</p>
+<div class="flex flex-wrap justify-evenly gap-5">
+  @if(upcomingMovies()) {
+    @for(upcomingMovie of upcomingMovies()?.results; track $index) {
+      <carrusel-card-movies [movie]="upcomingMovie" bgCardFooter="bg-stone-800"/>
+    }
+  } @else {
+    @for(_ of skeletonCards; track $index) {
+      <card-movie-skeleton/>
+    }
+  }
+</div>
+@if(upcomingMovies()) {
+  <pagination [currentPage]="page()" [totalPages]="upcomingMovies()?.total_pages!"
+  (emitNewPage)="onClick($event)"/>
+} @else {
+  <div class="h-6 w-32 bg-stone-700 rounded animate-pulse"></div>
+}
