@@ -27,9 +27,7 @@ export class BannerUpcomingComponent implements OnInit {
   }));
   private tmdbService = inject(TmdbService);
 
-  ngOnInit() {
-    this.getUpcommingMovies();
-  }
+  ngOnInit() { this.getUpcommingMovies(); }
 
   getUpcommingMovies() {
     this.tmdbService.getUpcommingMovies(10)
