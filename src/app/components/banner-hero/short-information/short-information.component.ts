@@ -26,16 +26,14 @@ export class ShortInformationComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private slugifyService = inject(SlugifyService);
 
-  ngOnInit() {
-    this.getGenresMovie();
-  }
+  ngOnInit() { this.getGenresMovie(); }
 
   slugify(title: string): string {
     return this.slugifyService.getSlug(title);
   }
 
   getGenresMovie() {
-    this.tmdbService.getGenreMovieList(this.movie().genre_ids)
+    this.tmdbService.getGenreMovieListByIds(this.movie().genre_ids)
       .subscribe(genres => this.genres.set(genres));
   }
 }
