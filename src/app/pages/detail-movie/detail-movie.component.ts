@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -46,7 +46,7 @@ export default class DetailMovieComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idSlug = params.get('id-slug') || '';
       this.idMovie.set(+idSlug.split('-')[0]);
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       const id = this.idMovie();
       if(!id) {
         this.errorMovie.set(true);
