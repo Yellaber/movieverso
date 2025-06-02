@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -8,7 +7,6 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'search-bar',
   imports: [
-    NgClass,
     ReactiveFormsModule,
     FontAwesomeModule
   ],
@@ -33,7 +31,7 @@ export class SearchBarComponent {
 
   navigateToSearch() {
     if(!this.searchingForm.invalid) {
-      this.router.navigateByUrl('/buscar');
+      this.router.navigateByUrl('/search');
     }
   }
 }

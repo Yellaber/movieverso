@@ -24,12 +24,9 @@ export class MenubarComponent implements OnInit {
   userLocation = signal<Location | undefined>(undefined);
   items = signal<string[]>(menuItems);
 
-  ngOnInit() {
-    this.initUserLocation();
-  };
+  ngOnInit() { this.initUserLocation(); };
 
   initUserLocation() {
-    this.userGeolocationService.initUserLocation();
     const userGeolocation = this.userGeolocationService.getUserGeolocation();
     if(userGeolocation) {
       const { location } = userGeolocation;
