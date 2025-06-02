@@ -20,6 +20,5 @@ export class BannerHeroComponent {
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  getBackdropImageUrl = computed<string>(() =>
-    environment.imageUrl + this.movie().backdrop_path || '');
+  getBackdropImageUrl = computed<string>(() => environment.imageUrl + this.movie().backdrop_path || '');
 }
