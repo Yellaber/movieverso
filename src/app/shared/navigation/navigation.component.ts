@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
          signal } from '@angular/core';
 import { Route, RouterLink, RouterLinkActive } from '@angular/router';
-import { NgClass } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { RoutesService } from '@services/';
@@ -11,11 +10,10 @@ import { RoutesService } from '@services/';
   imports: [
     RouterLink,
     RouterLinkActive,
-    NgClass,
     FontAwesomeModule
   ],
   template: `
-    <ul [ngClass]="layoutClass()">
+    <ul [class]="layoutClass()">
       @for(route of mainRoutes(); track $index) {
         <li>
           <a [routerLink]="[route.path]" routerLinkActive="text-yellow-500" class="text-xs lg:text-sm text-stone-300 hover:text-yellow-500 transition-colors duration-300">{{ route.title }}</a>
@@ -37,7 +35,5 @@ export class NavigationComponent implements OnInit {
   mainRoutes = computed(() =>
     this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
-  ngOnInit() {
-    this.menubarRoutes.set(this.routesService.getRoutes());
-  }
+  ngOnInit() { this.menubarRoutes.set(this.routesService.getRoutes()); }
 }
