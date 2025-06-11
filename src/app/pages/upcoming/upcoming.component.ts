@@ -51,9 +51,6 @@ export default class UpcomingComponent implements OnInit {
   pageInitializer = effect(() => {
     const genres = this.genresIdSelected();
     if(genres) {
-      if(isPlatformBrowser(this.platformId)) {
-        window.scrollTo({ top: 0 });
-      }
       this.page.set(1);
     }
   });
