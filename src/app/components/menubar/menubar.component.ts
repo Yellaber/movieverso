@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { LogoComponent } from './logo/logo.component';
 import { NavigationComponent } from '@shared/navigation/navigation.component';
 import { SignInButtonComponent } from '@shared/auth/sign-in-button/sign-in-button.component';
