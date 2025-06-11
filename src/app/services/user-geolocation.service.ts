@@ -16,29 +16,26 @@ export class UserGeolocationService {
   private httpClient = inject(HttpClient);
   private userGeolocation = signal<UserGeolocation | undefined>(undefined);
 
-  constructor() {
-    this.initUserLocation();
-  };
+  constructor() { this.initUserLocation(); };
 
   private initUserLocation() {
-    if(!isPlatformBrowser(this.platformId)) return;
-    const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
-    if(userLocalLocation) {
-      this.userGeolocation.set(JSON.parse(userLocalLocation));
-      return;
+    if(isPlatformBrowser(this.platformId)) {
+      const userLocalLocation = localStorage.getItem(USER_LOCAL_LOCATION);
+      if(userLocalLocation) {
+        this.userGeolocation.set(JSON.parse(userLocalLocation));
+        return;
+      }
+      this.getLocation().subscribe(geolocation => {
+        localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation));
+        this.userGeolocation.set(geolocation);
+      });
     }
-    this.getLocation().subscribe(geolocation => {
-      localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geolocation));
-      this.userGeolocation.set(geolocation);
-    });
-  };
-
-  getUserGeolocation(): UserGeolocation | undefined {
-    return this.userGeolocation();
   };
 
   private getLocation(): Observable<UserGeolocation> {
     const url = API_URL_IPGEOLOCATION + '?apiKey=' + API_KEY_IPGEOLOCATION;
     return this.httpClient.get<UserGeolocation>(url);
   };
+
+  getUserGeolocation(): UserGeolocation | undefined { return this.userGeolocation(); };
 }
