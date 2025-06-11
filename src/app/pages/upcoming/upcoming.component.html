@@ -1,17 +1,17 @@
+@if(!showModal()) {
+  <filter-button (emmitClick)="onShowModal()"/>
+}
 <div class="flex flex-wrap justify-evenly gap-5">
-  @if(upcomingMovies()) {
-    @for(upcomingMovie of upcomingMovies()?.results; track $index) {
-      <carrusel-card-movies [movie]="upcomingMovie" bgCardFooter="bg-stone-800"/>
+  @if(!upcomingMoviesFiltered.isLoading()) {
+    @for(movie of upcomingMovies(); track $index) {
+      <carrusel-card-movies [movie]="movie" bgCardFooter="bg-stone-800"/>
+    } @empty {
+      <notification notificationTitle="Pantalla en blanco" message="Silencio absoluto... No hay títulos que coincidan con tu búsqueda. ¡Prueba ajustando el filtro y volvamos a rodar!"/>
     }
   } @else {
-    @for(_ of skeletonCards; track $index) {
+    @for(_ of cardMoviesSkeleton; track $index) {
       <card-movie-skeleton/>
     }
   }
 </div>
-@if(upcomingMovies()) {
-  <pagination [currentPage]="page()" [totalPages]="upcomingMovies()?.total_pages!"
-  (emitNewPage)="onClick($event)"/>
-} @else {
-  <div class="h-6 w-32 bg-stone-700 rounded animate-pulse"></div>
-}
+<filter-modal-upcoming-movies [isOpen]="showModal()" (emmitClose)="onCloseModal($event)"/>
