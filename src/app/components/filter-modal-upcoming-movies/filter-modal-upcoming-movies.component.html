@@ -1,0 +1,18 @@
+<div [class]="classListModal()">
+  <div [class]="classListModalContent()">
+    <button class="absolute top-6 right-6 bg-stone-300 text-stone-900 rounded-full hover:cursor-pointer text-xl lg:text-2xl font-bold" (click)="onClose()">
+      <fa-icon class="w-3 md:w-4 lg:w-5" [icon]="faCircleXmark"></fa-icon>
+    </button>
+    <h2 class="text-xl font-bold mb-4">Filtrar por genero</h2>
+    <hr/>
+    <div class="flex flex-wrap w-full pt-5">
+      @for(genre of genresMovies(); track $index) {
+        <div class="flex-1/2 lg:flex-1/3 hover:text-stone-950 space-x-1.5 pb-3">
+          <input type="checkbox" [id]="genre.name.toLocaleLowerCase()" (click)="getGenresId(genre.id)"
+          [checked]="getGenresIdFiltered().includes(genre.id)"/>
+          <label class="text-xs md:text-sm" [for]="genre.name.toLocaleLowerCase()">{{ genre.name }}</label>
+        </div>
+      }
+    </div>
+  </div>
+</div>
