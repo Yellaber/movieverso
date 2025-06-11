@@ -1,3 +1,4 @@
+export * from './filter.service';
 export * from './flag-cdn.service';
 export * from './routes.service';
 export * from './seo-friendly.service';
