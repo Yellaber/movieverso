@@ -56,12 +56,8 @@ export class TmdbService {
     );
   };
 
-  getUpcomingMoviesFiltered(genres: string = '', page: number = 1): Observable<MovieResponse> {
+  getUpcomingMoviesFiltered(genres: string, page: number = 1): Observable<Movie[]> {
     const url = `${environment.tmdbApiUrl}/discover/movie`;
-    const key = url + '/upcoming/page=' + page.toString();
-    if(this.cacheQuery.has(key)) {
-      return of(<MovieResponse>this.cacheQuery.get(key)!);
-    }
     const today = new Date().toISOString().split('T')[0];
     let params = new HttpParams()
     .set('api_key', environment.tmdbApiKey)
@@ -72,9 +68,8 @@ export class TmdbService {
     .set('sort_by', 'primary_release_date.asc')
     .set('page', page)
     .set('primary_release_date.gte', today);
-    if(genres != '') {params = params.set('with_genres', genres);}
-    return this.httpClient.get<MovieResponse>(url, {params})
-            .pipe(tap(movieResponse => this.cacheQuery.set(key, movieResponse)));
+    if(genres != '') { params = params.set('with_genres', genres); }
+    return this.httpClient.get<MovieResponse>(url, {params}).pipe(map(({results}) => results))
   };
 
   getNowPlayingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
