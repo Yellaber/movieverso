@@ -22,7 +22,9 @@ export class TmdbService {
   userCountryCode = '';
   userLanguage = '';
 
-  constructor() { this.initUserLocation(); };
+  constructor() {
+    this.initUserLocation();
+  };
 
   private initUserLocation() {
     const userGeolocation = this.userGeolocationService.getUserGeolocation();
@@ -51,7 +53,7 @@ export class TmdbService {
     .set('page', page)
     .set('primary_release_date.gte', today);
     return this.httpClient.get<MovieResponse>(url, {params}).pipe(
-      map(({results}) => results.filter(movie => movie.poster_path && movie.backdrop_path)),
+      map(({results}) => results.filter(movie => movie.poster_path)),
       map(movies => limit? movies.slice(0, limit): movies),
       tap(movies => this.cacheQuery.set(key, movies))
     );
