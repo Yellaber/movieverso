@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, HostListener, inject, linkedSignal, OnInit,
-         PLATFORM_ID, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, HostListener, inject, linkedSignal, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { isPlatformBrowser } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -45,7 +44,7 @@ export default class UpcomingComponent implements OnInit {
   });
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.loadUpcomingMovies();
+    this.loadNextPage();
   };
 
   pageInitializer = effect(() => {
@@ -62,25 +61,25 @@ export default class UpcomingComponent implements OnInit {
     this.seoFriendlyService.setMetaTags('Próximamente', 'Esta es la página para las películas que estarán próximamente en cine.');
   };
 
-  loadUpcomingMovies() {
-    if(isPlatformBrowser(this.platformId) && this.isAtBottom()) {
-      if(this.upcomingMoviesFiltered.hasValue()) {
-        const moviesPagination = this.upcomingMoviesFiltered.value();
-        const totalPages = moviesPagination[this.page() - 1].total_pages;
-        if(this.page() === totalPages) {
-          this.page.set(totalPages);
-          return;
-        }
-        this.page.update(value => value + 1);
+  loadNextPage() {
+    if(this.isAtBottom() && this.upcomingMoviesFiltered.hasValue()) {
+      const moviesPagination = this.upcomingMoviesFiltered.value();
+      const totalPages = moviesPagination[this.page() - 1].total_pages;
+      if(this.page() === totalPages) {
+        return;
       }
+      this.page.update(value => value + 1);
     }
   };
 
   isAtBottom(): boolean {
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
-    const scrollHeight = document.documentElement.scrollHeight;
-    return scrollTop + clientHeight + 300 >= scrollHeight;
+    if(isPlatformBrowser(this.platformId)) {
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
+      return scrollTop + clientHeight + 300 >= scrollHeight;
+    }
+    return false;
   };
 
   getGenresId(genresSelected: Genre[]): string {
