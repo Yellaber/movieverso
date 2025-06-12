@@ -1,12 +1,17 @@
 import { Injectable, signal } from '@angular/core';
+import { Genre } from '@interfaces/';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
-  private genresId = signal<number[]>([]);
+  private genresUpcomingMoviesFiltered = signal<Genre[]>([]);
 
-  setGenresId(genresId: number[]) { this.genresId.set(genresId) };
+  setGenresUpcomingMoviesFiltered(genresSelected: Genre[]) {
+    this.genresUpcomingMoviesFiltered.set(genresSelected)
+  };
 
-  getGenresId(): number[] { return this.genresId() };
+  getGenresUpcomingMoviesFiltered(): Genre[] {
+    return this.genresUpcomingMoviesFiltered();
+  };
 }
