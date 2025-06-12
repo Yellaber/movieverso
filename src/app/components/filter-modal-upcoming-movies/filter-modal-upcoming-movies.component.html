@@ -8,8 +8,8 @@
     <div class="flex flex-wrap w-full pt-5">
       @for(genre of genresMovies(); track $index) {
         <div class="flex-1/2 lg:flex-1/3 hover:text-stone-950 space-x-1.5 pb-3">
-          <input type="checkbox" [id]="genre.name.toLocaleLowerCase()" (click)="getGenresId(genre.id)"
-          [checked]="getGenresIdFiltered().includes(genre.id)"/>
+          <input type="checkbox" [id]="genre.name.toLocaleLowerCase()" (click)="getGenresSelected(genre)"
+          [checked]="getGenresUpcomingMoviesFiltered().includes(genre)"/>
           <label class="text-xs md:text-sm" [for]="genre.name.toLocaleLowerCase()">{{ genre.name }}</label>
         </div>
       }

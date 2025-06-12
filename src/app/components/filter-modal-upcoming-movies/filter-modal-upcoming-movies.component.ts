@@ -21,15 +21,13 @@ export class FilterModalUpcomingMoviesComponent implements OnInit {
   classListModal = signal<string>('');
   classListModalContent = signal<string>('');
   genresMovies = signal<Genre[]>([]);
-  genresIdSelected: number[] = [];
+  genresSelected: Genre[] = [];
   private filterService = inject(FilterService);
   private tmdbService = inject(TmdbService);
 
-  constructor() {
-    effect(() => {
-      this.isOpen() && this.onShow();
-    });
-  };
+  openFilterModal = effect(() => {
+    this.isOpen() && this.onShow();
+  });
 
   ngOnInit() {
     this.classListModal.set(CLASS_MODAL);
@@ -39,8 +37,8 @@ export class FilterModalUpcomingMoviesComponent implements OnInit {
 
   getGenreMovieList() {
     this.tmdbService.getGenreMovieList().subscribe(genres => this.genresMovies.set(genres));
-    if(this.filterService.getGenresId().length > 0) {
-      this.genresIdSelected = this.filterService.getGenresId();
+    if(this.filterService.getGenresUpcomingMoviesFiltered().length > 0) {
+      this.genresSelected = this.filterService.getGenresUpcomingMoviesFiltered();
     }
   };
 
@@ -63,16 +61,16 @@ export class FilterModalUpcomingMoviesComponent implements OnInit {
     }, 200);
   };
 
-  getGenresId(genreId: number) {
-    if(this.genresIdSelected.find(id => id === genreId)) {
-      this.genresIdSelected = this.genresIdSelected.filter(id => id !== genreId);
+  getGenresSelected(genreSelected: Genre) {
+    if(this.genresSelected.find(genre => genre.id === genreSelected.id)) {
+      this.genresSelected = this.genresSelected.filter(genre => genre.id !== genreSelected.id);
     } else {
-      this.genresIdSelected = [ ...this.genresIdSelected, genreId ];
+      this.genresSelected = [ ...this.genresSelected, genreSelected ];
     }
-    this.filterService.setGenresId(this.genresIdSelected);
+    this.filterService.setGenresUpcomingMoviesFiltered(this.genresSelected);
   };
 
-  getGenresIdFiltered(): number[] {
-    return this.filterService.getGenresId();
+  getGenresUpcomingMoviesFiltered(): Genre[] {
+    return this.filterService.getGenresUpcomingMoviesFiltered();
   };
 }
