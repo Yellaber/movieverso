@@ -18,6 +18,7 @@ export class TmdbService {
   private httpClient = inject(HttpClient);
   private params = new HttpParams();
   private cacheQuery = new Map<string, TypeQuery>();
+  private upcomingMovies: MovieResponse[] = [];
   userCountryCode = '';
   userLanguage = '';
 
@@ -56,7 +57,10 @@ export class TmdbService {
     );
   };
 
-  getUpcomingMoviesFiltered(genres: string, page: number = 1): Observable<Movie[]> {
+  getUpcomingMoviesFiltered(genres: string, page: number): Observable<MovieResponse[]> {
+    if(page === 1) {
+      this.upcomingMovies = [];
+    }
     const url = `${environment.tmdbApiUrl}/discover/movie`;
     const today = new Date().toISOString().split('T')[0];
     let params = new HttpParams()
@@ -69,7 +73,13 @@ export class TmdbService {
     .set('page', page)
     .set('primary_release_date.gte', today);
     if(genres != '') { params = params.set('with_genres', genres); }
-    return this.httpClient.get<MovieResponse>(url, {params}).pipe(map(({results}) => results))
+    return this.httpClient.get<MovieResponse>(url, {params})
+      .pipe(
+        map(movieResponse => {
+          this.upcomingMovies = [ ...this.upcomingMovies, movieResponse ];
+          return this.upcomingMovies;
+        })
+      )
   };
 
   getNowPlayingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
@@ -165,17 +175,6 @@ export class TmdbService {
       }
     }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
   };
-
-  /*getMovieCredits(movieId: number): Observable<Cast[]> {
-    this.params.set('language', this.userLanguage)
-    const url = `${environment.tmdbApiUrl}/movie/${movieId}/credits`;
-    return this.httpClient.get<MovieCreditResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
-      }
-    }).pipe(map(({cast}) => cast));
-  };*/
 
   getMovieRecommendations(movieId: number, page: number): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/recommendations`;
