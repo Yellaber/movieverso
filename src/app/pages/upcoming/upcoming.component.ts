@@ -10,6 +10,7 @@ import { FilterButtonComponent } from '@shared/filter-button/filter-button.compo
 import { FilterModalUpcomingMoviesComponent } from '@components/filter-modal-upcoming-movies/filter-modal-upcoming-movies.component';
 import { NotificationComponent } from '@shared/notification/notification.component';
 import { FilterService, SeoFriendlyService, TmdbService } from '@services/';
+import { Genre } from '@interfaces/';
 
 @Component({
   imports: [
@@ -33,23 +34,25 @@ export default class UpcomingComponent implements OnInit {
   cardMoviesSkeleton = Array(20);
   showModal = signal<boolean>(false);
   page = signal<number>(1);
-  genresIdSelected = linkedSignal(() =>
-    this.filterService.getGenresId().length > 0? this.filterService.getGenresId().toString(): ''
-  );
+  genresSelected = linkedSignal(() => this.filterService.getGenresUpcomingMoviesFiltered());
   upcomingMoviesFiltered = rxResource({
-    request: this.genresIdSelected,
-    loader: () => this.tmdbService.getUpcomingMoviesFiltered(this.genresIdSelected())
+    request: () => ({genres: this.genresSelected(), page: this.page()}),
+    loader: ({request}) => {
+      const genresIdSelected = this.getGenresId(request.genres);
+      const page = request.page;
+      return this.tmdbService.getUpcomingMoviesFiltered(genresIdSelected, page)
+    }
   });
-  upcomingMovies = linkedSignal(() =>
-    this.upcomingMoviesFiltered.hasValue()? this.upcomingMoviesFiltered.value(): null
-  );
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.loadUpcomingMovies();
   };
 
   pageInitializer = effect(() => {
-    const genres = this.genresIdSelected();
+    if(isPlatformBrowser(this.platformId)) {
+      window.scrollTo({top: 0});
+    }
+    const genres = this.genresSelected();
     if(genres) {
       this.page.set(1);
     }
@@ -60,17 +63,29 @@ export default class UpcomingComponent implements OnInit {
   };
 
   loadUpcomingMovies() {
-    if(isPlatformBrowser(this.platformId)) {
-      const scrollTop = document.documentElement.scrollTop;
-      const clientHeight = document.documentElement.clientHeight;
-      const scrollHeight = document.documentElement.scrollHeight;
-      const isAtBottom = scrollTop + clientHeight + 300 >= scrollHeight;
-      if(isAtBottom) {
+    if(isPlatformBrowser(this.platformId) && this.isAtBottom()) {
+      if(this.upcomingMoviesFiltered.hasValue()) {
+        const moviesPagination = this.upcomingMoviesFiltered.value();
+        const totalPages = moviesPagination[this.page() - 1].total_pages;
+        if(this.page() === totalPages) {
+          this.page.set(totalPages);
+          return;
+        }
         this.page.update(value => value + 1);
-        this.tmdbService.getUpcomingMoviesFiltered(this.genresIdSelected(), this.page())
-          .subscribe(movies => this.upcomingMovies.set([ ...this.upcomingMovies()!, ...movies ]));
       }
     }
+  };
+
+  isAtBottom(): boolean {
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+    return scrollTop + clientHeight + 300 >= scrollHeight;
+  };
+
+  getGenresId(genresSelected: Genre[]): string {
+    const genresId = genresSelected.map(genre => genre.id);
+    return genresId.toString();
   };
 
   onShowModal() {
