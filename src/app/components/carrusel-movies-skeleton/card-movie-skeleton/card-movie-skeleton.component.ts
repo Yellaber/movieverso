@@ -14,6 +14,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col min-w-[160px] max-w-[160px] rounded-md shadow-md' }
+  host: { class: 'flex flex-col animate-pulse min-w-[160px] max-w-[160px] rounded-md shadow-md' }
 })
 export class CardMovieSkeletonComponent { }

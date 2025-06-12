@@ -10,6 +10,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     <div class="w-30 h-6 bg-stone-700 rounded"></div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex justify-between mb-5' }
+  host: { class: 'flex animate-pulse justify-between mb-5' }
 })
 export class CarruselTitleSkeletonComponent { }
