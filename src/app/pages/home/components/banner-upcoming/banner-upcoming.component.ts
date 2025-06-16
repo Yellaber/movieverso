@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
-import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '@shared/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 import { TmdbService } from '@services/';
 import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
 
