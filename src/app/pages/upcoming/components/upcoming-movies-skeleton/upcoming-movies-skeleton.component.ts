@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CardMovieSkeletonComponent } from '@components/carrusel-movies-skeleton/card-movie-skeleton/card-movie-skeleton.component';
+import { CardMovieSkeletonComponent } from '@app/shared/carrusel-movies-skeleton/card-movie-skeleton/card-movie-skeleton.component';
 
 @Component({
   selector: 'upcoming-movies-skeleton',
