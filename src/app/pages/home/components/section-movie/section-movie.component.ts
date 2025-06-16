@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
-import { BannerHeroComponent } from '@components/banner-hero/banner-hero.component';
+import { BannerHeroComponent } from '../banner-hero/banner-hero.component';
+import { BannerHeroSkeletonComponent } from '../banner-hero-skeleton/banner-hero-skeleton.component';
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
-import { BannerHeroSkeletonComponent } from '@components/banner-hero-skeleton/banner-hero-skeleton.component';
-import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '@shared/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 import { TmdbService } from '@services/tmdb.service';
 import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
 
@@ -10,8 +10,8 @@ import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
   selector: 'section-movie',
   imports: [
     BannerHeroComponent,
-    CarruselMoviesComponent,
     BannerHeroSkeletonComponent,
+    CarruselMoviesComponent,
     CarruselMoviesSkeletonComponent
   ],
   template: `
@@ -38,7 +38,9 @@ export class SectionMovieComponent implements OnInit {
     bgCardFooter: 'bg-stone-800'
   }));
 
-  ngOnInit() { this.getDataSectionMovies(); }
+  ngOnInit() {
+    this.getDataSectionMovies();
+  };
 
   getDataSectionMovies() {
     switch(this.section().heroType) {
