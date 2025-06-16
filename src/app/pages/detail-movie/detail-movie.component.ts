@@ -4,15 +4,15 @@ import { map, tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BannerDetailComponent } from '@components/banner-detail/banner-detail.component';
 import { SideDetailComponent } from '@components/side-detail/side-detail.component';
-import { BannerDetailSkeletonComponent } from '@components/banner-detail-skeleton/banner-detail-skeleton.component';
+import { BannerDetailSkeletonComponent } from './components/banner-detail-skeleton/banner-detail-skeleton.component';
 import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
 import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
-import { MovieListComponent } from '@components/movie-list/movie-list.component';
+import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { NotificationComponent } from '@shared/notification/notification.component';
+import { YoutubeVideoComponent } from './components/youtube-video/youtube-video.component';
 import { environment } from '@environments/environment.developments';
 import { TmdbService, SeoFriendlyService } from '@services/';
 import { DetailMovieResponse, Keyword, Movie, Trailer } from '@interfaces/';
-import { YoutubeVideoComponent } from '@shared/youtube-video/youtube-video.component';
 
 @Component({
   imports: [
