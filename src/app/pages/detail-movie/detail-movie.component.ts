@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { map, tap } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { BannerDetailComponent } from '@components/banner-detail/banner-detail.component';
-import { SideDetailComponent } from '@components/side-detail/side-detail.component';
+import { BannerDetailComponent } from './components/banner-detail/banner-detail.component';
+import { SideDetailComponent } from './components/side-detail/side-detail.component';
 import { BannerDetailSkeletonComponent } from './components/banner-detail-skeleton/banner-detail-skeleton.component';
-import { SideDetailSkeletonComponent } from '@components/side-detail-skeleton/side-detail-skeleton.component';
-import { CarruselMoviesSkeletonComponent } from '@components/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
+import { SideDetailSkeletonComponent } from './components/side-detail-skeleton/side-detail-skeleton.component';
+import { CarruselMoviesSkeletonComponent } from '@shared/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { NotificationComponent } from '@shared/notification/notification.component';
 import { YoutubeVideoComponent } from './components/youtube-video/youtube-video.component';
