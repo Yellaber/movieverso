@@ -1,0 +1,7 @@
+@if(movieDetail()) {
+  <img class="absolute inset-0 w-full h-full object-cover rounded-md"
+  [src]="movieDetail().backdrop_path? backdropImage(): '/images/no-backdrop.jpg'" loading="eager">
+  <card-detail [movieDetail]="movieDetail()"/>
+  <short-detail [movieDetail]="movieDetail()"/>
+  <div class="absolute inset-0 bg-stone-900/80 z-0"></div>
+}
