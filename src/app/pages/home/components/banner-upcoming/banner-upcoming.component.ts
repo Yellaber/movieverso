@@ -12,7 +12,7 @@ import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
   ],
   templateUrl: './banner-upcoming.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'relative flex flex-col gap-5 pt-3 lg:pt-15' }
+  host: { class: 'relative flex flex-col gap-5 pt-10 lg:pt-15' }
 })
 export class BannerUpcomingComponent implements OnInit {
   private tmdbService = inject(TmdbService);
@@ -26,10 +26,12 @@ export class BannerUpcomingComponent implements OnInit {
     bgCardFooter: 'bg-stone-800'
   }));
 
-  ngOnInit() { this.getUpcommingMovies(); }
+  ngOnInit() {
+    this.getUpcommingMovies();
+  };
 
   getUpcommingMovies() {
     this.tmdbService.getUpcommingMovies(10)
       .subscribe(upcommingMovies => this.upcommingMovies.set(upcommingMovies));
-  }
+  };
 }
