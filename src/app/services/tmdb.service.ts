@@ -178,7 +178,7 @@ export class TmdbService {
     }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
   };
 
-  getMovieRecommendations(movieId: number, page: number): Observable<MovieResponse> {
+  getMovieRecommendations(movieId: number, page: number = 1): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/recommendations`;
     if(this.cacheQuery.has(url)) {
       return of(<MovieResponse>this.cacheQuery.get(url)!);
@@ -192,7 +192,7 @@ export class TmdbService {
     }).pipe(tap(movieRecomendations => this.cacheQuery.set(url, movieRecomendations)));
   };
 
-  getMovieSimilar(movieId: number, page: number): Observable<MovieResponse> {
+  getMovieSimilar(movieId: number, page: number = 1): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/similar`;
     if(this.cacheQuery.has(url)) {
       return of(<MovieResponse>this.cacheQuery.get(url)!);
