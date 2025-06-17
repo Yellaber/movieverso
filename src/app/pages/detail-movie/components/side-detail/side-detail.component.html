@@ -11,7 +11,7 @@
   <hr class="text-stone-700">
   <badge-section titleSection="Compañias productoras:" [badges]="movieDetail().production_companies"/>
 }
-@if(movieKeywords()) {
+@if(movieKeywords() && movieKeywords().length > 0) {
   <hr class="text-stone-700">
   <badge-section titleSection="Palabras clave:" [badges]="movieKeywords()"/>
 }
