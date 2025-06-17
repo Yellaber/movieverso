@@ -1,17 +1,21 @@
-@if(movieDetail()) {
-  <banner-detail [movieDetail]="movieDetail()!"/>
-  <section class="flex gap-5 mt-5">
-    <side-detail [movieDetail]="movieDetail()!" [movieKeywords]="movieKeywords()"/>
-    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-10 py-11">
-      @if(movieTrailer().length > 0) {
-        <youtube-video [idVideo]="movieTrailer()[0].key"/>
-      }
-      <movie-list [movies]="moviesRecomended()" typeMovieList="Recomendadas"/>
-      <movie-list [movies]="moviesSimilars()" typeMovieList="Similares"/>
-      <movie-list [movies]="movieCollection()" typeMovieList="Colección" [hasRoute]="false"/>
+@if(!movieSelected.isLoading()) {
+  @if(movieSelected.hasValue()) {
+    <banner-detail [movieDetail]="movieSelected.value()"/>
+    <section class="flex gap-5 mt-5">
+      <side-detail [movieDetail]="movieSelected.value()" [movieKeywords]="movieKeywords.value()!"/>
+      <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-10 py-11">
+        <youtube-video [trailers]="movieTrailer.value()!"/>
+        <movie-list [movies]="moviesRecomended.value()!" typeMovieList="Recomendadas"/>
+        <movie-list [movies]="moviesSimilars.value()!" typeMovieList="Similares"/>
+        <movie-list [movies]="movieCollection.value()!" typeMovieList="Colección" [hasRoute]="false"/>
+      </div>
+    </section>
+  } @else {
+    <div class="flex mt-10 lg:mt-15">
+      <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
     </div>
-  </section>
-} @else if(!errorMovie()) {
+  }
+} @else {
   <banner-detail-skeleton/>
   <section class="flex gap-5 mt-5">
     <side-detail-skeleton/>
@@ -21,8 +25,4 @@
       <carrusel-movies-skeleton/>
     </div>
   </section>
-} @else {
-  <div class="flex mt-10 lg:mt-15">
-    <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
-  </div>
 }
