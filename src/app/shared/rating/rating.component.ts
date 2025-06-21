@@ -19,7 +19,7 @@ const ratings: Rating[] = [
     FontAwesomeModule
   ],
   template: `
-    @if(getRating()) {
+    @if(getRating() && value() >= 0) {
       <a class="flex items-center gap-1" href="#">
         <fa-icon class="text-yellow-600" [icon]="getRating()!.faIcon"></fa-icon>
         @if(type() === 'popularity') {
