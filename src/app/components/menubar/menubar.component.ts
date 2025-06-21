@@ -28,11 +28,13 @@ export class MenubarComponent implements OnInit {
     this.initUserLocation();
   };
 
-  initUserLocation() {
-    const userGeolocation = this.userGeolocationService.getUserGeolocation();
-    if(userGeolocation) {
-      const {location} = userGeolocation;
-      this.userLocation.set(location);
-    }
+  private initUserLocation() {
+    this.userGeolocationService.getUserGeolocation()
+      .subscribe(userGeolocation => {
+        if(userGeolocation) {
+          const {location} = userGeolocation;
+          this.userLocation.set(location);
+        }
+      });
   };
 }
