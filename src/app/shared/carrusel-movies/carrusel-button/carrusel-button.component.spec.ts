@@ -28,46 +28,52 @@ describe('CarruselButton Component:', () => {
 
   it('getDirection should return a Direction object when the next button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'next');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
   });
 
   it('getDirection should return a Direction object when the previous button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'previous');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
   });
 
   it('Should add any classes to classButton when the next button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'next');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
-    expect(component.classButton).toContain(component.getDirection()!.class);
+    expect(component.classButton()).toContain(component.getDirection()!.class);
   });
 
   it('Should add any classes to classButton when the previous button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'previous');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
-    expect(component.classButton).toContain(component.getDirection()!.class);
+    expect(component.classButton()).toContain(component.getDirection()!.class);
   });
 
   it('Should emit the emitDirection event when the next button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'next');
-    spyOn(component.emitDirection, 'emit');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
+    jest.spyOn(component.emitDirection, 'emit');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
-    expect(component.classButton).toContain(component.getDirection()!.class);
+    expect(component.classButton()).toContain(component.getDirection()!.class);
     component.handleChangeScrollState();
     expect(component.emitDirection.emit).toHaveBeenCalledWith(component.getDirection()!.label);
   });
 
   it('Should emit the emitDirection event when the previous button is clicked.', () => {
     fixture.componentRef.setInput('direction', 'previous');
-    spyOn(component.emitDirection, 'emit');
+    fixture.componentRef.setInput('bgButton', 'bg-stone-800');
+    jest.spyOn(component.emitDirection, 'emit');
     fixture.detectChanges();
     expect(component.getDirection()).toBeTruthy();
-    expect(component.classButton).toContain(component.getDirection()!.class);
+    expect(component.classButton()).toContain(component.getDirection()!.class);
     component.handleChangeScrollState();
     expect(component.emitDirection.emit).toHaveBeenCalledWith(component.getDirection()!.label);
   });
