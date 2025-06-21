@@ -3,6 +3,15 @@ import { provideRouter } from '@angular/router';
 import { ElementRef, signal } from '@angular/core';
 import { CarruselMoviesComponent } from './carrusel-movies.component';
 import { mockMovies } from '@shared/mocks/mockMovies';
+import { CarouselConfig } from '@interfaces/';
+
+const mockCarouselConfig: CarouselConfig = {
+  carouselTitle: 'Próximamente',
+  movies: mockMovies,
+  route: '/upcoming',
+  bgButtons: 'from-stone-900',
+  bgCardFooter: 'bg-stone-800'
+};
 
 const mockElementRef = {nativeElement: { offsetWidth: 864 }} as ElementRef<HTMLDivElement>;
 
@@ -20,9 +29,7 @@ describe('CarruselMovies Component:', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CarruselMoviesComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('carruselTitle', 'Top-10 Populares');
-    fixture.componentRef.setInput('route', '/popular');
-    fixture.componentRef.setInput('movies', mockMovies);
+    fixture.componentRef.setInput('carouselConfig', mockCarouselConfig);
     component.carouselContainer = signal(mockElementRef);
     fixture.detectChanges();
   });
@@ -33,35 +40,34 @@ describe('CarruselMovies Component:', () => {
 
   it('Should increment scrollStep from next().', () => {
     component.next();
-    expect(component.scrollStep()).toBe(864);
+    expect(component.scrollStep()).toBe(704);
   });
 
-  it('scrollStep should not to be greater than totalScrollStep from next().', () => {
-    component.scrollStep.set(component.totalScrollStep());
+  it('scrollStep + scrollVisibleMovies should be greater than totalScrollStep from next().', () => {
+    component.scrollStep.set(704);
     component.next();
-    expect(component.scrollStep()).toBe(component.totalScrollStep() - 16);
+    expect(component.scrollStep()).toBe(880);
   });
 
   it('Should decrement scrollStep from previous().', () => {
-    component.scrollStep.set(1296);
+    component.scrollStep.set(880);
     component.previous();
-    expect(component.scrollStep()).toBe(432);
+    expect(component.scrollStep()).toBe(176);
   });
 
-  it('scrollStep should not to be less than 0 from previous().', () => {
-    component.scrollStep.set(0);
+  it('scrollStep should be less than 0 from previous().', () => {
     component.previous();
     expect(component.scrollStep()).toBe(0);
   });
 
   it('Should call to next() from onClick("next").', () => {
-    spyOn(component, 'next');
+    jest.spyOn(component, 'next');
     component.onClick('next');
     expect(component.next).toHaveBeenCalled();
   });
 
   it('Should call to previous() from onClick("previous").', () => {
-    spyOn(component, 'previous');
+    jest.spyOn(component, 'previous');
     component.onClick('previous');
     expect(component.previous).toHaveBeenCalled();
   });
