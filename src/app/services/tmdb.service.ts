@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse,
@@ -19,21 +19,24 @@ export class TmdbService {
   private params = new HttpParams();
   private cacheQuery = new Map<string, TypeQuery>();
   private upcomingMovies: MovieResponse[] = [];
-  userCountryCode = '';
-  userLanguage = '';
+  private userCountryCode = signal<string>('');
+  private userLanguage = signal<string>('');
 
   constructor() {
     this.initUserLocation();
   };
 
   private initUserLocation() {
-    const userGeolocation = this.userGeolocationService.getUserGeolocation();
-    if(userGeolocation) {
-      const {location, country_metadata} = userGeolocation;
-      this.userCountryCode = location.country_code2;
-      this.userLanguage = (country_metadata.languages[0].includes('es'))?
-      country_metadata.languages[0]: 'en_US';
-    }
+    this.userGeolocationService.getUserGeolocation()
+      .subscribe(userGeolocation => {
+        if(userGeolocation) {
+          const {location, country_metadata} = userGeolocation;
+          this.userCountryCode.set(location.country_code2);
+          const language = (country_metadata.languages[0].includes('es'))?
+          country_metadata.languages[0]: 'en_US';
+          this.userLanguage.set(language);
+        }
+      });
   };
 
   getUpcommingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
@@ -47,8 +50,8 @@ export class TmdbService {
     .set('api_key', environment.tmdbApiKey)
     .set('include_adult', false)
     .set('include_video', false)
-    .set('language', this.userLanguage)
-    .set('region', this.userCountryCode)
+    .set('language', this.userLanguage())
+    .set('region', this.userCountryCode())
     .set('sort_by', 'primary_release_date.asc')
     .set('page', page)
     .set('primary_release_date.gte', today);
@@ -69,8 +72,8 @@ export class TmdbService {
     .set('api_key', environment.tmdbApiKey)
     .set('include_adult', false)
     .set('include_video', false)
-    .set('language', this.userLanguage)
-    .set('region', this.userCountryCode)
+    .set('language', this.userLanguage())
+    .set('region', this.userCountryCode())
     .set('sort_by', 'primary_release_date.asc')
     .set('page', page)
     .set('primary_release_date.gte', today);
@@ -81,7 +84,7 @@ export class TmdbService {
           this.upcomingMovies = [ ...this.upcomingMovies, movieResponse ];
           return this.upcomingMovies;
         })
-      )
+      );
   };
 
   getNowPlayingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
@@ -93,8 +96,8 @@ export class TmdbService {
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
-        region: this.userCountryCode,
+        language: this.userLanguage(),
+        region: this.userCountryCode(),
         page
       }
     }).pipe(
@@ -117,8 +120,8 @@ export class TmdbService {
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
-        region: this.userCountryCode,
+        language: this.userLanguage(),
+        region: this.userCountryCode(),
         page
       }
     }).pipe(
@@ -136,7 +139,7 @@ export class TmdbService {
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
       }
     }).pipe(
       map(genreMovies => genreMovies.genres.filter(genre => genreIds.includes(genre.id))),
@@ -152,7 +155,7 @@ export class TmdbService {
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
       }
     }).pipe(
       map(genreMovies => genreMovies.genres),
@@ -173,7 +176,7 @@ export class TmdbService {
     return this.httpClient.get<DetailMovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
       }
     }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
   };
@@ -186,7 +189,7 @@ export class TmdbService {
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
         page
       }
     }).pipe(tap(movieRecomendations => this.cacheQuery.set(url, movieRecomendations)));
@@ -200,7 +203,7 @@ export class TmdbService {
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
         page
       }
     }).pipe(tap(movieSimilars => this.cacheQuery.set(url, movieSimilars)));
@@ -214,7 +217,7 @@ export class TmdbService {
     return this.httpClient.get<MovieTrailerResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
       }
     }).pipe(
       map(({results}) => results),
@@ -247,11 +250,11 @@ export class TmdbService {
     if(this.cacheQuery.has(url)) {
       return of(<MovieCollectionResponse>this.cacheQuery.get(url)!);
     }
-    this.params.set('language', this.userLanguage)
+    this.params.set('language', this.userLanguage())
     return this.httpClient.get<MovieCollectionResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage,
+        language: this.userLanguage(),
       }
     }).pipe(tap(movieCollection => this.cacheQuery.set(url, movieCollection)));
   };
