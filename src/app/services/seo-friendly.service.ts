@@ -10,7 +10,7 @@ export class SeoFriendlyService {
   private meta = inject(Meta);
 
   setMetaTags(titlePage: string, content: string, image?: string) {
-    this.title.setTitle(environment.appName + ' - ' + titlePage);
+    this.title.setTitle(`${environment.appName} - ${titlePage}`);
     this.meta.updateTag({ name:'description', content });
     this.meta.updateTag({ name:'og:title', content: titlePage });
     if(image) {
