@@ -13,5 +13,7 @@ export class FilterButtonComponent {
   faSliders = faSliders;
   emmitClick = output<boolean>();
 
-  onClick() { this.emmitClick.emit(true); };
+  onClick() {
+    this.emmitClick.emit(true);
+  };
 }
