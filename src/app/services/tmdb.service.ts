@@ -27,16 +27,14 @@ export class TmdbService {
   };
 
   private initUserLocation() {
-    this.userGeolocationService.getUserGeolocation()
-      .subscribe(userGeolocation => {
-        if(userGeolocation) {
-          const {location, country_metadata} = userGeolocation;
-          this.userCountryCode.set(location.country_code2);
-          const language = (country_metadata.languages[0].includes('es'))?
-          country_metadata.languages[0]: 'en_US';
-          this.userLanguage.set(language);
-        }
-      });
+    const userGeolocation = this.userGeolocationService.getUserGeolocation();
+    if(userGeolocation) {
+      const {location, country_metadata} = userGeolocation;
+      this.userCountryCode.set(location.country_code2);
+      const language = (country_metadata.languages[0].includes('es'))?
+      country_metadata.languages[0]: 'en_US';
+      this.userLanguage.set(language);
+    }
   };
 
   getUpcommingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
@@ -89,7 +87,7 @@ export class TmdbService {
 
   getNowPlayingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
     const url = `${environment.tmdbApiUrl}/movie/now_playing`;
-    const key = url + '/page=' + page.toString();
+    const key = `${url}/page=${page.toString()}`;
     if(this.cacheQuery.has(key)) {
       return of(<Movie[]>this.cacheQuery.get(key)!);
     }
