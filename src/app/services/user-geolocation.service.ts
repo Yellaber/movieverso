@@ -5,7 +5,6 @@ import { Observable, of, tap } from 'rxjs';
 import { UserGeolocation } from '@interfaces/';
 
 const USER_LOCAL_LOCATION = 'userLocalLocation';
-const API_URL_IPGEOLOCATION = 'https://api.ipgeolocation.io/v2/ipgeo';
 const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 
 @Injectable({
@@ -14,32 +13,31 @@ const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 export class UserGeolocationService {
   private platformId = inject(PLATFORM_ID);
   private httpClient = inject(HttpClient);
-  private userGeolocation: Observable<UserGeolocation | undefined> = (of());
+  private userGeolocation: UserGeolocation | undefined;
 
-  constructor() {
-    this.initUserLocation();
-  };
-
-  private initUserLocation() {
-    if(!isPlatformBrowser(this.platformId)) { return; }
+  loadUserLocation(apiUrlGeolocation: string): Observable<UserGeolocation | undefined> {
+    if(!isPlatformBrowser(this.platformId)) { return of(); }
     const userLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocation) {
       const location = <UserGeolocation>JSON.parse(userLocation);
-      this.userGeolocation = of(location);
-      return;
+      this.userGeolocation = location;
+      return of(location);
     }
-    this.userGeolocation = this.getLocation();
+    return this.getLocation(apiUrlGeolocation);
   };
 
-  private getLocation(): Observable<UserGeolocation> {
-    const url = `${API_URL_IPGEOLOCATION}?apiKey=${API_KEY_IPGEOLOCATION}`;
+  private getLocation(apiUrlGeolocation: string): Observable<UserGeolocation> {
+    const url = `${apiUrlGeolocation}?apiKey=${API_KEY_IPGEOLOCATION}`;
     return this.httpClient.get<UserGeolocation>(url)
       .pipe(
-        tap(geoLocation => localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geoLocation)))
+        tap(geoLocation => {
+          this.userGeolocation = geoLocation;
+          localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geoLocation));
+        })
       );
   };
 
-  getUserGeolocation(): Observable<UserGeolocation | undefined> {
+  getUserGeolocation(): UserGeolocation | undefined {
     return this.userGeolocation;
   };
 }
