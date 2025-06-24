@@ -1,5 +1,7 @@
-<menubar/>
-<main class="flex flex-col h-screen text-stone-300 text-sm gap-3 px-5 lg:px-10 pt-27 lg:pt-15">
-  <router-outlet/>
-  <footer-site/>
-</main>
+@if(geoLocation.hasValue()) {
+  <menubar/>
+  <main class="flex flex-col h-screen text-stone-300 text-sm gap-3 px-5 lg:px-10 pt-27 lg:pt-15">
+    <router-outlet/>
+    <footer-site/>
+  </main>
+}
