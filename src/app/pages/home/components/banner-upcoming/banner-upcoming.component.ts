@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, si
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
 import { CarruselMoviesSkeletonComponent } from '@shared/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
 import { TmdbService } from '@services/';
-import { SectionMovie, Movie, CarouselConfig } from '@interfaces/';
+import { SectionMovie, Movie, CarouselConfig, QueryParams } from '@interfaces/';
 
 @Component({
   selector: 'banner-upcoming',
@@ -31,7 +31,15 @@ export class BannerUpcomingComponent implements OnInit {
   };
 
   getUpcommingMovies() {
-    this.tmdbService.getUpcommingMovies(10)
+    this.tmdbService.getUpcommingMovies(this.getQueryParams(), 10)
       .subscribe(upcommingMovies => this.upcommingMovies.set(upcommingMovies));
+  };
+
+  private getQueryParams(): QueryParams {
+    const today = new Date().toISOString().split('T')[0];
+    return {
+      sortBy: 'primary_release_date.asc',
+      primaryReleaseDateGte: today
+    };
   };
 }
