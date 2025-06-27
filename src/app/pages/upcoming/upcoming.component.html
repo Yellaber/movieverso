@@ -1,5 +1,6 @@
 @if(!showModal()) {
   <filter-button (emmitClick)="onShowModal()"/>
 }
-<load-upcoming-movies [genresSelected]="genresSelected()"/>
-<filter-modal-upcoming-movies [isOpen]="showModal()" (emmitClose)="onCloseModal($event)"/>
+<load-movies-filtered [queryParams]="genresSelected()"/>
+<filter-modal-movies currentComponent="upcoming" [isOpen]="showModal()"
+(emitClose)="onCloseModal($event)" (emitQueryParams)="onQueryParams($event)"/>
