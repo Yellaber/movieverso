@@ -7,6 +7,6 @@ export * from './movie-keyword-response';
 export * from './movie-response.interface';
 export * from './movie-trailer-response.interface';
 export * from './movie-watch-provider-response.interface';
-export * from './params-filter.interface';
+export * from './query-params.interface';
 export * from './sectionMovie.interface';
 export * from './user-geolocation.interface';
