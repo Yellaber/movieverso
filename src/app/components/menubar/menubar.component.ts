@@ -6,7 +6,7 @@ import { ScrollableMenuComponent } from '@shared/scrollable-menu/scrollable-menu
 import { UserGeolocationService } from '@services/user-geolocation.service';
 import { Location } from '@interfaces/';
 
-const menuItems = [ 'upcoming', 'now-playing', 'populars', 'top-rated', 'trending', 'list' ];
+const menuItems = [ 'upcoming', 'now-playing', 'populars', 'top-rated', 'trending' ];
 
 @Component({
   selector: 'menubar',
