@@ -37,24 +37,28 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/trending/trending.component')
   },
   {
-    title: 'Listado',
-    path: 'list',
-    loadComponent: () => import('./pages/list/list.component')
-  },
-  {
     title: 'Buscar',
     path: 'search',
     loadComponent: () => import('./pages/search/search.component')
   },
   {
-    title: 'Iniciar sesión',
-    path: 'auth/sign-in',
-    loadComponent: () => import('./pages/auth/sign-in/sign-in.component')
-  },
-  {
-    title: 'Registro',
-    path: 'auth/sign-up',
-    loadComponent: () => import('./pages/auth/sign-up/sign-up.component')
+    path: 'auth',
+    children: [
+      {
+        title: 'Iniciar sesión',
+        path: 'sign-in',
+        loadComponent: () => import('./pages/auth/sign-in/sign-in.component')
+      },
+      {
+        title: 'Registro',
+        path: 'sign-up',
+        loadComponent: () => import('./pages/auth/sign-up/sign-up.component')
+      },
+      {
+        path: '**',
+        redirectTo: 'sign-in'
+      }
+    ]
   },
   {
     title: 'Política de privacidad',
