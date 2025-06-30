@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit,
-         signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -35,5 +34,7 @@ export class NavigationComponent implements OnInit {
   mainRoutes = computed(() =>
     this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
 
-  ngOnInit() { this.menubarRoutes.set(this.routesService.getRoutes()); }
+  ngOnInit() {
+    this.menubarRoutes.set(this.routesService.getRoutes());
+  }
 }
