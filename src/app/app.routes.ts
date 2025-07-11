@@ -9,27 +9,37 @@ export const routes: Routes = [
   {
     title: 'Película',
     path: 'movie/:id-slug',
-    loadComponent: () => import('./pages/detail-movie/detail-movie.component')
+    loadComponent: () => import('./pages/detail-movie/detail-movie.component'),
   },
   {
-    title: 'Próximamente',
+    title: 'Recomendaciones',
+    path: 'movie/:id-slug/recommendations',
+    loadComponent: () => import('./pages/recommendations/recommendations.component')
+  },
+  {
+    title: 'Similares',
+    path: 'movie/:id-slug/similar',
+    loadComponent: () => import('./pages/similars/similars.component')
+  },
+  {
+    title: 'Próximos estrenos',
     path: 'upcoming',
     loadComponent: () => import('./pages/upcoming/upcoming.component')
   },
   {
-    title: 'Estrenos',
+    title: 'En cartelera',
     path: 'now-playing',
-    loadComponent: () => import('./pages/released/released.component')
+    loadComponent: () => import('./pages/now-playing/now-playing.component')
   },
   {
     title: 'Populares',
-    path: 'populars',
+    path: 'popular',
     loadComponent: () => import('./pages/popular/popular.component')
   },
   {
-    title: 'Más valoradas',
+    title: 'Mejor valoradas',
     path: 'top-rated',
-    loadComponent: () => import('./pages/rated/rated.component')
+    loadComponent: () => import('./pages/top-rated/top-rated.component')
   },
   {
     title: 'En tendencia',
