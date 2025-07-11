@@ -8,5 +8,13 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'movie/:id-slug',
     renderMode: RenderMode.Client
+  },
+  {
+    path: 'movie/:id-slug/recommendations',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'movie/:id-slug/similar',
+    renderMode: RenderMode.Client
   }
 ];
