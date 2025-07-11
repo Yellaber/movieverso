@@ -42,7 +42,7 @@ export class TmdbService {
     const url = `${environment.tmdbApiUrl}/discover/movie`;
     const key = `${url}/upcoming-home/page=1`;
     if(this.cacheQuery.has(key)) {
-      return of(<Movie[]>this.cacheQuery.get(key)!);
+      return of(<Movie[]>this.cacheQuery.get(key));
     }
     const params = this.getHttpParamsCommons(queryParams, 1);
     return this.httpClient.get<MovieResponse>(url, {params}).pipe(
@@ -67,12 +67,11 @@ export class TmdbService {
       );
   };
 
-  getNowPlayingMovies(limit?: number, page: number = 1): Observable<Movie[]> {
-    const url = `${environment.tmdbApiUrl}/movie/now_playing`;
-    const key = `${url}/page=${page.toString()}`;
-    if(this.cacheQuery.has(key)) {
-      return of(<Movie[]>this.cacheQuery.get(key)!);
+  getMoviesFilteredByCategory(category: string, page: number): Observable<MovieResponse[]> {
+    if(page === 1) {
+      this.moviesFiltered = [];
     }
+    const url = `${environment.tmdbApiUrl}/${category}`;
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
@@ -81,31 +80,28 @@ export class TmdbService {
         page
       }
     }).pipe(
-      map(({results}) => limit? results.slice(0, limit): results),
-      map(movies => movies.sort((movie1, movie2) => {
-        const dateMovie1 = new Date(movie1.release_date);
-        const dateMovie2 = new Date(movie2.release_date);
-        return dateMovie2.getTime() - dateMovie1.getTime();
-      })),
-      tap(movies => this.cacheQuery.set(key, movies))
-    );
+        map(movieResponse => {
+          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+          return this.moviesFiltered;
+        })
+      );
   };
 
-  getMovies(endpoint: string, limit?: number, page: number = 1): Observable<Movie[]> {
-    const url = environment.tmdbApiUrl + endpoint;
-    const key = `${url}/page=${page.toString()}`;
+  getMovies(endPoint: string): Observable<Movie[]> {
+    const url = `${environment.tmdbApiUrl}/${endPoint}`;
+    const key = `${url}/page=1`;
     if(this.cacheQuery.has(key)) {
-      return of(<Movie[]>this.cacheQuery.get(key)!);
+      return of(<Movie[]>this.cacheQuery.get(key));
     }
     return this.httpClient.get<MovieResponse>(url, {
       params: {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage(),
         region: this.userCountryCode(),
-        page
+        page: 1
       }
     }).pipe(
-      map(({results}) => limit? results.slice(0, limit): results),
+      map(({results}) => results),
       tap(movies => this.cacheQuery.set(key, movies))
     );
   };
@@ -114,7 +110,7 @@ export class TmdbService {
     const url = `${environment.tmdbApiUrl}/genre/movie/list`;
     const key = `${url}/ids=${genreIds.toString()}`;
     if(this.cacheQuery.has(key)) {
-      return of(<Genre[]>this.cacheQuery.get(key)!);
+      return of(<Genre[]>this.cacheQuery.get(key));
     }
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
@@ -130,7 +126,7 @@ export class TmdbService {
   getGenreMovieList(): Observable<Genre[]> {
     const url = `${environment.tmdbApiUrl}/genre/movie/list`;
     if(this.cacheQuery.has(url)) {
-      return of(<Genre[]>this.cacheQuery.get(url)!);
+      return of(<Genre[]>this.cacheQuery.get(url));
     }
     return this.httpClient.get<GenreMoviesResponse>(url, {
       params: {
@@ -151,7 +147,7 @@ export class TmdbService {
   getMovieById(id: number): Observable<DetailMovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${id}`;
     if(this.cacheQuery.has(url)) {
-      return of(<DetailMovieResponse>this.cacheQuery.get(url)!);
+      return of(<DetailMovieResponse>this.cacheQuery.get(url));
     }
     return this.httpClient.get<DetailMovieResponse>(url, {
       params: {
@@ -164,7 +160,7 @@ export class TmdbService {
   getMovieRecommendations(movieId: number, page: number = 1): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/recommendations`;
     if(this.cacheQuery.has(url)) {
-      return of(<MovieResponse>this.cacheQuery.get(url)!);
+      return of(<MovieResponse>this.cacheQuery.get(url));
     }
     return this.httpClient.get<MovieResponse>(url, {
       params: {
@@ -178,7 +174,7 @@ export class TmdbService {
   getMovieSimilar(movieId: number, page: number = 1): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/similar`;
     if(this.cacheQuery.has(url)) {
-      return of(<MovieResponse>this.cacheQuery.get(url)!);
+      return of(<MovieResponse>this.cacheQuery.get(url));
     }
     return this.httpClient.get<MovieResponse>(url, {
       params: {
@@ -189,10 +185,29 @@ export class TmdbService {
     }).pipe(tap(movieSimilars => this.cacheQuery.set(url, movieSimilars)));
   };
 
+  getMoviesBasedIn(basedIn: string, movieId: number, page: number): Observable<MovieResponse[]> {
+    if(page === 1) {
+      this.moviesFiltered = [];
+    }
+    const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language: this.userLanguage(),
+        page
+      }
+    }).pipe(
+        map(movieResponse => {
+          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+          return this.moviesFiltered;
+        })
+      );
+  };
+
   getMovieTrailers(movieId: number): Observable<Trailer[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/videos`;
     if(this.cacheQuery.has(url)) {
-      return of(<Trailer[]>this.cacheQuery.get(url)!);
+      return of(<Trailer[]>this.cacheQuery.get(url));
     }
     return this.httpClient.get<MovieTrailerResponse>(url, {
       params: {
@@ -215,7 +230,7 @@ export class TmdbService {
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/keywords`;
     if(this.cacheQuery.has(url)) {
-      return of(<Keyword[]>this.cacheQuery.get(url)!);
+      return of(<Keyword[]>this.cacheQuery.get(url));
     }
     return this.httpClient.get<MovieKeywordResponse>(url, {
       params: { api_key: environment.tmdbApiKey }
@@ -228,7 +243,7 @@ export class TmdbService {
   getMovieCollectionById(id: number): Observable<MovieCollectionResponse> {
     const url = `${environment.tmdbApiUrl}/collection/${id}`;
     if(this.cacheQuery.has(url)) {
-      return of(<MovieCollectionResponse>this.cacheQuery.get(url)!);
+      return of(<MovieCollectionResponse>this.cacheQuery.get(url));
     }
     this.params.set('language', this.userLanguage())
     return this.httpClient.get<MovieCollectionResponse>(url, {
@@ -252,7 +267,9 @@ export class TmdbService {
     .set('primary_release_date.gte', queryParams.primaryReleaseDateGte ?? '')
     .set('primary_release_date.lte', queryParams.primaryReleaseDateLte ?? '')
     .set('with_genres', genresIdSelected)
-    .set('vote_average.gte', queryParams.voteAverageGte ?? 0);
+    .set('with_keywords', queryParams.withKeywords ?? '')
+    .set('vote_average.gte', queryParams.voteAverageGte ?? 0)
+    .set('vote_count.gte', queryParams.voteCountGte ?? 0);
     return params;
   };
 
