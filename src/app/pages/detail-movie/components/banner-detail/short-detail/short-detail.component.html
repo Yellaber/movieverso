@@ -14,6 +14,7 @@ my-3">{{ movieDetail().title }}</h2>
   <badge-list [badgeList]="movieDetail().genres"/>
   <div class="flex items-center gap-4">
     <rating type="popularity" [value]="movieDetail().popularity"/>
-    <rating type="vote" [value]="movieDetail().vote_average"/>
+    <rating type="vote_average" [value]="movieDetail().vote_average"/>
+    <rating type="vote_count" [value]="movieDetail().vote_count"/>
   </div>
 </div>
