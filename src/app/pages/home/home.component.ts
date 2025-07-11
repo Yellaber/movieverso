@@ -1,23 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
-import { BannerUpcomingComponent } from './components/banner-upcoming/banner-upcoming.component';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnInit } from '@angular/core';
 import { SectionMovieComponent } from './components/section-movie/section-movie.component';
 import { SeoFriendlyService, ScrollService } from '@services/';
 import { SectionMovie } from '@interfaces/';
 
-
 @Component({
   selector: 'home',
-  imports: [
-    BannerUpcomingComponent,
-    SectionMovieComponent
-  ],
+  imports: [SectionMovieComponent],
   template: `
     @for(section of sections; track $index) {
-      @if(section.heroType === 'upcoming') {
-        <banner-upcoming [section]="section"/>
-      } @else {
-        <section-movie [section]="section"/>
-      }
+      <section-movie [section]="section"/>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,23 +27,18 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.seoFriendlyService.setMetaTags('Inicio', 'Descubre películas de forma rápida y divertida en MovieVerso. Explora por nombre, género o popularidad y accede a información detallada de tus películas favoritas. ¡Tu universo de cine comienza aquí!');
     this.loadSections();
-  }
+  };
 
   ngAfterViewInit() {
     this.scrollService.restoreScrollPosition('home');
-  }
+  };
 
   loadSections() {
     this.sections = [
-      { heroType: 'upcoming', heroTitle: '', carruselTitle: 'Próximamente', route: '/upcoming' },
-      { heroType: 'now_playing', heroTitle: 'Estrenos', carruselTitle: 'Top 20 - Estrenos',
-        route: '/now-playing'},
-      { heroType: 'popularity', heroTitle: 'Más popular', carruselTitle: 'Top 20 - Más populares',
-        route: '/populars' },
-      { heroType: 'rated', heroTitle: 'Más valorada', carruselTitle: 'Top 20 - Más valoradas',
-        route: '/top-rated' },
-      { heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 20 - En tendencia',
-        route: '/trending' }
+      {heroType: 'now-playing', heroTitle: 'En cartelera', carruselTitle: 'Top 20 - En cartelera'},
+      {heroType: 'popular', heroTitle: 'Más popular', carruselTitle: 'Top 20 - Más populares'},
+      {heroType: 'top-rated', heroTitle: 'Mejor valorada', carruselTitle: 'Top 20 - Mejor valoradas'},
+      {heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 20 - En tendencia',}
     ];
-  }
+  };
 }
