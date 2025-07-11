@@ -17,31 +17,31 @@
   };
 
   const getUpcoming = async() => {
-    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/upcoming?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/upcoming?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}&page=1`).then(response => response.json());
     const totalData = moviesResponse['results'].length;
     return moviesResponse['results'].slice(0, totalData);
   }
 
   const getTopNowPlaying = async() => {
-    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/now_playing?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/now_playing?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}&page=1`).then(response => response.json());
     const totalData = moviesResponse['results'].length;
     return moviesResponse['results'].slice(0, totalData);
   }
 
   const getTopPopular = async() => {
-    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/popular?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/popular?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}&page=1`).then(response => response.json());
     const totalData = moviesResponse['results'].length;
     return moviesResponse['results'].slice(0,totalData);
   }
 
   const getTopRated = async() => {
-    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/top_rated?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/top_rated?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}&page=1`).then(response => response.json());
     const totalData = moviesResponse['results'].length;
     return moviesResponse['results'].slice(0, totalData);
   }
 
   const getTopTrending = async() => {
-    const moviesResponse = await fetch(`${API_URL_TMDB}/trending/movie/day?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const moviesResponse = await fetch(`${API_URL_TMDB}/trending/movie/day?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}&page=1`).then(response => response.json());
     const totalData = moviesResponse['results'].length;
     return moviesResponse['results'].slice(0, totalData);
   }
@@ -49,7 +49,7 @@
   const slugify = title =>
     title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g, '-');
 
-  getUserLocation();
+  await getUserLocation();
   const moviesUpcoming = await getUpcoming();
   const moviesTopNowPlaying = await getTopNowPlaying();
   const moviesTopPopular = await getTopPopular();
