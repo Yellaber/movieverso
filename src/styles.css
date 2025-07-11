@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import 'primeicons/primeicons.css';
+@plugin 'tailwindcss-primeui';
 
 @layer base {
   @font-face {
