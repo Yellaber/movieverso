@@ -19,10 +19,9 @@ export class ScrollService {
       return false;
   };
 
-  setScrollTo(top: number, behavior: ScrollBehavior = 'smooth') {
+  setScrollTo(top: number, behavior: ScrollBehavior = 'auto') {
     if(isPlatformBrowser(this.platform)) {
-      //this.document.documentElement.scrollTo({top, behavior});
-      window.scroll({top, behavior});
+      this.document.documentElement.scrollTo({top, behavior});
     }
   };
 
@@ -30,7 +29,7 @@ export class ScrollService {
     return isPlatformBrowser(this.platform)? this.document.documentElement.scrollTop: 0;
   };
 
-  scrollTop(behavior: ScrollBehavior = 'smooth') {
+  scrollTop(behavior: ScrollBehavior = 'auto') {
     this.setScrollTo(0, behavior);
   };
 
