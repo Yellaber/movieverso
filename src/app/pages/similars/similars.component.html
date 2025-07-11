@@ -1,0 +1,19 @@
+@if(movie.hasValue()) {
+  <div class="flex flex-col gap-5 pt-12 lg:pt-15">
+    <h3 class="text-sm lg:text-xl font-bold rounded-full text-yellow-600 gap-2">
+      {{ titleDescription() }}
+    </h3>
+    <p class="text-xs lg:text-sm text-stone-300 leading-relaxed">
+      <span class="font-bold">¿Buscas algo con la misma vibra?</span> Estas películas tienen mucho en
+      común con la que acabas de ver. Comparten género, energía o historia. ¡Una experiencia similar
+      garantizada! Según esta película, podrías disfrutar también estas otras <a class="text-yellow-600"
+      [routerLink]="linkRecommendationsMovies()">recomendadas</a>.
+    </p>
+  </div>
+  <categories [menuItems]="menuItems()"/>
+  <load-results [movieId]="movie.value().id" typeResult="similar"/>
+} @else {
+  <div class="flex mt-10 lg:mt-15">
+    <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
+  </div>
+}
