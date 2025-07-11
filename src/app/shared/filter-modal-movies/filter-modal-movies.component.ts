@@ -1,38 +1,48 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { DecimalPipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FilterGenreComponent } from './filter-genre/filter-genre.component';
 import { FilterVoteAverageComponent } from './filter-vote-average/filter-vote-average.component';
-import { FilterService } from '@services/';
-import { Genre, QueryParams } from '@interfaces/';
+import { QueryParamsService, TmdbService } from '@services/';
+import { Category, Genre, MovieResponse, QueryParams } from '@interfaces/';
 
-const CLASS_MODAL = 'fixed inset-0 bg-stone-900/80 items-center justify-center z-50 hidden';
+const CLASS_MODAL = 'fixed inset-0 bg-stone-900/60 items-center justify-center z-50 hidden';
 const CLASS_MODAL_CONTENT = 'w-full max-w-md bg-stone-300 text-stone-700 rounded-md shadow-md transform transition-all duration-300 translate-y-full opacity-0';
-const CLASS_FILTER_CONTAINER = 'flex flex-col gap-4 p-6';
 
 @Component({
   selector: 'filter-modal-movies',
   imports: [
     FontAwesomeModule,
-    FilterGenreComponent,
-    FilterVoteAverageComponent
+    DecimalPipe,
+    //FilterGenreComponent,
+    //FilterVoteAverageComponent,
   ],
   templateUrl: './filter-modal-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilterModalMoviesComponent implements OnInit {
+export class FilterModalMoviesComponent implements OnInit, AfterViewInit {
   faCircleXmark = faCircleXmark;
-  currentComponent = input.required<string>();
+  faSpinner = faSpinner;
+  //currentComponent = input.required<ComponentToFilter>();
   isOpen = input.required<boolean>();
   emitClose = output<boolean>();
-  emitQueryParams = output<QueryParams>();
-  genresMovieSelected = signal<Genre[]>([]);
+  //emitQueryParams = output<QueryParams>();
+  /*genresMovieSelected = signal<Genre[]>([]);
   queryParams = signal<QueryParams>({});
-  voteAverage = signal<number>(0);
+  voteAverage = signal<number>(0);*/
+  showMovieList = signal<boolean>(false);
   classListModal = signal<string>('');
   classListModalContent = signal<string>('');
   classListFilterContainer = signal<string>('');
-  private filterService = inject(FilterService);
+  categorySelected = signal<Category | undefined>(undefined);
+  totalMovies = rxResource({
+    request: this.categorySelected,
+    loader: () => this.tmdbService.getMoviesFilteredByCategory(this.categorySelected()!.endPoint, 1)
+  });
+  private tmdbService = inject(TmdbService);
+  //private queryParamsService = inject(QueryParamsService);
 
   openFilterModal = effect(() => {
     this.isOpen() && this.onShow();
@@ -41,9 +51,12 @@ export class FilterModalMoviesComponent implements OnInit {
   ngOnInit() {
     this.classListModal.set(CLASS_MODAL);
     this.classListModalContent.set(CLASS_MODAL_CONTENT);
-    this.loadClassListFilterContainer();
-    this.queryParams.set(this.filterService.getQueryParams(this.currentComponent()));
+    //this.queryParams.set(this.queryParamsService.get(this.categorySelected().));
   };
+
+  ngAfterViewInit() {
+    this.showMovieList.set(false);
+  }
 
   onShow() {
     const classModal = this.classListModal().replace('hidden', 'flex');
@@ -64,20 +77,24 @@ export class FilterModalMoviesComponent implements OnInit {
     }, 200);
   };
 
-  onGenresMovieSelected(event: Genre[]) {
+  showResults() {
+    this.showMovieList.set(true);
+  };
+
+  /*onGenresMovieSelected(event: Genre[]) {
     this.genresMovieSelected.set(event);
     this.queryParams.update(params => ({
       ...params,
       withGenres: this.genresMovieSelected()
     }));
-    this.filterService.setQueryParams(this.currentComponent(), this.queryParams());
+    this.queryParamsService.set(this.currentComponent(), this.queryParams());
     this.emitQueryParams.emit(this.queryParams());
-  };
+  };*/
 
-  onVoteAverage(event: number) {
+  /*onVoteAverage(event: number) {
     this.voteAverage.set(event);
     if(this.genresMovieSelected().length === 0) {
-      const queryParams = this.filterService.getQueryParams(this.currentComponent());
+      const queryParams = this.queryParamsService.get(this.currentComponent());
       this.genresMovieSelected.set(queryParams.withGenres!);
     }
     this.queryParams.update(params => ({
@@ -85,15 +102,11 @@ export class FilterModalMoviesComponent implements OnInit {
       withGenres: this.genresMovieSelected(),
       voteAverageGte: this.voteAverage()
     }));
-    this.filterService.setQueryParams(this.currentComponent(), this.queryParams());
+    this.queryParamsService.set(this.currentComponent(), this.queryParams());
     this.emitQueryParams.emit(this.queryParams());
-  };
+  };*/
 
-  loadClassListFilterContainer() {
-    if(this.currentComponent() === 'upcoming') {
-      this.classListFilterContainer.set(CLASS_FILTER_CONTAINER);
-      return;
-    }
-    this.classListFilterContainer.set(`${CLASS_FILTER_CONTAINER} h-70 overflow-y-scroll`);
+  onCategorySelected(category: Category) {
+    this.categorySelected.set(category);
   };
 }

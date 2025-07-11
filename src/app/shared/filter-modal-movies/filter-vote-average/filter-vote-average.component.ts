@@ -8,7 +8,7 @@ import { RatingComponent } from '@shared/rating/rating.component';
     <div class="flex justify-between items-center gap-4">
       <h3 class="text-sm font-bold">Calificación mínima:</h3>
       <div class="rounded-md bg-stone-700 px-3 py-1">
-        <rating type="vote" [value]="rangeValue()"/>
+        <rating type="vote_average" [value]="rangeValue()"/>
       </div>
     </div>
     <input (input)="onChangeValue($event)" type="range" min="0" max="10" step="0" [value]="rangeValue()" class="w-full h-2 bg-stone-400 rounded-md appearance-none cursor-pointer accent-yellow-600">

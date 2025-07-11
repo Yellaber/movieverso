@@ -41,7 +41,6 @@ export class FilterGenreComponent implements OnInit {
   saveGenreMovieSelected(genre: Genre) {
     this.genresMovieSelected = this.genresMovieSelected.find(genreSelected => genreSelected.id === genre.id)?
     this.genresMovieSelected.filter(genreSelected => genreSelected.id !== genre.id): [ ...this.genresMovieSelected, genre ];
-    console.log('GenresSelected: ', this.genresMovieSelected);
     this.emitGenresMovieSelected.emit(this.genresMovieSelected);
   };
 
