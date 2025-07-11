@@ -1,10 +1,8 @@
-import { Movie } from './movie-response.interface';
 
-type typeTag = 'upcoming' | 'now_playing' | 'popularity' | 'rated' | 'trending';
+export type TypeTag = 'now-playing' | 'popular' | 'top-rated' | 'trending' | 'calendar';
 
 export interface SectionMovie {
-  heroType: typeTag,
+  heroType: TypeTag,
   heroTitle: string,
-  carruselTitle: string,
-  route: string
+  carruselTitle: string
 }
