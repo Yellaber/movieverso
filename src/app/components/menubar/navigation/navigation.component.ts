@@ -1,40 +1,36 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
-import { Route, RouterLink, RouterLinkActive } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Route, RouterLink } from '@angular/router';
 import { RoutesService } from '@services/';
 
 @Component({
   selector: 'navigation',
-  imports: [
-    RouterLink,
-    RouterLinkActive,
-    FontAwesomeModule
-  ],
+  imports: [RouterLink],
   template: `
-    <ul [class]="layoutClass()">
+    <ul class="flex flex-wrap">
       @for(route of mainRoutes(); track $index) {
-        <li>
-          <a [routerLink]="[route.path]" routerLinkActive="text-yellow-500" class="text-xs lg:text-sm text-stone-300 hover:text-yellow-500 transition-colors duration-300">{{ route.title }}</a>
+        <li class="pr-5">
+          <a [routerLink]="getAbsouteRoute(route.path!)" class="text-xs lg:text-sm text-yellow-600">
+            {{ route.title }}
+          </a>
         </li>
       }
-      <button class="text-xs lg:text-sm font-medium h-full text-yellow-600 bg-stone-800 rounded-full focus:outline-none hover:cursor-pointer ml-10 py-2 px-3">
-        <fa-icon class="w-3 md:w-4 lg:w-5" [icon]="faMagnifyingGlass"></fa-icon>
-      </button>
     </ul>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent implements OnInit {
   private routesService = inject(RoutesService);
-  faMagnifyingGlass = faMagnifyingGlass;
   menuItems = input.required<string[]>();
-  layoutClass = input.required<string>();
   menubarRoutes = signal<Route[]>([]);
   mainRoutes = computed(() =>
-    this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!)));
+    this.menubarRoutes().filter(route => this.menuItems()?.includes(route.path!))
+  );
 
   ngOnInit() {
     this.menubarRoutes.set(this.routesService.getRoutes());
-  }
+  };
+
+  getAbsouteRoute(route: string) {
+    return `/${route}`;
+  };
 }
