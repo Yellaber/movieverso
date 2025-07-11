@@ -1,17 +1,19 @@
 import { Genre } from './genre-movies-response.interface';
 
-type typeSort = 'title.asc' | 'popularity.desc' | 'vote_average.desc' | 'primary_release_date.asc' | 'primary_release_date.desc';
+type typeSort = 'popularity.desc' | 'primary_release_date.asc' | 'primary_release_date.desc' |
+'title.asc' | 'vote_average.desc' | 'vote_count.desc';
 
 export interface QueryParams {
-  withGenres?: Genre[],
-  withOriginalLanguage?: string,
-  primaryReleaseYear?: number,
-  voteAverageGte?: number,
-  withOriginCountry?: string,
   primaryReleaseDateGte?: string,
   primaryReleaseDateLte?: string,
-  withCompanies?: string,
+  primaryReleaseYear?: number,
   releaseDateGte?: string,
-  sortBy?: typeSort,
+  voteAverageGte?: number,
   voteCountGte?: number
+  sortBy?: typeSort,
+  withGenres?: Genre[],
+  withKeywords?: string,
+  withCompanies?: string,
+  withOriginCountry?: string,
+  withOriginalLanguage?: string,
 };
