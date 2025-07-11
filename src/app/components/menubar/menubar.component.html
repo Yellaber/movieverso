@@ -1,15 +1,10 @@
-<div class="relative">
-  <nav class="hidden lg:flex lg:justify-between lg:items-center fixed top-0 left-0 w-full lg:py-3 z-50 lg:px-10">
+<nav class="flex flex-col lg:flex-row lg:justify-between lg:items-center fixed top-0 left-0 w-full py-3 z-50 px-5 lg:px-10 gap-5 lg:gap-0">
+  <div class="flex justify-between items-center lg:gap-14">
     <logo [countryFlag]="userLocation()?.country_flag"/>
-    <navigation [menuItems]="items()" layoutClass="hidden lg:flex lg:items-center lg:gap-5"/>
-    <sign-in-button layoutClass="hidden lg:flex items-center gap-3"/>
-    <div class="pointer-events-none absolute top-0 left-0 w-full h-100 bg-gradient-to-b from-stone-900 to-transparent z-[-1]"></div>
-  </nav>
-</div>
-<nav class="flex flex-col lg:hidden justify-center bg-stone-900 fixed top-0 left-0 w-full shadow-lg z-40 py-3 px-5">
-  <div class="flex w-full justify-between items-center">
-    <logo [countryFlag]="userLocation()?.country_flag"/>
-    <sign-in-button layoutClass="flex items-center gap-4"/>
+    <button type="button" class="text-xs lg:text-sm font-bold h-full text-stone-900 bg-yellow-600 rounded-full focus:outline-none hover:cursor-pointer px-3 py-2"
+    (click)="navigateToUpcoming()">Próximamente</button>
   </div>
-  <scrollable-menu [items]="items()"/>
+  <search-bar (emmitClick)="onShowModal()"/>
+  <div class="pointer-events-none absolute top-0 left-0 w-full h-100 bg-gradient-to-b from-stone-900 to-transparent z-[-1]"></div>
 </nav>
+<filter-modal-movies [isOpen]="showModal()" (emitClose)="onCloseModal($event)"/>

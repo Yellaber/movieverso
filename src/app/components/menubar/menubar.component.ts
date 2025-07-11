@@ -1,28 +1,27 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { LogoComponent } from './logo/logo.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { SignInButtonComponent } from './sign-in-button/sign-in-button.component';
-import { ScrollableMenuComponent } from '@shared/scrollable-menu/scrollable-menu.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { FilterModalMoviesComponent } from "@shared/filter-modal-movies/filter-modal-movies.component";
 import { UserGeolocationService } from '@services/user-geolocation.service';
 import { Location } from '@interfaces/';
-
-const menuItems = [ 'upcoming', 'now-playing', 'populars', 'top-rated', 'trending' ];
 
 @Component({
   selector: 'menubar',
   imports: [
     LogoComponent,
-    NavigationComponent,
-    ScrollableMenuComponent,
-    SignInButtonComponent
+    SearchBarComponent,
+    FilterModalMoviesComponent
   ],
   templateUrl: './menubar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'relative' }
 })
 export class MenubarComponent implements OnInit {
+  private router = inject(Router);
   private userGeolocationService = inject(UserGeolocationService);
+  showModal = signal<boolean>(false);
   userLocation = signal<Location | undefined>(undefined);
-  items = signal<string[]>(menuItems);
 
   ngOnInit() {
     this.initUserLocation();
@@ -34,5 +33,17 @@ export class MenubarComponent implements OnInit {
       const {location} = userGeolocation;
       this.userLocation.set(location);
     }
+  };
+
+  onShowModal() {
+    this.showModal.set(true);
+  };
+
+  onCloseModal(event: boolean) {
+    this.showModal.set(event);
+  };
+
+  navigateToUpcoming() {
+    this.router.navigateByUrl('/upcoming');
   };
 }
