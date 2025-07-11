@@ -5,9 +5,9 @@
       <side-detail [movieDetail]="movieSelected.value()" [movieKeywords]="movieKeywords.value()!"/>
       <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-10 py-11">
         <youtube-video [trailers]="movieTrailer.value()!"/>
-        <movie-list [movies]="moviesRecomended.value()!" typeMovieList="Recomendadas"/>
-        <movie-list [movies]="moviesSimilars.value()!" typeMovieList="Similares"/>
-        <movie-list [movies]="movieCollection.value()!" typeMovieList="Colección" [hasRoute]="false"/>
+        <movie-list [movies]="moviesRecomended.value()!" typeMovieList="recommendations"/>
+        <movie-list [movies]="moviesSimilars.value()!" typeMovieList="similar"/>
+        <movie-list [movies]="movieCollection.value()!" typeMovieList="collection" [hasRoute]="false"/>
       </div>
     </section>
   } @else {

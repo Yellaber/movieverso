@@ -12,7 +12,7 @@ import { MovieListComponent } from './components/movie-list/movie-list.component
 import { NotificationComponent } from '@shared/notification/notification.component';
 import { YoutubeVideoComponent } from './components/youtube-video/youtube-video.component';
 import { environment } from '@environments/environment.developments';
-import { TmdbService, SeoFriendlyService } from '@services/';
+import { TmdbService, SeoFriendlyService, ScrollService } from '@services/';
 
 @Component({
   imports: [
@@ -24,7 +24,7 @@ import { TmdbService, SeoFriendlyService } from '@services/';
     MovieListComponent,
     NotificationComponent,
     CarruselMoviesSkeletonComponent,
-    YoutubeVideoComponent
+    YoutubeVideoComponent,
   ],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -33,6 +33,7 @@ export default class DetailMovieComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
+  private scrollService = inject(ScrollService);
   idMovie = signal<number | null>(null);
   movieSelected = rxResource({
     request: this.idMovie,
@@ -64,9 +65,9 @@ export default class DetailMovieComponent implements OnInit {
       this.idMovie()? this.tmdbService.getMovieSimilar(this.idMovie()!)
         .pipe(map(({results}) => results)): of([])
   });
-  idCollection = computed<number | null>(() =>
+  idCollection = computed<number | undefined>(() =>
     (this.movieSelected.hasValue() && this.movieSelected.value().belongs_to_collection)?
-      this.movieSelected.value().belongs_to_collection.id: null
+      this.movieSelected.value().belongs_to_collection.id: undefined
   );
   movieCollection = rxResource({
     request: this.idCollection,
@@ -79,7 +80,7 @@ export default class DetailMovieComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idSlug = params.get('id-slug') || '';
       this.idMovie.set(+idSlug.split('-')[0]);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.scrollService.scrollTop();
     });
   };
 };
