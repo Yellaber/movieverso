@@ -1,22 +1,22 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFire, faStar, faCalendarCheck, faArrowTrendUp, faFilm,
-         IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faFire, faStar, faCalendarCheck, faArrowTrendUp, faFilm, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { TypeTag } from '@interfaces/';
 
 interface Icon {
-  text: string,
+  text: TypeTag,
   faIcon: IconDefinition
 }
 
 const icons: Icon[] = [
-  { text: 'now_playing', faIcon: faFilm }, { text: 'popularity', faIcon: faFire },
-  { text: 'rated', faIcon: faStar }, { text: 'calendar', faIcon: faCalendarCheck },
-  { text: 'trending', faIcon: faArrowTrendUp }
+  {text: 'now-playing', faIcon: faFilm}, {text: 'popular', faIcon: faFire},
+  {text: 'top-rated', faIcon: faStar}, {text: 'calendar', faIcon: faCalendarCheck},
+  {text: 'trending', faIcon: faArrowTrendUp}
 ];
 
 @Component({
   selector: 'tag',
-  imports: [ FontAwesomeModule ],
+  imports: [FontAwesomeModule],
   template: `
     @if(getIcon()) {
       <div class="flex items-center rounded-full bg-yellow-900/50 text-yellow-600 gap-2 px-3 py-2">
