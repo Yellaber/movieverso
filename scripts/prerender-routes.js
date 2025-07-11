@@ -16,40 +16,46 @@
     language = (country_metadata.languages[0].includes('es'))? country_metadata.languages[0]: 'en-US';
   };
 
+  const getUpcoming = async() => {
+    const moviesResponse = await fetch(`${API_URL_TMDB}/movie/upcoming?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
+    const totalData = moviesResponse['results'].length;
+    return moviesResponse['results'].slice(0, totalData);
+  }
+
   const getTopNowPlaying = async() => {
     const moviesResponse = await fetch(`${API_URL_TMDB}/movie/now_playing?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
-    return moviesResponse['results'].slice(0, 10).sort((movie1, movie2) => {
-      const dateMovie1 = new Date(movie1.release_date);
-      const dateMovie2 = new Date(movie2.release_date);
-      return dateMovie2.getTime() - dateMovie1.getTime()
-    });
+    const totalData = moviesResponse['results'].length;
+    return moviesResponse['results'].slice(0, totalData);
   }
 
   const getTopPopular = async() => {
     const moviesResponse = await fetch(`${API_URL_TMDB}/movie/popular?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
-    return moviesResponse['results'].slice(0, 10);
+    const totalData = moviesResponse['results'].length;
+    return moviesResponse['results'].slice(0,totalData);
   }
 
   const getTopRated = async() => {
     const moviesResponse = await fetch(`${API_URL_TMDB}/movie/top_rated?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
-    return moviesResponse['results'].slice(0, 10);
+    const totalData = moviesResponse['results'].length;
+    return moviesResponse['results'].slice(0, totalData);
   }
 
   const getTopTrending = async() => {
     const moviesResponse = await fetch(`${API_URL_TMDB}/trending/movie/day?api_key=${API_KEY_TMDB}&region=${countryCode}&language=${language}`).then(response => response.json());
-    return moviesResponse['results'].slice(0, 10);
+    const totalData = moviesResponse['results'].length;
+    return moviesResponse['results'].slice(0, totalData);
   }
 
   const slugify = title =>
     title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g, '-');
 
-  //const moviesUpcoming = await getUpComing();
   getUserLocation();
+  const moviesUpcoming = await getUpcoming();
   const moviesTopNowPlaying = await getTopNowPlaying();
   const moviesTopPopular = await getTopPopular();
   const moviesTopRated = await getTopRated();
   const moviesTopTrending = await getTopTrending();
-  let movies = [ ...moviesTopNowPlaying, ...moviesTopPopular,
+  let movies = [ ...moviesUpcoming, ...moviesTopNowPlaying, ...moviesTopPopular,
                  ...moviesTopRated, ...moviesTopTrending ];
   movies = movies.filter((movie, index, selfArray) =>
               index === selfArray.findIndex(selfMovie => selfMovie.id === movie.id));
