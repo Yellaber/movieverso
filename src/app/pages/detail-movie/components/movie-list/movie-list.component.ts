@@ -44,6 +44,7 @@ export class MovieListComponent {
   });
   carouselConfig = computed<CarouselConfig>(() => ({
     carouselTitle: this.carouselTitle(),
+    text: '',
     movies: this.movies(),
     route: this.hasRoute()? `${this.typeMovieList()}`: '',
     bgButtons: 'from-stone-800',
