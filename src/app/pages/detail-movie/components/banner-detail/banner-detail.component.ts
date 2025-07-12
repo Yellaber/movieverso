@@ -9,7 +9,7 @@ import { DetailMovieResponse } from '@interfaces/';
   imports: [CardDetailComponent, ShortDetailComponent],
   templateUrl: './banner-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'relative flex items-center rounded-md shadow-md p-5 md:p-10 mt-10 lg:mt-15' }
+  host: { class: 'relative flex items-center rounded-md overflow-hidden shadow-md p-5 md:p-10 mt-10 lg:mt-15' }
 })
 export class BannerDetailComponent {
   movieDetail = input.required<DetailMovieResponse>();
