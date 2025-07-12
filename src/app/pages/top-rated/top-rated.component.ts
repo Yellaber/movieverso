@@ -36,7 +36,7 @@ export default class TopRatedComponent implements OnInit {
   ngOnInit() {
     this.menuItems.set(menuItems);
     this.titlePage.set('Mejor valoradas');
-    this.textPage.set('Alta puntuación, alto impacto: Si buscas calidad garantizada, esta es tu zona segura. Películas que se ganaron un 10… o casi.');
+    this.textPage.set('Alta puntuación, alto impacto: Si buscas calidad garantizada, este es tu universo seguro. Películas que se ganaron un 10… o casi.');
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
   }
 }
