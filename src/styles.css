@@ -14,10 +14,7 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-  }
-
-  .bg-blue-color {
-    background-color: #00638d;
+    background-position: center;
   }
 
   .scrollbar-none::-webkit-scrollbar {
