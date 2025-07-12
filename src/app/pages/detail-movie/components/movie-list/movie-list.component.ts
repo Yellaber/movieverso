@@ -22,7 +22,7 @@ interface Notification {
     @if(movies() && movies().length > 0) {
       <carrusel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
-      <carrusel-title [carruselTitle]="typeMovieList()" route=""/>
+      <carrusel-title [carruselTitle]="carouselTitle()" route=""/>
       <notification [notificationTitle]="getNotification().title" [message]="getNotification().message"/>
     }
   `,
@@ -32,8 +32,18 @@ export class MovieListComponent {
   typeMovieList = input.required<TypeMovieList>();
   hasRoute = input<boolean>(true);
   movies = input.required<Movie[]>();
+  carouselTitle = computed(() => {
+    switch(this.typeMovieList()) {
+      case 'recommendations':
+        return 'Recomendadas';
+      case 'similar':
+        return 'Similares';
+      case 'collection':
+        return 'Colección';
+    }
+  });
   carouselConfig = computed<CarouselConfig>(() => ({
-    carouselTitle: this.typeMovieList(),
+    carouselTitle: this.carouselTitle(),
     movies: this.movies(),
     route: this.hasRoute()? `${this.typeMovieList()}`: '',
     bgButtons: 'from-stone-800',
