@@ -13,7 +13,7 @@ import { Movie } from '@interfaces/';
   templateUrl: './banner-hero.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'relative flex items-center rounded-md shadow-md md:gap-10 lg:gap-20 p-5 md:p-10 mt-10 lg:mt-20 mb-10'
+    class: 'relative flex items-center rounded-md overflow-hidden shadow-md md:gap-10 lg:gap-20 p-5 md:p-10 mt-10 lg:mt-20 mb-10'
   }
 })
 export class BannerHeroComponent {
