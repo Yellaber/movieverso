@@ -9,7 +9,7 @@ import { RoutesService } from '@services/';
     <ul class="flex flex-wrap">
       @for(route of mainRoutes(); track $index) {
         <li class="pr-5">
-          <a [routerLink]="getAbsouteRoute(route.path!)" class="text-xs lg:text-sm text-yellow-600">
+          <a [routerLink]="getAbsouteRoute(route.path!)" class="text-xs lg:text-sm text-yellow-600 font-bold">
             {{ route.title }}
           </a>
         </li>
