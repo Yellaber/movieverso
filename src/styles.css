@@ -9,6 +9,13 @@
     src: url('../public/fonts/montserrat-regular.woff2') format('woff2');
   }
 
+  body {
+    background-image: url('../public/images/bg-universe-planets.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
   .bg-blue-color {
     background-color: #00638d;
   }
