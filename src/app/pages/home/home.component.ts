@@ -10,6 +10,14 @@ import { SectionMovie } from '@interfaces/';
     @for(section of sections; track $index) {
       <section-movie [section]="section"/>
     }
+    <div class="flex flex-col justify-center items-center gap-5 py-20">
+      <h2 class="text-2xl lg:text-3xl text-yellow-600 font-bold">¿Nada interesante a la vista?</h2>
+      <p class="text-sm lg:text-xl text-center text-stone-300 font-semibold leading-relaxed md:px-7 lg:px-15">
+        Eso no significa que la película no exista, tal vez la joya que buscas está en algún universo
+        paralelo. Prueba afinando la búsqueda con nuestro filtro avanzado. ¡Entre más detalles das, más
+        preciso es el hallazgo! El universo es tuyo.
+      </p>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
