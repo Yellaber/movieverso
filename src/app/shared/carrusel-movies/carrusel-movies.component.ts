@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, input, OnInit, signal,
-         viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, input, OnInit, signal, viewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CarruselTitleComponent } from './carrusel-title/carrusel-title.component';
-import { CarruselCardMoviesComponent } from './carrusel-card-movies/carrusel-card-movies.component';
-import { CarruselButtonComponent } from './carrusel-button/carrusel-button.component';
+import { CarruselTitleComponent } from './components/carrusel-title/carrusel-title.component';
+import { CarruselCardMoviesComponent } from './components/carrusel-card-movies/carrusel-card-movies.component';
+import { CarruselButtonComponent } from './components/carrusel-button/carrusel-button.component';
 import { CarouselConfig } from '@interfaces/';
 
 const CARD_MOVIE_SIZE = 176; //200px(card size movie) + gap-4(16px)
