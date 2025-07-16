@@ -3,8 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse,
-         MovieTrailerResponse, Trailer, MovieWatchProviderResponse,
-         Keyword, MovieKeywordResponse, MovieCollectionResponse,
+         MovieTrailerResponse, Trailer, Keyword, MovieKeywordResponse, MovieCollectionResponse,
          QueryParams } from '@interfaces/';
 import { UserGeolocationService } from './user-geolocation.service';
 
@@ -36,20 +35,6 @@ export class TmdbService {
       country_metadata.languages[0]: 'en_US';
       this.userLanguage.set(language);
     }
-  };
-
-  getUpcommingMovies(queryParams: QueryParams, limit?: number): Observable<Movie[]> {
-    const url = `${environment.tmdbApiUrl}/discover/movie`;
-    const key = `${url}/upcoming-home/page=1`;
-    if(this.cacheQuery.has(key)) {
-      return of(<Movie[]>this.cacheQuery.get(key));
-    }
-    const params = this.getHttpParamsCommons(queryParams, 1);
-    return this.httpClient.get<MovieResponse>(url, {params}).pipe(
-      map(({results}) => results.filter(movie => movie.poster_path)),
-      map(movies => limit? movies.slice(0, limit): movies),
-      tap(movies => this.cacheQuery.set(key, movies))
-    );
   };
 
   getMoviesFiltered(queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
@@ -157,6 +142,27 @@ export class TmdbService {
     }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
   };
 
+  getMovieByTitle(query: string, page: number): Observable<MovieResponse[]> {
+    if(page === 1) {
+      this.moviesFiltered = [];
+    }
+    const url = `${environment.tmdbApiUrl}/search/movie`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        query,
+        language: this.userLanguage(),
+        region: this.userCountryCode(),
+        page
+      }
+    }).pipe(
+        map(movieResponse => {
+          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+          return this.moviesFiltered;
+        })
+      );
+  };
+
   getMovieRecommendations(movieId: number, page: number = 1): Observable<MovieResponse> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/recommendations`;
     if(this.cacheQuery.has(url)) {
@@ -220,13 +226,6 @@ export class TmdbService {
     );
   };
 
-  getMovieWatchProviders(movieId: number): Observable<MovieWatchProviderResponse> {
-    const url = `${environment.tmdbApiUrl}/movie/${movieId}/watch/providers`;
-    return this.httpClient.get<MovieWatchProviderResponse>(url, {
-      params: { api_key: environment.tmdbApiKey }
-    });
-  };
-
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/keywords`;
     if(this.cacheQuery.has(url)) {
@@ -255,7 +254,6 @@ export class TmdbService {
   };
 
   private getHttpParamsCommons(queryParams: QueryParams, page: number): HttpParams {
-    const genresIdSelected = this.getGenresIdSelected(queryParams.withGenres);
     const params = new HttpParams()
     .set('api_key', environment.tmdbApiKey)
     .set('include_adult', false)
@@ -266,18 +264,9 @@ export class TmdbService {
     .set('sort_by', queryParams.sortBy ?? '')
     .set('primary_release_date.gte', queryParams.primaryReleaseDateGte ?? '')
     .set('primary_release_date.lte', queryParams.primaryReleaseDateLte ?? '')
-    .set('with_genres', genresIdSelected)
-    .set('with_keywords', queryParams.withKeywords ?? '')
+    .set('with_genres', queryParams.withGenres ?? '')
     .set('vote_average.gte', queryParams.voteAverageGte ?? 0)
     .set('vote_count.gte', queryParams.voteCountGte ?? 0);
     return params;
-  };
-
-  getGenresIdSelected(genresSelected: Genre[] | undefined): string {
-    if(genresSelected) {
-      const genresId = genresSelected.map(genre => genre.id);
-      return genresId.toString();
-    }
-    return '';
   };
 }
