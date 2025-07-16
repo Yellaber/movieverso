@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NavigationComponent } from '@app/components/menubar/navigation/navigation.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @Component({
   selector: 'categories',
