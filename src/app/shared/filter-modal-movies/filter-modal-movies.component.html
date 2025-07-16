@@ -1,34 +1,21 @@
 <div [class]="classListModal()">
   <div [class]="classListModalContent()">
-    <button class="absolute top-2 right-4 bg-yellow-600 text-stone-900 rounded-full hover:cursor-pointer text-xl lg:text-2xl" (click)="onClose()">
+    <button class="absolute top-2 right-4 bg-yellow-600 text-stone-900 rounded-full cursor-pointer text-xl lg:text-2xl" (click)="onClose()">
       <fa-icon [icon]="faCircleXmark"></fa-icon>
     </button>
-    <h2 class="text-xl font-bold bg-yellow-600 text-stone-900 rounded-t-md shadow-md py-2 pl-6">Filtrar por...</h2>
-    <div class="flex flex-col h-100 overflow-y-auto gap-4 p-6">
-      <!--<filter-genre [genresSelected]="this.queryParams().withGenres!"
-      (emitGenresMovieSelected)="onGenresMovieSelected($event)"/>
-      <filter-vote-average [voteAverageSelected]="this.queryParams().voteAverageGte!"
-      (emitVoteAverage)="onVoteAverage($event)"/>-->
+    <h2 class="text-xl font-bold bg-yellow-600 text-stone-900 rounded-t-md shadow-md py-2 pl-6">Filtro avanzado</h2>
+    <div class="flex flex-col h-100 overflow-y-auto gap-8 p-6">
+      <filter-genre/>
+      <form-filter/>
+      <filter-order/>
     </div>
     <div class="flex bg-yellow-600 text-stone-900 font-bold rounded-b-md divide-x-2 divide-stone-900 py-3">
-      <button class="w-1/2 text-xs md:text-sm rounded-bl-md hover:cursor-pointer">Limpiar filtros</button>
-      @if(!totalMovies.isLoading()) {
-        @if(totalMovies.hasValue()) {
-          <button class="w-1/2 text-xs md:text-sm rounded-br-md hover:cursor-pointer">
-            Ver los {{ totalMovies.value()[0].total_results | number: '1.0-0' }} resultados
-          </button>
-        } @else {
-          <button class="w-1/2 text-xs md:text-sm rounded-br-md hover:cursor-pointer">Sin resultados que mostrar</button>
-        }
-      } @else {
-        <button class="flex justify-center items-center w-1/2 text-xs md:text-sm rounded-br-md hover:cursor-pointer">
-          <span class="pr-1">Ver los</span>
-          <div class="animate-spin">
-            <fa-icon [icon]="faSpinner"></fa-icon>
-          </div>
-          <span class="pl-1">resultados</span>
-        </button>
-      }
+      <button class="w-1/2 text-xs md:text-sm rounded-bl-md cursor-pointer" (click)="onResetFilter()">
+        Resetear filtro
+      </button>
+      <button class="w-1/2 text-xs md:text-sm rounded-br-md cursor-pointer" (click)="onShowResults()">
+        Mostrar resultados
+      </button>
     </div>
   </div>
 </div>
