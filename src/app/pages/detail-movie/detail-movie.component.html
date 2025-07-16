@@ -1,5 +1,8 @@
 @if(!movieSelected.isLoading()) {
   @if(movieSelected.hasValue()) {
+    <div class="flex mt-10 lg:mt-15 mb-7">
+      <categories [menuItems]="menuItems()"/>
+    </div>
     <banner-detail [movieDetail]="movieSelected.value()"/>
     <section class="flex gap-5 mt-5">
       <side-detail [movieDetail]="movieSelected.value()" [movieKeywords]="movieKeywords.value()!"/>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { YouTubePlayer } from '@angular/youtube-player';
-import { CarruselTitleComponent } from '@shared/carrusel-movies/carrusel-title/carrusel-title.component';
+import { CarruselTitleComponent } from '@app/shared/carrusel-movies/components/carrusel-title/carrusel-title.component';
 import { NotificationComponent } from '@shared/notification/notification.component';
 import { Trailer } from '@interfaces/';
 

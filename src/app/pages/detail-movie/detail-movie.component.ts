@@ -13,6 +13,9 @@ import { NotificationComponent } from '@shared/notification/notification.compone
 import { YoutubeVideoComponent } from './components/youtube-video/youtube-video.component';
 import { environment } from '@environments/environment.developments';
 import { TmdbService, SeoFriendlyService, ScrollService } from '@services/';
+import { CategoriesComponent } from "@app/shared/categories/categories.component";
+
+const menuItems = ['upcoming', 'now-playing', 'popular', 'top-rated', 'trending'];
 
 @Component({
   imports: [
@@ -25,7 +28,8 @@ import { TmdbService, SeoFriendlyService, ScrollService } from '@services/';
     NotificationComponent,
     CarruselMoviesSkeletonComponent,
     YoutubeVideoComponent,
-  ],
+    CategoriesComponent
+],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -34,6 +38,7 @@ export default class DetailMovieComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
   private scrollService = inject(ScrollService);
+  menuItems = signal<string[]>([]);
   idMovie = signal<number | null>(null);
   movieSelected = rxResource({
     request: this.idMovie,
@@ -78,6 +83,7 @@ export default class DetailMovieComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
+      this.menuItems.set(menuItems);
       const idSlug = params.get('id-slug') || '';
       this.idMovie.set(+idSlug.split('-')[0]);
       this.scrollService.scrollTop();
