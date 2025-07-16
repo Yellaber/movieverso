@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CarruselTitleSkeletonComponent } from './carrusel-title-skeleton/carrusel-title-skeleton.component';
-import { CardMovieSkeletonComponent } from './card-movie-skeleton/card-movie-skeleton.component';
+import { CarruselTitleSkeletonComponent } from './components/carrusel-title-skeleton/carrusel-title-skeleton.component';
+import { CardMovieSkeletonComponent } from './components/card-movie-skeleton/card-movie-skeleton.component';
 
 @Component({
   selector: 'carrusel-movies-skeleton',
