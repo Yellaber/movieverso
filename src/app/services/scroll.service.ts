@@ -48,4 +48,11 @@ export class ScrollService {
       }
     }
   };
+
+  blockWindow(isBlocked: boolean) {
+    if(isPlatformBrowser(this.platform)) {
+      isBlocked? this.document.querySelector('body')?.classList.add('overflow-hidden'):
+      this.document.querySelector('body')?.classList.remove('overflow-hidden');
+    }
+  };
 }
