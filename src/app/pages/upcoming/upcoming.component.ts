@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CategoriesComponent } from '@shared/categories/categories.component';
-import { LoadMoviesFilteredComponent } from '@shared/load-movies-filtered/load-movies-filtered.component';
+import { LoadCategoryComponent } from '@shared/load-category/load-category.component';
 import { SeoFriendlyService } from '@services/';
 import { EndPointValid } from '@interfaces/';
 
@@ -10,10 +10,10 @@ const menuItems = ['now-playing', 'popular', 'top-rated', 'trending'];
   selector: 'upcoming',
   imports: [
     CategoriesComponent,
-    LoadMoviesFilteredComponent,
+    LoadCategoryComponent,
   ],
   template: `
-    <div class="flex flex-col gap-5 pt-12 lg:pt-15">
+    <div class="flex flex-col gap-5 mt-10 lg:mt-15">
       <h3 class="text-sm lg:text-xl font-bold rounded-full text-yellow-600 gap-2">
         {{ titlePage() }}
       </h3>
@@ -22,7 +22,7 @@ const menuItems = ['now-playing', 'popular', 'top-rated', 'trending'];
       </p>
     </div>
     <categories [menuItems]="menuItems()"/>
-    <load-movies-filtered [endPoint]="endPointValid()"/>
+    <load-category [endPoint]="endPointValid()"/>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
