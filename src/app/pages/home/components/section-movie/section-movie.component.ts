@@ -3,7 +3,7 @@ import { BannerHeroComponent } from '../banner-hero/banner-hero.component';
 import { BannerHeroSkeletonComponent } from '../banner-hero-skeleton/banner-hero-skeleton.component';
 import { CarruselMoviesComponent } from '@shared/carrusel-movies/carrusel-movies.component';
 import { CarruselMoviesSkeletonComponent } from '@shared/carrusel-movies-skeleton/carrusel-movies-skeleton.component';
-import { TmdbService } from '@services/tmdb.service';
+import { TmdbService } from '@services/';
 import { SectionMovie, Movie, CarouselConfig, EndPointValid } from '@interfaces/';
 
 @Component({
@@ -16,7 +16,8 @@ import { SectionMovie, Movie, CarouselConfig, EndPointValid } from '@interfaces/
   ],
   template: `
     @if(movies().length > 0) {
-      <banner-hero [heroType]="section().heroType" [heroTitle]="section().heroTitle" [movie]="movies()[0]"/>
+      <banner-hero [heroType]="section().heroType" [heroTitle]="section().heroTitle"
+      [movie]="movies()[0]"/>
       <carrusel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
       <banner-hero-skeleton/>
@@ -48,7 +49,7 @@ export class SectionMovieComponent implements OnInit {
     switch(this.section().heroType) {
       case 'now-playing':
         this.text.set('¡Directo desde la pantalla grande! Aquí reunimos las 20 películas que están encendiendo las salas de cine en este preciso instante. El ranking se basa en fechas de estreno recientes, disponibilidad en cartelera y, claro, en ese aroma irresistible a crispetas recién hechas.');
-          this.tmdbService.getMovies(EndPointValid.nowPlaying).subscribe(movies => this.movies.set(movies));
+        this.tmdbService.getMovies(EndPointValid.nowPlaying).subscribe(movies => this.movies.set(movies));
         break;
       case 'popular':
         this.text.set('Estas son las estrellas del momento. Las 20 películas que están rompiendo internet, acumulando clics, likes y miradas curiosas. No importa si son nuevas o antiguas, ¡la popularidad no entiende de edad!');
