@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, OnInit, viewChild }
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
 import { LoadResultsComponent } from '@shared/load-results/load-results.component';
-import { QueryParamsService, TmdbService, SeoFriendlyService, ScrollService, MenubarService } from '@services/';
+import { TmdbService, SeoFriendlyService, QueryParamsService, ScrollService, MenubarService } from '@services/';
 import { MovieResponse, QueryParams } from '@interfaces/';
 
 const noMovieResponse: MovieResponse = {
