@@ -77,7 +77,7 @@ export const routes: Routes = [
   },
   {
     title: 'Términos y condiciones',
-    path: 'terminos-y-condiciones',
+    path: 'terms-and-conditions',
     loadComponent: () => import('./pages/terminos-condiciones/terminos-condiciones.component')
   },
   {
