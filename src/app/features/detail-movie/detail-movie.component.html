@@ -1,0 +1,31 @@
+@if(!movieSelected.isLoading()) {
+  @if(movieSelected.hasValue()) {
+    <div class="flex mt-10 lg:mt-15 mb-7">
+      <categories [menuItems]="menuItems()"/>
+    </div>
+    <banner-detail [movieDetail]="movieSelected.value()"/>
+    <section class="flex gap-5 mt-5">
+      <side-detail [movieDetail]="movieSelected.value()"/>
+      <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-10 py-11">
+        <trailer [movieId]="movieSelected.value().id"/>
+        <movie-list [movieId]="movieSelected.value().id" typeMovieList="recommendations"/>
+        <movie-list [movieId]="movieSelected.value().id" typeMovieList="similar"/>
+        <movie-list [movieId]="idCollection()!" typeMovieList="collection" [hasRoute]="false"/>
+      </div>
+    </section>
+  } @else {
+    <div class="flex mt-10 lg:mt-15">
+      <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
+    </div>
+  }
+} @else {
+  <banner-detail-skeleton/>
+  <section class="flex gap-5 mt-5">
+    <side-detail-skeleton/>
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 p-10">
+      <carrusel-movies-skeleton/>
+      <carrusel-movies-skeleton/>
+      <carrusel-movies-skeleton/>
+    </div>
+  </section>
+}
