@@ -1,84 +1,54 @@
 import { Routes } from '@angular/router';
+import { authRoutes } from './features/auth/auth.routes';
+import { detailMovieRoutes } from './features/detail-movie/detail-movie.routes';
 
 export const routes: Routes = [
   {
     title: 'Inicio',
     path: '',
-    loadComponent: () => import('./pages/home/home.component')
+    loadComponent: () => import('./features/home/home.component')
   },
-  {
-    title: 'Película',
-    path: 'movie/:id-slug',
-    loadComponent: () => import('./pages/detail-movie/detail-movie.component'),
-  },
-  {
-    title: 'Recomendaciones',
-    path: 'movie/:id-slug/recommendations',
-    loadComponent: () => import('./pages/recommendations/recommendations.component')
-  },
-  {
-    title: 'Similares',
-    path: 'movie/:id-slug/similar',
-    loadComponent: () => import('./pages/similars/similars.component')
-  },
+  ...detailMovieRoutes,
   {
     title: 'Próximos estrenos',
     path: 'upcoming',
-    loadComponent: () => import('./pages/upcoming/upcoming.component')
+    loadComponent: () => import('./features/upcoming/upcoming.component')
   },
   {
     title: 'En cartelera',
     path: 'now-playing',
-    loadComponent: () => import('./pages/now-playing/now-playing.component')
+    loadComponent: () => import('./features/now-playing/now-playing.component')
   },
   {
     title: 'Populares',
     path: 'popular',
-    loadComponent: () => import('./pages/popular/popular.component')
+    loadComponent: () => import('./features/popular/popular.component')
   },
   {
     title: 'Mejor valoradas',
     path: 'top-rated',
-    loadComponent: () => import('./pages/top-rated/top-rated.component')
+    loadComponent: () => import('./features/top-rated/top-rated.component')
   },
   {
     title: 'En tendencia',
     path: 'trending',
-    loadComponent: () => import('./pages/trending/trending.component')
+    loadComponent: () => import('./features/trending/trending.component')
   },
   {
     title: 'Buscar',
     path: 'search',
-    loadComponent: () => import('./pages/search/search.component')
+    loadComponent: () => import('./features/search/search.component')
   },
-  {
-    path: 'auth',
-    children: [
-      {
-        title: 'Iniciar sesión',
-        path: 'sign-in',
-        loadComponent: () => import('./pages/auth/sign-in/sign-in.component')
-      },
-      {
-        title: 'Registro',
-        path: 'sign-up',
-        loadComponent: () => import('./pages/auth/sign-up/sign-up.component')
-      },
-      {
-        path: '**',
-        redirectTo: 'sign-in'
-      }
-    ]
-  },
+  ...authRoutes,
   {
     title: 'Política de privacidad',
     path: 'politica-de-privacidad',
-    loadComponent: () => import('./pages/politica-privacidad/politica-privacidad.component')
+    loadComponent: () => import('./features/politica-privacidad/politica-privacidad.component')
   },
   {
     title: 'Términos y condiciones',
     path: 'terms-and-conditions',
-    loadComponent: () => import('./pages/terminos-condiciones/terminos-condiciones.component')
+    loadComponent: () => import('./features/terminos-condiciones/terminos-condiciones.component')
   },
   {
     path: '**',
