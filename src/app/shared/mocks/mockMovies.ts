@@ -1,4 +1,4 @@
-import { Movie } from '@app/interfaces';
+import { Movie } from '@shared/interfaces';
 
 export const mockMovies: Movie[] = [
   {
