@@ -1,6 +1,6 @@
 @if(movie()) {
   <a [routerLink]="['/movie', `${movie().id}-${slugify(movie().title)}`]">
-    <img class="w-full h-60 rounded-t-md object-cover object-center"
+    <img class="w-full h-60 rounded-t-md bg-stone-700 object-cover object-center"
     [src]="movie().poster_path? srcImage(): '/images/no-poster.jpg'" loading="lazy">
   </a>
   <div [class]="bgClassCardFooter()">
