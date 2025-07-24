@@ -22,7 +22,7 @@ interface Notification {
     NotificationComponent,
   ],
   template: `
-    @if(movies.hasValue()) {
+    @if(movies.hasValue() && movies.value().length > 0) {
       <carrusel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
       <carrusel-title [carruselTitle]="carouselTitle()" route=""/>
