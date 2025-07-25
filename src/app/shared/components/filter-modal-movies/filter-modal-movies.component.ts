@@ -5,7 +5,7 @@ import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FilterGenreComponent } from './filter-genre/filter-genre.component';
 import { FormFilterComponent } from './form-filter/form-filter.component';
 import { FilterOrderByComponent } from './filter-order-by/filter-order-by.component';
-import { MenubarService, QueryParamsService, ScrollService } from '@shared/services';
+import { ActiveActionService, QueryParamsService, ScrollService } from '@shared/services';
 
 const CLASS_MODAL = 'fixed inset-0 bg-stone-900/60 items-center justify-center z-50 hidden';
 const CLASS_MODAL_CONTENT = 'w-full max-w-md bg-stone-300 text-stone-700 rounded-md shadow-md transform transition-all duration-300 translate-y-full opacity-0';
@@ -22,6 +22,10 @@ const CLASS_MODAL_CONTENT = 'w-full max-w-md bg-stone-300 text-stone-700 rounded
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterModalMoviesComponent implements OnInit {
+  private router = inject(Router);
+  private queryParamsService = inject(QueryParamsService);
+  private scrollService = inject(ScrollService);
+  private activeActionService = inject(ActiveActionService);
   faCircleXmark = faCircleXmark;
   faSpinner = faSpinner;
   isOpen = input.required<boolean>();
@@ -32,10 +36,6 @@ export class FilterModalMoviesComponent implements OnInit {
   classListModal = signal<string>('');
   classListModalContent = signal<string>('');
   classListFilterContainer = signal<string>('');
-  private router = inject(Router);
-  private queryParamsService = inject(QueryParamsService);
-  private scrollService = inject(ScrollService);
-  private menubarService = inject(MenubarService);
 
   constructor() {
     effect(() => {
@@ -83,7 +83,7 @@ export class FilterModalMoviesComponent implements OnInit {
         sortBy: this.filterOrderBy()?.selectedOption()
       });
       this.onClose();
-      this.menubarService.set('filter');
+      this.activeActionService.set('filter');
       this.router.navigateByUrl('/search');
     }
   };
