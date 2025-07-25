@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { QueryParams } from '@shared/interfaces';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class QueryParamsService {
     this.queryParams.set(queryParams);
   };
 
-  get(): Signal<QueryParams | undefined> {
+  get() {
     return this.queryParams.asReadonly();
   };
 }
