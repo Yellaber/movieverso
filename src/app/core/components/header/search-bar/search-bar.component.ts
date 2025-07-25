@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons';
-import { MenubarService, QueryParamsService } from '@shared/services';
+import { ActiveActionService, QueryParamsService } from '@shared/services';
 
 @Component({
   selector: 'search-bar',
@@ -19,7 +19,7 @@ export class SearchBarComponent {
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   private queryParamsService = inject(QueryParamsService);
-  private menubarService = inject(MenubarService);
+  private activeActionService = inject(ActiveActionService);
   faMagnifyingGlass = faMagnifyingGlass;
   faSliders = faSliders;
   emmitClick = output<boolean>();
@@ -35,7 +35,7 @@ export class SearchBarComponent {
       this.queryParamsService.set({
         query: this.searchingForm.controls['search'].value!
       });
-      this.menubarService.set('search');
+      this.activeActionService.set('search');
       this.router.navigateByUrl('/search');
     }
   };
