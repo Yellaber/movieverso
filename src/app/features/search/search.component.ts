@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { LoadResultsComponent } from '@shared/components/load-results/load-results.component';
 import { SearchService } from './services/search.service';
 import { SeoFriendlyService } from '@app/core/services';
-import { MenubarService, QueryParamsService, ScrollService } from '@shared/services';
+import { ActiveActionService, QueryParamsService, ScrollService } from '@shared/services';
 import { MovieResponse, QueryParams } from '@shared/interfaces';
 
 const noMovieResponse: MovieResponse = {
@@ -36,9 +36,9 @@ export default class SearchComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   private queryParamsService = inject(QueryParamsService);
   private scrollService = inject(ScrollService);
-  private menubarService = inject(MenubarService);
+  private activeActionService = inject(ActiveActionService);
   queryParams = this.queryParamsService.get();
-  typeSelectedOption = this.menubarService.get();
+  typeSelectedOption = this.activeActionService.get();
   loadResultsRef = viewChild(LoadResultsComponent);
   movies = rxResource({
     request: () => ({ typeSelectedOption: this.typeSelectedOption(), queryParams: this.queryParams(),
