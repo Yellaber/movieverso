@@ -1,59 +1,110 @@
-# Movieverso
+# MovieVerso 🎬
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.4.
+[![Estado de la Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/tu-usuario/movieverso)
 
-## Development server
+**MovieVerso** es una aplicación web moderna y responsiva para explorar un vasto universo de películas. Descubre estrenos, tendencias, las más populares y las mejor valoradas. Obtén información detallada, recomendaciones y mucho más. ¡Tu portal al cine!
 
-To start a local development server, run:
+**[➡️ Ver Demo en Vivo](https://movieverso.vercel.app)**
 
-```bash
-ng serve
+![Captura de pantalla de MovieVerso](https://via.placeholder.com/800x450.png?text=Añade+una+captura+de+pantalla+del+proyecto)
+
+## ✨ Características Principales
+
+-   **Exploración Intuitiva**: Navega por películas divididas en categorías claras:
+    -   🍿 En Cartelera
+    -   🔥 Populares
+    -   ⭐ Mejor Valoradas
+    -   📈 En Tendencia
+    -   📅 Próximos Estrenos
+-   **Búsqueda Potente**: Encuentra cualquier película con un sistema de búsqueda rápido y eficiente.
+-   **Detalles Completos**: Accede a páginas de detalle para cada película con sinopsis, puntuación, popularidad, géneros, y más.
+-   **Descubrimiento Inteligente**: Obtén listas de películas **recomendadas** y **similares** basadas en tus intereses.
+-   **Diseño Responsivo**: Experiencia de usuario fluida y adaptada a cualquier dispositivo, desde móviles hasta ordenadores de escritorio.
+-   **Optimización SEO**: Construido con Angular y prerendering para una carga inicial veloz y un excelente posicionamiento en buscadores.
+-   **Navegación Infinita**: Carga más películas automáticamente al hacer scroll en las listas.
+
+## 🛠️ Tecnologías Utilizadas
+
+-   **Framework**: Angular v19+
+-   **Lenguaje**: TypeScript
+-   **Estado de la Aplicación**: Angular Signals
+-   **Estilos**: Tailwind CSS
+-   **Datos**: The Movie Database (TMDb) API
+-   **Tooling**: Angular CLI
+
+## 🚀 Cómo Empezar
+
+Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina local.
+
+### Prerrequisitos
+
+-   Node.js (versión 18.x o superior)
+-   Angular CLI instalado globalmente: `npm install -g @angular/cli`
+-   Una clave de API de The Movie Database (TMDb). Es gratuita y fácil de obtener.
+
+### Instalación
+
+1.  **Clona el repositorio:**
+    ```bash
+    git clone https://github.com/tu-usuario/movieverso.git
+    cd movieverso
+    ```
+
+2.  **Instala las dependencias del proyecto:**
+    ```bash
+    npm install
+    ```
+
+3.  **Configura las variables de entorno:**
+    Crea un archivo `environment.ts` dentro de la carpeta `src/environments/`. Puedes copiar el contenido de `environment.development.ts` y modificarlo.
+
+    `src/environments/environment.ts`:
+    ```typescript
+    export const environment = {
+      production: false,
+      // Añade tu clave de API de TMDb aquí
+      tmdbApiKey: 'TU_CLAVE_DE_API_DE_TMDB',
+      // URL base de la API de TMDb
+      tmdbApiUrl: 'https://api.themoviedb.org/3',
+      // URL base para las imágenes
+      tmdbImageUrl: 'https://image.tmdb.org/t/p/original'
+    };
+    ```
+    *Asegúrate de reemplazar `TU_CLAVE_DE_API_DE_TMDB` con tu clave real.*
+
+### Scripts Disponibles
+
+-   **Iniciar el servidor de desarrollo:**
+    ```bash
+    ng serve -o
+    ```
+    La aplicación se abrirá automáticamente en `http://localhost:4200/`.
+
+-   **Construir para producción:**
+    ```bash
+    ng build
+    ```
+    Los archivos optimizados se generarán en la carpeta `dist/movieverso`.
+
+-   **Ejecutar pruebas unitarias:**
+    ```bash
+    ng test
+    ```
+
+## 📂 Estructura del Proyecto (Simplificada)
+
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+movieverso/
+├── src/
+│   ├── app/
+│   │   ├── components/     # Componentes reutilizables (botones, cards, etc.)
+│   │   ├── pages/          # Componentes de página (Home, MovieDetails, etc.)
+│   │   ├── services/       # Servicios (API, SEO, Scroll, etc.)
+│   │   ├── models/         # Interfaces y modelos de datos
+│   │   └── app.routes.ts   # Definición de rutas principales
+│   ├── assets/             # Archivos estáticos (imágenes, fuentes)
+│   └── environments/       # Configuración de entornos
+├── angular.json            # Configuración del workspace de Angular
+├── tailwind.config.js      # Configuración de Tailwind CSS
+└── package.json            # Dependencias y scripts del proyecto
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
