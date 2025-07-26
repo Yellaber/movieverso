@@ -15,20 +15,17 @@ describe('Seofriendly Service:', () => {
     TestBed.configureTestingModule({
       providers: [
         SeoFriendlyService,
-        { provide: Title,
-          useValue: { setTitle: jest.fn() }
-        },
-        { provide: Meta,
-          useValue: { updateTag: jest.fn() }
-        }
+        { provide: Title, useValue: { setTitle: jest.fn() } },
+        { provide: Meta, useValue: { updateTag: jest.fn() } }
       ]
     });
-  });
-
-  beforeEach(() => {
     seofriendlyService = TestBed.inject(SeoFriendlyService);
     titleService = TestBed.inject(Title);
     metaService = TestBed.inject(Meta);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('Should create service.', () => {
@@ -40,6 +37,7 @@ describe('Seofriendly Service:', () => {
     expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
+    expect(metaService.updateTag).not.toHaveBeenCalledWith(expect.objectContaining({ name: 'og:image' }));
   });
 
   it('Should setup the title and meta tags with image.', () => {
