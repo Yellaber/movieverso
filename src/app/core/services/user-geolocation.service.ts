@@ -16,7 +16,7 @@ export class UserGeolocationService {
   private userGeolocation: UserGeolocation | undefined;
 
   loadUserLocation(apiUrlGeolocation: string): Observable<UserGeolocation | undefined> {
-    if(!isPlatformBrowser(this.platformId)) { return of(); }
+    if(!isPlatformBrowser(this.platformId)) { return of(undefined); }
     const userLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocation) {
       const geoLocation = <UserGeolocation>JSON.parse(userLocation);
