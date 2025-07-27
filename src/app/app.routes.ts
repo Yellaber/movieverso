@@ -41,16 +41,6 @@ export const routes: Routes = [
   },
   ...authRoutes,
   {
-    title: 'Política de privacidad',
-    path: 'politica-de-privacidad',
-    loadComponent: () => import('./features/politica-privacidad/politica-privacidad.component')
-  },
-  {
-    title: 'Términos y condiciones',
-    path: 'terms-and-conditions',
-    loadComponent: () => import('./features/terminos-condiciones/terminos-condiciones.component')
-  },
-  {
     path: '**',
     redirectTo: ''
   }
