@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RatingComponent } from '@shared/components/rating/rating.component';
-import { FormUtils } from '@app/utilities/form-utils';
+import { FormUtils } from '@shared/utilities/form-utils';
 import { QueryParams } from '@shared/interfaces';
 
 @Component({
