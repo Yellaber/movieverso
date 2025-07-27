@@ -1,6 +1,6 @@
 # MovieVerso 🎬
 
-[![Estado de la Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/Yellaber/movie-verso)
+[![Estado de la Build](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/Yellaber/movieverso)
 
 **MovieVerso** es una aplicación web moderna y responsiva para explorar un vasto universo de películas. Descubre estrenos, tendencias, las más populares y las mejor valoradas. Obtén información detallada, recomendaciones y mucho más. ¡Tu portal al cine!
 
