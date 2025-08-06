@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, of, tap } from 'rxjs';
+import { _, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CategoriesComponent } from '@shared/components/categories/categories.component';
@@ -16,7 +17,7 @@ import { environment } from '@environments/environment.developments';
 import { ScrollService, TmdbService } from '@shared/services';
 import { SeoFriendlyService } from '@app/core/services';
 
-const menuItems = ['upcoming', 'now-playing', 'popular', 'top-rated', 'trending'];
+const menuItems = [ 'upcoming', 'now-playing', 'popular', 'top-rated', 'trending' ];
 
 @Component({
   imports: [
@@ -30,6 +31,7 @@ const menuItems = ['upcoming', 'now-playing', 'popular', 'top-rated', 'trending'
     NotificationComponent,
     CarruselMoviesSkeletonComponent,
     TrailerComponent,
+    TranslatePipe
   ],
   templateUrl: './detail-movie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -38,17 +40,17 @@ export default class DetailMovieComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private tmdbService = inject(TmdbService);
   private seoFriendlyService = inject(SeoFriendlyService);
+  private translateService = inject(TranslateService);
   private scrollService = inject(ScrollService);
   menuItems = signal<string[]>([]);
   idMovie = signal<number | undefined>(undefined);
   movieSelected = rxResource({
     request: this.idMovie,
-    loader: () => this.tmdbService.getMovieById(this.idMovie()!)
+    loader: ({ request }) => this.tmdbService.getMovieById(request)
       .pipe(
         tap(detailMovie => {
           const movieYear = detailMovie.release_date.toString().split('-')[0];
-          this.seoFriendlyService.setMetaTags(`${detailMovie.title} (${movieYear})`, `Detalles, sinopsis, reparto y más sobre la película ${detailMovie.title}.`,
-          `${environment.imageUrl}${detailMovie.backdrop_path}`)
+          this.loadMetaTags(detailMovie.title, movieYear, detailMovie.backdrop_path);
         }))
   });
   idCollection = computed<number | undefined>(() =>
@@ -63,5 +65,13 @@ export default class DetailMovieComponent implements OnInit {
       this.idMovie.set(+idSlug.split('-')[0]);
       this.scrollService.scrollTop();
     });
+  };
+
+  private loadMetaTags(movieTitle: string, movieYear: string, movieBackdropPath: string) {
+    this.translateService.get(_('detailMovie.metaTags.description'), { title: movieTitle })
+      .subscribe((description: string) =>
+        this.seoFriendlyService.setMetaTags(`${movieTitle} (${movieYear})`, description,
+          `${environment.imageUrl}${movieBackdropPath}`)
+    );
   };
 };
