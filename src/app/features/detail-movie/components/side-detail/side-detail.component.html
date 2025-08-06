@@ -3,15 +3,15 @@
   <hr class="text-stone-700">
 }
 @if(movieDetail().spoken_languages.length > 0) {
-  <badge-section titleSection="Idiomas:" [badges]="movieDetail().spoken_languages"/>
+  <badge-section [titleSection]="'detailMovie.sideDetail.languages' | translate" [badges]="movieDetail().spoken_languages"/>
   <hr class="text-stone-700">
 }
-<info-item label="Estado:" [value]="movieDetail().status"/>
+<info-item [label]="'detailMovie.sideDetail.status' | translate" [value]="movieDetail().status"/>
 @if(movieDetail().production_companies.length > 0) {
   <hr class="text-stone-700">
-  <badge-section titleSection="Compañias productoras:" [badges]="movieDetail().production_companies"/>
+  <badge-section [titleSection]="'detailMovie.sideDetail.productionCompanies' | translate" [badges]="movieDetail().production_companies"/>
 }
-@if(movieKeywords.hasValue()) {
+@if(movieKeywords.hasValue() && movieKeywords.value().length > 0) {
   <hr class="text-stone-700">
-  <badge-section titleSection="Palabras clave:" [badges]="movieKeywords.value()"/>
+  <badge-section [titleSection]="'detailMovie.sideDetail.keywords' | translate" [badges]="movieKeywords.value()"/>
 }
