@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslatePipe } from "@ngx-translate/core";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons';
 import { ActiveActionService, QueryParamsService } from '@shared/services';
@@ -9,7 +10,8 @@ import { ActiveActionService, QueryParamsService } from '@shared/services';
   selector: 'search-bar',
   imports: [
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    TranslatePipe
   ],
   templateUrl: './search-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,11 +24,11 @@ export class SearchBarComponent {
   private activeActionService = inject(ActiveActionService);
   faMagnifyingGlass = faMagnifyingGlass;
   faSliders = faSliders;
-  emmitClick = output<boolean>();
+  openFiltersClick = output<void>();
   searchingForm = this.formBuilder.group({
     search: [
       '',
-      [Validators.required, Validators.minLength(1)]
+      [Validators.required]
     ]
   });
 
@@ -40,7 +42,7 @@ export class SearchBarComponent {
     }
   };
 
-  onClick() {
-    this.emmitClick.emit(true);
+  onOpenFilters() {
+    this.openFiltersClick.emit();
   };
 }
