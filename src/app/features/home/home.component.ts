@@ -1,22 +1,25 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnInit } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 import { SectionMovieComponent } from './components/section-movie/section-movie.component';
 import { SeoFriendlyService } from '@app/core/services';
 import { ScrollService } from '@shared/services';
-import { SectionMovie } from '@shared/interfaces';
+import { SectionMovie, TypeTag } from '@shared/interfaces';
 
 @Component({
   selector: 'home',
-  imports: [SectionMovieComponent],
+  imports: [
+    SectionMovieComponent,
+    TranslatePipe
+  ],
   template: `
     @for(section of sections; track $index) {
       <section-movie [section]="section"/>
     }
     <div class="flex flex-col justify-center items-center gap-5 py-20">
-      <h2 class="text-2xl lg:text-3xl text-yellow-600 font-bold">¿Nada interesante a la vista?</h2>
+      <h2 class="text-2xl lg:text-3xl text-yellow-600 font-bold">{{ 'home.title' | translate }}</h2>
       <p class="text-sm lg:text-xl text-center text-stone-300 font-semibold leading-relaxed md:px-7 lg:px-15">
-        Eso no significa que la película no exista, tal vez la joya que buscas está en algún universo
-        paralelo. Prueba afinando la búsqueda con nuestro filtro avanzado. ¡Entre más detalles das, más
-        preciso es el hallazgo! El universo es tuyo.
+        {{ 'home.paragraph' | translate }}
       </p>
     </div>
   `,
@@ -25,6 +28,7 @@ import { SectionMovie } from '@shared/interfaces';
 export default class HomeComponent implements OnInit, AfterViewInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   private scrollService = inject(ScrollService);
+  private translateService = inject(TranslateService);
   sections: SectionMovie[] = [];
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -34,7 +38,9 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   };
 
   ngOnInit() {
-    this.seoFriendlyService.setMetaTags('Inicio', 'Descubre películas de forma rápida y divertida en MovieVerso. Explora por nombre, género o popularidad y accede a información detallada de tus películas favoritas. ¡Tu universo de cine comienza aquí!');
+    this.translateService.get('home.metaTags').subscribe((metaTags: { title: string, description: string }) => {
+      this.seoFriendlyService.setMetaTags(metaTags.title, metaTags.description);
+    });
     this.loadSections();
   };
 
@@ -42,12 +48,15 @@ export default class HomeComponent implements OnInit, AfterViewInit {
     this.scrollService.restoreScrollPosition('home');
   };
 
-  loadSections() {
-    this.sections = [
-      {heroType: 'now-playing', heroTitle: 'En cartelera', carruselTitle: 'Top 20 - En cartelera'},
-      {heroType: 'popular', heroTitle: 'Más popular', carruselTitle: 'Top 20 - Más populares'},
-      {heroType: 'top-rated', heroTitle: 'Mejor valorada', carruselTitle: 'Top 20 - Mejor valoradas'},
-      {heroType: 'trending', heroTitle: 'En tendencia', carruselTitle: 'Top 20 - En tendencia',}
-    ];
+  private loadSections() {
+    const keys: string[] = [ 'home.nowPlayingSection', 'home.popularSection', 'home.topRatedSection', 'home.trendingSection' ];
+    keys.forEach(key =>
+      this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string,
+        carouselTitle: string }) => {
+          const { heroType, heroTitle, carouselTitle } = section;
+          this.sections.push({ heroType, heroTitle, carruselTitle: carouselTitle });
+        }
+      )
+    );
   };
 }
