@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { BadgeListComponent } from '@shared/components/badge-list/bandge-list.component';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SlugifyService, TmdbService } from '@shared/services';
-import { Movie, Genre } from '@shared/interfaces';
+import { Genre, Movie } from '@shared/interfaces';
 
 @Component({
   selector: 'short-information',
@@ -12,30 +14,27 @@ import { Movie, Genre } from '@shared/interfaces';
     TagComponent,
     RatingComponent,
     BadgeListComponent,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './short-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col w-full md:w-1/2 lg:w-2/3 z-10 gap-5' }
 })
-export class ShortInformationComponent implements OnInit {
+export class ShortInformationComponent {
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  genres = signal<Genre[]>([]);
   private tmdbService = inject(TmdbService);
   private slugifyService = inject(SlugifyService);
-
-  ngOnInit() {
-    this.getGenresMovie();
-  };
+  private movieGenreIds = computed<number[]>(() => this.movie().genre_ids);
+  private genresResource = rxResource({
+    request: this.movieGenreIds,
+    loader: ({ request }) => this.tmdbService.getGenreMovieListByIds(request)
+  });
+  genres = computed<Genre[]>(() => this.genresResource.value()?? []);
 
   slugify(title: string): string {
     return this.slugifyService.getSlug(title);
-  };
-
-  getGenresMovie() {
-    this.tmdbService.getGenreMovieListByIds(this.movie().genre_ids)
-      .subscribe(genres => this.genres.set(genres));
   };
 }
