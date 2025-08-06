@@ -1,4 +1,4 @@
-<a class="flex items-center gap-3" routerLink="/inicio">
+<a class="flex items-center gap-3" routerLink="/home">
   <div class="flex items-center w-10 md:w-12 lg:w-15">
     <img class="bg-cover bg-center" src="/images/logo.png" alt="Logo de MovieVerso" loading="lazy">
   </div>
@@ -9,6 +9,6 @@
         <img class="h-3 bg-cover bg-center" [src]="countryFlag()" loading="lazy">
       }
     </div>
-    <small class="text-xs text-stone-300">{{ slogan }}</small>
+    <small class="text-xs text-stone-300">{{ 'header.logo.slogan' | translate }}</small>
   </div>
 </a>
