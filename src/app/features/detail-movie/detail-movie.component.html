@@ -10,12 +10,13 @@
         <trailer [movieId]="movieSelected.value().id"/>
         <movie-list [movieId]="movieSelected.value().id" typeMovieList="recommendations"/>
         <movie-list [movieId]="movieSelected.value().id" typeMovieList="similar"/>
-        <movie-list [movieId]="idCollection()!" typeMovieList="collection" [hasRoute]="false"/>
+        <movie-list [movieId]="idCollection()?? -1" typeMovieList="collection" [hasRoute]="false"/>
       </div>
     </section>
   } @else {
     <div class="flex mt-10 lg:mt-15">
-      <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
+      <notification [notificationTitle]="'detailMovie.notification.title' | translate"
+      [message]="'detailMovie.notification.message' | translate"/>
     </div>
   }
 } @else {
