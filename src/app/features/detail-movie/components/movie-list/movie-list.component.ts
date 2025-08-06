@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { CarruselMoviesComponent } from '@shared/components/carrusel-movies/carrusel-movies.component';
 import { CarruselTitleComponent } from '@shared/components/carrusel-movies/carrusel-title/carrusel-title.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
 import { DetailService } from '../../services/detail.service';
 import { CarouselConfig, Movie } from '@shared/interfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 type TypeMovieList = 'recommendations' | 'similar' | 'collection';
 
@@ -19,74 +20,66 @@ interface Notification {
   imports: [
     CarruselMoviesComponent,
     CarruselTitleComponent,
-    NotificationComponent,
+    NotificationComponent
   ],
   template: `
     @if(movies.hasValue() && movies.value().length > 0) {
       <carrusel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
-      <carrusel-title [carruselTitle]="carouselTitle()" route=""/>
-      <notification [notificationTitle]="getNotification().title" [message]="getNotification().message"/>
+      <carrusel-title [carruselTitle]="carouselTitle.value()!" route=""/>
+      <notification [notificationTitle]="notification()?.title!" [message]="notification()?.message!"/>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieListComponent {
   private detailService = inject(DetailService);
+  private translateService = inject(TranslateService);
   typeMovieList = input.required<TypeMovieList>();
   hasRoute = input<boolean>(true);
   movieId = input.required<number>();
-  carouselTitle = computed(() => {
-    switch(this.typeMovieList()) {
-      case 'recommendations':
-        return 'Recomendadas';
-      case 'similar':
-        return 'Similares';
-      case 'collection':
-        return 'Colección';
-    }
+  carouselTitle = rxResource({
+    request: this.typeMovieList,
+    loader: () => this.getTypeMovieListTranslation()
   });
   movies = rxResource({
     request: this.movieId,
-    loader: () => this.getRelationedMovies()
+    loader: () => this.getRelatedMovies().pipe(
+      tap(movies => {
+        if(movies && movies.length === 0) {
+          this.loadNotificationTranslation(`detailMovie.movieList.${this.typeMovieList()}.notification`);
+        }
+      })
+    )
   });
   carouselConfig = computed<CarouselConfig>(() => ({
-    carouselTitle: this.carouselTitle(),
+    carouselTitle: this.carouselTitle.value()?? '',
     text: '',
-    movies: this.movies.value()!,
+    movies: this.movies.value()?? [],
     route: this.hasRoute()? `${this.typeMovieList()}`: '',
     bgButtons: 'from-stone-800',
     bgCardFooter: 'bg-stone-700'
   }));
+  notification = signal<Notification | undefined>(undefined);
 
-  getRelationedMovies(): Observable<Movie[] | undefined> {
+  private getTypeMovieListTranslation(): Observable<string | undefined> {
+    return this.translateService.get(`detailMovie.movieList.${this.typeMovieList()}.title`);
+  };
+
+  private getRelatedMovies(): Observable<Movie[] | undefined> {
     switch(this.typeMovieList()) {
       case 'collection':
-        return this.detailService.getMovieCollectionById(this.movieId()!)
-          .pipe(map(({ parts }) => parts));
+        return (this.movieId() !== -1)? this.detailService.getMovieCollectionById(this.movieId())
+          .pipe(map(({ parts }) => parts)): of([]);
       default:
-        return this.detailService.getRelationedMovies(this.typeMovieList(), this.movieId()!)
+        return this.detailService.getRelationedMovies(this.typeMovieList(), this.movieId())
           .pipe(map(({ results }) => results));
     }
   };
 
-  getNotification(): Notification {
-    switch(this.typeMovieList()) {
-      case('recommendations'):
-        return {
-          title: 'Sin recomendaciones.',
-          message: 'Parece que esta película es única en su especie. ¡Ni los algoritmos supieron qué sugerirte!'
-        };
-      case('similar'):
-        return {
-          title: 'Irrepetible.',
-          message: 'Buscamos algo parecido, pero nada le llega a los talones a esta película. ¡Es un caso especial!'
-        };
-      default:
-        return {
-          title: 'Sin familia cinematográfica.',
-          message: 'Esta película es como un lobo solitario… No pertenece a ninguna colección. ¡Libre como el viento!'
-        };
-    }
+  private loadNotificationTranslation(key: string) {
+    this.translateService.get(key).subscribe((notification: { title: string, message: string }) =>
+      this.notification.set(notification)
+    );
   };
 }
