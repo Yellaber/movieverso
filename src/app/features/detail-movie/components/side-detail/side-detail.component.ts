@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ProductionCountriesComponent } from './production-countries/production-countries.component';
 import { BadgeSectionComponent } from './badge-section/badge-section.component';
 import { InfoItemComponent } from './info-item/info-item.component';
@@ -12,7 +13,8 @@ import { DetailMovieResponse } from '@shared/interfaces';
   imports: [
     ProductionCountriesComponent,
     BadgeSectionComponent,
-    InfoItemComponent
+    InfoItemComponent,
+    TranslatePipe
   ],
   templateUrl: './side-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +26,6 @@ export class SideDetailComponent {
   movieId = computed<number>(() => this.movieDetail().id);
   movieKeywords = rxResource({
     request: this.movieId,
-    loader: () => this.movieId()? this.detailService.getMovieKeywords(this.movieId()!): of([])
+    loader: () => this.movieId()? this.detailService.getMovieKeywords(this.movieId()): of([])
   });
 }
