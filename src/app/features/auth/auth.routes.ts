@@ -5,12 +5,15 @@ export const authRoutes: Routes = [
     path: 'auth',
     children: [
       {
-        title: 'Iniciar sesión',
+        path: '',
+        redirectTo: 'sign-in',
+        pathMatch: 'full'
+      },
+      {
         path: 'sign-in',
         loadComponent: () => import('./pages/sign-in/sign-in.component')
       },
       {
-        title: 'Registro',
         path: 'sign-up',
         loadComponent: () => import('./pages/sign-up/sign-up.component')
       },
