@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
@@ -24,7 +24,7 @@ export class SearchBarComponent {
   private activeActionService = inject(ActiveActionService);
   faMagnifyingGlass = faMagnifyingGlass;
   faSliders = faSliders;
-  openFiltersClick = output<void>();
+  isOpenedFilter = signal<boolean>(false);
   searchingForm = this.formBuilder.group({
     search: [
       '',
@@ -32,17 +32,19 @@ export class SearchBarComponent {
     ]
   });
 
+  private getSearchValue(): string {
+    return this.searchingForm.get('search')?.value || '';
+  }
+
   navigateToSearch() {
     if(!this.searchingForm.invalid) {
-      this.queryParamsService.set({
-        query: this.searchingForm.controls['search'].value!
-      });
+      this.queryParamsService.set({ query: this.getSearchValue() });
       this.activeActionService.set('search');
       this.router.navigateByUrl('/search');
     }
   };
 
-  onOpenFilters() {
-    this.openFiltersClick.emit();
+  onOpenFilter() {
+    this.isOpenedFilter.set(true);
   };
 }
