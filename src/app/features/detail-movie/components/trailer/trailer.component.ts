@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CarruselTitleComponent } from '@shared/components/carrusel-movies/carrusel-title/carrusel-title.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
 import { DetailService } from '../../services/detail.service';
@@ -10,7 +11,8 @@ import { DetailService } from '../../services/detail.service';
   selector: 'trailer',
   imports: [
     CarruselTitleComponent,
-    NotificationComponent
+    NotificationComponent,
+    TranslatePipe
   ],
   template: `
     <carrusel-title carruselTitle="Trailer" route=""/>
@@ -21,7 +23,8 @@ import { DetailService } from '../../services/detail.service';
         </iframe>
       </div>
     } @else {
-      <notification notificationTitle="Spoiler invisible." message="Nada por aquí, nada por allá… ni un solo avance que mostrar. ¡La película se está haciendo la difícil!"/>
+      <notification [notificationTitle]="'detailMovie.movieList.trailer.notification.title' | translate"
+      [message]="'detailMovie.movieList.trailer.notification.message' | translate"/>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +36,7 @@ export class TrailerComponent {
 
   movieTrailers = rxResource({
     request: this.movieId,
-    loader: () => this.movieId()? this.detailService.getMovieTrailers(this.movieId()!): of([])
+    loader: () => this.movieId()? this.detailService.getMovieTrailers(this.movieId()): of([])
   });
 
   getSafeYoutubeUrl(key: string): SafeResourceUrl {
