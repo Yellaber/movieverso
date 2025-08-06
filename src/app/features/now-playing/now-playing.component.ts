@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CategoriesComponent } from '@shared/components/categories/categories.component';
 import { LoadCategoryComponent } from '@shared/components/load-category/load-category.component';
 import { SeoFriendlyService } from '@app/core/services';
@@ -28,6 +29,7 @@ const menuItems = ['upcoming', 'popular', 'top-rated', 'trending'];
 })
 export default class NowPlayingComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
+  private translateService = inject(TranslateService);
   titlePage = signal<string>('');
   textPage = signal<string>('');
   menuItems = signal<string[]>([]);
@@ -35,8 +37,14 @@ export default class NowPlayingComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems.set(menuItems);
-    this.titlePage.set('En cartelera');
-    this.textPage.set('Cine en tiempo real: ¿Quieres saber qué está moviendo las taquillas ahora mismo? Esta lista te pone al día con lo que puedes ver hoy mismo en pantalla grande.');
+    this.loadTranslations();
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
+  };
+
+  private loadTranslations() {
+    this.translateService.get('routes.nowPlaying')
+      .subscribe((title: string) => this.titlePage.set(title));
+    this.translateService.get('nowPlaying.paragraph')
+      .subscribe((paragraph: string) => this.textPage.set(paragraph));
   };
 }
