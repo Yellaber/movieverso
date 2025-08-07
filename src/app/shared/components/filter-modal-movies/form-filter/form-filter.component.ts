@@ -37,7 +37,6 @@ export class FormFilterComponent {
     validators: [FormUtils.isFieldLessThan('primaryReleaseDateGte', 'primaryReleaseDateLte')]
   });
 
-
   onShowResults() {
     if(this.formFilter.invalid) {
       this.formFilter.markAllAsTouched();
