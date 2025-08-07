@@ -1,0 +1,190 @@
+{
+  "header": {
+    "logo": {
+      "slogan": "Your universe of movies"
+    },
+    "button": {
+      "text": "Coming soon!"
+    },
+    "input": {
+      "placeholder": "Movie name? Type it and let the story find you..."
+    }
+  },
+  "home": {
+    "metaTags": {
+      "title": "Home",
+      "description": "Quickly and funly discover movies on MovieVerso. Explore by name, genre, or popularity and access detailed information about your favorite films. Your universe of movies begins here!"
+    },
+    "nowPlayingSection": {
+      "heroType": "now-playing",
+      "heroTitle": "Now Playing",
+      "carouselTitle": "Top 20 - Now Playing",
+      "paragraph": "Straight from the big screen! Here we've gathered the 20 movies lighting up theaters right now. The ranking is based on recent release dates, current theater availability, and of course, that irresistible smell of freshly popped popcorn."
+    },
+    "popularSection": {
+      "heroType": "popular",
+      "heroTitle": "Most Popular",
+      "carouselTitle": "Top 20 - Most Popular",
+      "paragraph": "These are the stars of the moment. The 20 movies breaking the internet, racking up clicks, likes, and curious glances. Whether new or old, popularity knows no age!"
+    },
+    "topRatedSection": {
+      "heroType": "top-rated",
+      "heroTitle": "Top Rated",
+      "carouselTitle": "Top 20 - Top Rated",
+      "paragraph": "They're not here for the fame — they're here on merit. These 20 cinematic gems are scoring sky-high thanks to thousands of votes. If you're looking for guaranteed quality, this is your front-row seat."
+    },
+    "trendingSection": {
+      "heroType": "trending",
+      "heroTitle": "Trending",
+      "carouselTitle": "Top 20 - Trending",
+      "paragraph": "What's being watched, talked about, or going viral TODAY? These 20 films are in full swing — some fresh out of the oven, others revived by the magic of the internet. Want to stay in the loop? Start here."
+    },
+    "title": "Nothing interesting in sight?",
+    "paragraph": "That doesn't mean the movie doesn't exist—maybe the gem you're looking for is in a parallel universe. Try refining your search with our advanced filter. The more details you give, the more accurate the discovery! The universe is yours.",
+    "bannerHeroButton": "Exploring"
+  },
+  "carouselLink": "See all",
+  "detailMovie": {
+    "metaTags": {
+      "description": "Details, synopsis, cast, and more about the movie {{ title }}."
+    },
+    "notification": {
+      "title": "Ghost movie?",
+      "message": "Oops... we couldn't find this movie. Maybe it slipped off the set or hasn't been released yet. Try another one!"
+    },
+    "sideDetail": {
+      "productionCountries": "Production countries:",
+      "languages": "Languages:",
+      "status": "Status:",
+      "productionCompanies": "Production companies:",
+      "keywords": "Keywords:"
+    },
+    "movieList": {
+      "trailer": {
+        "notification": {
+          "title": "Invisible spoiler.",
+          "message": "Nothing here, nothing there... not a single trailer to show. This movie is playing hard to get!"
+        }
+      },
+      "recommendations": {
+        "title": "Recommended",
+        "notification": {
+          "title": "No recommendations.",
+          "message": "It seems this movie is one of a kind. Not even the algorithms knew what to suggest!"
+        }
+      },
+      "similar": {
+        "title": "Similar",
+        "notification": {
+          "title": "Unrepeatable.",
+          "message": "We searched for something alike, but nothing quite measures up to this film. It's a special case!"
+        }
+      },
+      "collection": {
+        "title": "Collection",
+        "notification": {
+          "title": "No cinematic family.",
+          "message": "This movie is like a lone wolf... It doesn't belong to any collection. Free as the wind!"
+        }
+      }
+    }
+  },
+  "upcoming": {
+    "paragraph": "Do you like getting ahead of the show? Here you'll find upcoming releases before they hit the big screen. Don't let anyone spoil what's coming!"
+  },
+  "nowPlaying": {
+    "paragraph": "Cinema in real time: Want to know what's rocking the box office right now? This list keeps you up to date with what you can catch on the big screen today."
+  },
+  "popular": {
+    "paragraph": "The current favorites: These movies are breaking the internet… and the box office. Have you seen why everyone's talking about them?"
+  },
+  "topRated": {
+    "paragraph": "High score, high impact: If you're looking for guaranteed quality, this is your safe universe. Movies that earned a perfect 10… or almost."
+  },
+  "trending": {
+    "paragraph": "What everyone's talking about (today): Movies blowing up in searches, likes, and views. Blink and you might miss them."
+  },
+  "recommendations": {
+    "title": "Recommended Movies",
+    "description": "Recommended movies based on:",
+    "paragraph": {
+      "highLightText": "Did you like this movie?",
+      "text": "Then we have other gems ready for you to watch. Here are some titles you might love if the last one already hooked you. Hit play on new adventures! But if these aren't enough, then surely these other ones are",
+      "link": "similar",
+      "text2": "will hook you. Different titles, same emotional impact."
+    },
+    "notification": {
+      "title": "Ghost movie?",
+      "message": "Oops... we couldn't find this movie. Maybe it escaped the set or hasn't premiered yet. Try another one!"
+    }
+  },
+  "similar": {
+    "title": "Similar Movies",
+    "description": "Movies similar to:",
+    "paragraph": {
+      "highLightText": "Looking for something with the same vibe?",
+      "text": "These movies have a lot in common with the one you just watched. They share genre, energy, or storyline. A similar experience guaranteed! Based on this movie, you might also enjoy these other",
+      "link": "recommended"
+    },
+    "notification": {
+      "title": "Ghost movie?",
+      "message": "Oops... we couldn't find this movie. Maybe it escaped the set or hasn't been released yet. Try another one!"
+    }
+  },
+  "search": {
+    "title": "Results related to:"
+  },
+  "categories": {
+    "text": "Parallel universes worth exploring:"
+  },
+  "routes": {
+    "home": "Home",
+    "detail": "Detail",
+    "recommendations": "Recommendations",
+    "similar": "Similar",
+    "upcoming": "Upcoming releases",
+    "nowPlaying": "Now playing",
+    "popular": "Popular",
+    "topRated": "Top rated",
+    "trending": "Trending",
+    "search": "Search"
+  },
+  "filter": {
+    "title": "Advanced filter",
+    "button": {
+      "reset": "Reset filter",
+      "show": "Show results"
+    },
+    "genresLabel": "Genres:",
+    "voteAverageLabel": "Minimum rating:",
+    "voteCountLabel": "Minimum vote count:",
+    "releaseDateGteLabel": "Minimum release date:",
+    "releaseDateLteLabel": "Maximum release date:",
+    "sortBy": {
+      "label": "Sort results by:",
+      "mostPopular": "Most popular",
+      "leastPopular": "Least popular",
+      "bestRated": "Best rated",
+      "worstRated": "Worst rated",
+      "mostVoted": "Most voted",
+      "leastVoted": "Least voted",
+      "newest": "Newest releases",
+      "oldest": "Oldest releases",
+      "titleAsc": "Title (A-Z)",
+      "titleDesc": "Title (Z-A)"
+    },
+    "message": {
+      "placeholder": "Value between 1 and 25.000",
+      "required": "This field is required.",
+      "value": "The minimum value must be between 1 and 25.000.",
+      "invalidDateFormat": "Invalid date format.",
+      "invalidForm": "The minimum release date cannot be greater than the maximum date."
+    }
+  },
+  "loadResult": {
+    "notification": {
+      "title": "Blank screen",
+      "message": "Complete silence... No titles match your search. Try adjusting the filter and let’s roll again!"
+    }
+  }
+}
