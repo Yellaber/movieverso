@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CategoriesComponent } from '@shared/components/categories/categories.component';
 import { LoadCategoryComponent } from '@shared/components/load-category/load-category.component';
 import { SeoFriendlyService } from '@app/core/services';
@@ -28,6 +29,7 @@ const menuItems = ['upcoming', 'now-playing', 'top-rated', 'trending'];
 })
 export default class PopularComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
+  private translateService = inject(TranslateService);
   titlePage = signal<string>('');
   textPage = signal<string>('');
   menuItems = signal<string[]>([]);
@@ -35,8 +37,14 @@ export default class PopularComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuItems.set(menuItems);
-    this.titlePage.set('Populares');
-    this.textPage.set('Las favoritas del momento: Estas películas están rompiendo el internet… y la taquilla. ¿Ya viste por qué todos hablan de ellas?');
+    this.loadTranslations();
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
+  };
+
+  private loadTranslations() {
+    this.translateService.get('routes.popular')
+      .subscribe((title: string) => this.titlePage.set(title));
+    this.translateService.get('popular.paragraph')
+      .subscribe((paragraph: string) => this.textPage.set(paragraph));
   };
 }
