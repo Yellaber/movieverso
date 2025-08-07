@@ -1,0 +1,190 @@
+{
+  "header": {
+    "logo": {
+      "slogan": "Tu universo de películas"
+    },
+    "button": {
+      "text": "¡Muy pronto!"
+    },
+    "input": {
+      "placeholder": "¿Nombre de la película? Escríbelo y deja que la historia te encuentre..."
+    }
+  },
+  "home": {
+    "metaTags": {
+      "title": "Inicio",
+      "description": "Descubre películas de forma rápida y divertida en MovieVerso. Explora por nombre, género o popularidad y accede a información detallada de tus películas favoritas. ¡Tu universo de películas comienza aquí!"
+    },
+    "nowPlayingSection": {
+      "heroType": "now-playing",
+      "heroTitle": "En cartelera",
+      "carouselTitle": "Top 20 - En cartelera",
+      "paragraph": "¡Directo desde la pantalla grande! Aquí reunimos las 20 películas que están encendiendo las salas de cine en este preciso instante. El ranking se basa en fechas de estreno recientes, disponibilidad en cartelera y, claro, en ese aroma irresistible a crispetas recién hechas."
+    },
+    "popularSection": {
+      "heroType": "popular",
+      "heroTitle": "Más popular",
+      "carouselTitle": "Top 20 - Más populares",
+      "paragraph": "Estas son las estrellas del momento. Las 20 películas que están rompiendo internet, acumulando clics, likes y miradas curiosas. No importa si son nuevas o antiguas, ¡la popularidad no entiende de edad!"
+    },
+    "topRatedSection": {
+      "heroType": "top-rated",
+      "heroTitle": "Mejor valorada",
+      "carouselTitle": "Top 20 - Mejor valoradas",
+      "paragraph": "Aquí no entran por fama, entran por mérito. Estas 20 joyas del cine llevan la puntuación por las nubes gracias a miles de votos. Si buscas calidad garantizada, este es tu asiento en primera fila."
+    },
+    "trendingSection": {
+      "heroType": "trending",
+      "heroTitle": "En tendencia",
+      "carouselTitle": "Top 20 - En tendencia",
+      "paragraph": "¿Qué se está viendo, comentando o viralizando HOY? Estas 20 películas están en pleno apogeo: algunas recién salidas del horno, otras revividas por la magia del internet. Si quieres estar en la onda, empieza por aquí."
+    },
+    "title": "¿Nada interesante a la vista?",
+    "paragraph": "Eso no significa que la película no exista, tal vez la joya que buscas está en algún universo paralelo. Prueba afinando la búsqueda con nuestro filtro avanzado. ¡Entre más detalles das, más preciso es el hallazgo! El universo es tuyo.",
+    "bannerHeroButton": "Explorar"
+  },
+  "carouselLink": "Ver todas",
+  "detailMovie": {
+    "metaTags": {
+      "description": "Detalles, sinopsis, reparto y más sobre la película {{ title }}."
+    },
+    "notification": {
+      "title": "¿Película fantasma?",
+      "message": "Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"
+    },
+    "sideDetail": {
+      "productionCountries": "Países productores:",
+      "languages": "Idiomas:",
+      "status": "Estado:",
+      "productionCompanies": "Compañías productoras:",
+      "keywords": "Palabras clave:"
+    },
+    "movieList": {
+      "trailer": {
+        "notification": {
+          "title": "Spoiler invisible.",
+          "message": "Nada por aquí, nada por allá… ni un solo avance que mostrar. ¡La película se está haciendo la difícil!"
+        }
+      },
+      "recommendations": {
+        "title": "Recomendadas",
+        "notification": {
+          "title": "Sin recomendaciones.",
+          "message": "Parece que esta película es única en su especie. ¡Ni los algoritmos supieron qué sugerirte!"
+        }
+      },
+      "similar": {
+        "title": "Similares",
+        "notification": {
+          "title": "Irrepetible.",
+          "message": "Buscamos algo parecido, pero nada le llega a los talones a esta película. ¡Es un caso especial!"
+        }
+      },
+      "collection": {
+        "title": "Colección",
+        "notification": {
+          "title": "Sin familia cinematográfica.",
+          "message": "Esta película es como un lobo solitario… No pertenece a ninguna colección. ¡Libre como el viento!"
+        }
+      }
+    }
+  },
+  "upcoming": {
+    "paragraph": "¿Te gusta adelantarte a la función? Aquí encontrarás los próximos estrenos antes de que lleguen a la gran pantalla. ¡No dejes que nadie te spoilee lo que está por venir!"
+  },
+  "nowPlaying": {
+    "paragraph": "Cine en tiempo real: ¿Quieres saber qué está moviendo las taquillas ahora mismo? Esta lista te pone al día con lo que puedes ver hoy mismo en pantalla grande."
+  },
+  "popular": {
+    "paragraph": "Las favoritas del momento: Estas películas están rompiendo el internet… y la taquilla. ¿Ya viste por qué todos hablan de ellas?"
+  },
+  "topRated": {
+    "paragraph": "Alta puntuación, alto impacto: Si buscas calidad garantizada, este es tu universo seguro. Películas que se ganaron un 10… o casi."
+  },
+  "trending": {
+    "paragraph": "Lo que está en boca de todos (hoy): Películas que explotaron en búsquedas, likes y visualizaciones. Si pestañeas, te lo pierdes."
+  },
+  "recommendations": {
+    "title": "Películas recomendadas",
+    "description": "Películas recomendadas basadas en:",
+    "paragraph": {
+      "highLightText": "¿Te gustó esta película?",
+      "text1": "Entonces, te tenemos otras joyas listas para ver. Aquí tienes títulos que podrían encantarte si ya te atrapó la anterior. ¡Dale play a nuevas aventuras! Pero si estas no son suficientes, seguro estas otras",
+      "link": "similares",
+      "text2": "te atraparán. Diferentes títulos, mismo impacto emocional."
+    },
+    "notification": {
+      "title": "¿Película fantasma?",
+      "message": "Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"
+    }
+  },
+  "similar": {
+    "title": "Películas similares",
+    "description": "Películas similares a:",
+    "paragraph": {
+      "highLightText": "¿Buscas algo con la misma vibra?",
+      "text": "Estas películas tienen mucho en común con la que acabas de ver. Comparten género, energía o historia. ¡Una experiencia similar garantizada! Según esta película, podrías disfrutar también estas otras",
+      "link": "recomendadas"
+    },
+    "notification": {
+      "title": "¿Película fantasma?",
+      "message": "Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"
+    }
+  },
+  "search": {
+    "title": "Resultados relacionados con:"
+  },
+  "categories": {
+    "text": "Universos paralelos que vale la pena explorar:"
+  },
+  "routes": {
+    "home": "Inicio",
+    "detail": "Detalle",
+    "recommendations": "Recomendaciones",
+    "similar": "Similar",
+    "upcoming": "Próximos estrenos",
+    "nowPlaying": "En cartelera",
+    "popular": "Populares",
+    "topRated": "Mejor valoradas",
+    "trending": "En tendencia",
+    "search": "Búsqueda"
+  },
+  "filter": {
+    "title": "Filtro avanzado",
+    "button": {
+      "reset": "Resetear filtro",
+      "show": "Mostrar resultados"
+    },
+    "genresLabel": "Géneros:",
+    "voteAverageLabel": "Calificación mínima:",
+    "voteCountLabel": "Cantidad mínima de votos:",
+    "releaseDateGteLabel": "Fecha mínima de estreno:",
+    "releaseDateLteLabel": "Fecha máxima de estreno:",
+    "sortBy": {
+      "label": "Ordenar resultados por:",
+      "mostPopular": "Más populares",
+      "leastPopular": "Menos populares",
+      "bestRated": "Mejor valoradas",
+      "worstRated": "Peor valoradas",
+      "mostVoted": "Más votadas",
+      "leastVoted": "Menos votadas",
+      "newest": "Estrenos más recientes",
+      "oldest": "Estrenos más antiguos",
+      "titleAsc": "Título (A-Z)",
+      "titleDesc": "Título (Z-A)"
+    },
+    "message": {
+      "placeholder": "Valor entre 1 y 25.000",
+      "required": "Este campo es requerido.",
+      "value": "El valor mínimo debe estar entre 1 y 25.000.",
+      "invalidDateFormat": "Formato de fecha inválido.",
+      "invalidForm": "La fecha mínima de estreno no puede ser mayor que la fecha máxima."
+    }
+  },
+  "loadResult": {
+    "notification": {
+      "title": "Pantalla en blanco",
+      "message": "Silencio absoluto... No hay títulos que coincidan con tu búsqueda. ¡Prueba ajustando el filtro y volvamos a rodar!"
+    }
+  }
+}
