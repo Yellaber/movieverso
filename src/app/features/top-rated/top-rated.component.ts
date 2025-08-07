@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CategoriesComponent } from '@shared/components/categories/categories.component';
 import { LoadCategoryComponent } from '@shared/components/load-category/load-category.component';
 import { SeoFriendlyService } from '@app/core/services/seo-friendly.service';
 import { EndPointValid } from '@shared/interfaces';
 
-const menuItems = ['upcoming', 'now-playing', 'popular', 'trending'];
+const menuItems = [ 'upcoming', 'now-playing', 'popular', 'trending' ];
 
 @Component({
   selector: 'top-rated',
@@ -28,6 +29,7 @@ const menuItems = ['upcoming', 'now-playing', 'popular', 'trending'];
 })
 export default class TopRatedComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
+  private translateService = inject(TranslateService);
   titlePage = signal<string>('');
   textPage = signal<string>('');
   menuItems = signal<string[]>([]);
@@ -35,8 +37,14 @@ export default class TopRatedComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems.set(menuItems);
-    this.titlePage.set('Mejor valoradas');
-    this.textPage.set('Alta puntuación, alto impacto: Si buscas calidad garantizada, este es tu universo seguro. Películas que se ganaron un 10… o casi.');
+    this.loadTranslations();
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
-  }
+  };
+
+  private loadTranslations() {
+    this.translateService.get('routes.topRated')
+      .subscribe((title: string) => this.titlePage.set(title));
+    this.translateService.get('topRated.paragraph')
+      .subscribe((paragraph: string) => this.textPage.set(paragraph));
+  };
 }
