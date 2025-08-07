@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CategoriesComponent } from '@shared/components/categories/categories.component';
 import { LoadCategoryComponent } from '@shared/components/load-category/load-category.component';
 import { SeoFriendlyService } from '@app/core/services';
 import { EndPointValid } from '@shared/interfaces';
 
-const menuItems = ['now-playing', 'popular', 'top-rated', 'trending'];
+const menuItems = [ 'now-playing', 'popular', 'top-rated', 'trending' ];
 
 @Component({
   selector: 'upcoming',
@@ -28,6 +29,7 @@ const menuItems = ['now-playing', 'popular', 'top-rated', 'trending'];
 })
 export default class UpcomingComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
+  private translateService = inject(TranslateService);
   titlePage = signal<string>('');
   textPage = signal<string>('');
   menuItems = signal<string[]>([]);
@@ -35,8 +37,14 @@ export default class UpcomingComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems.set(menuItems);
-    this.titlePage.set('Próximos estrenos');
-    this.textPage.set('¿Te gusta adelantarte a la función? Aquí encontrarás los próximos estrenos antes de que lleguen a la gran pantalla. ¡No dejes que nadie te spoilee lo que está por venir!');
+    this.loadTranslations();
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
+  };
+
+  private loadTranslations() {
+    this.translateService.get('routes.upcoming')
+      .subscribe((title: string) => this.titlePage.set(title));
+    this.translateService.get('upcoming.paragraph')
+      .subscribe((paragraph: string) => this.textPage.set(paragraph));
   };
 }
