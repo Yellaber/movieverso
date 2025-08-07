@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FilterGenreComponent } from './filter-genre/filter-genre.component';
@@ -16,7 +17,8 @@ const CLASS_MODAL_CONTENT = 'w-full max-w-md bg-stone-300 text-stone-700 rounded
     FontAwesomeModule,
     FilterGenreComponent,
     FormFilterComponent,
-    FilterOrderByComponent
+    FilterOrderByComponent,
+    TranslatePipe
   ],
   templateUrl: './filter-modal-movies.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,24 +30,15 @@ export class FilterModalMoviesComponent implements OnInit {
   private activeActionService = inject(ActiveActionService);
   faCircleXmark = faCircleXmark;
   faSpinner = faSpinner;
-  isOpen = input.required<boolean>();
-  emitClose = output<boolean>();
+  emitClose = output();
   filterGenresSelected = viewChild(FilterGenreComponent);
   formFilter = viewChild(FormFilterComponent);
   filterOrderBy = viewChild(FilterOrderByComponent);
-  classListModal = signal<string>('');
-  classListModalContent = signal<string>('');
-  classListFilterContainer = signal<string>('');
-
-  constructor() {
-    effect(() => {
-      this.isOpen() && this.onShow();
-    });
-  };
+  classListModal = signal<string>(CLASS_MODAL);
+  classListModalContent = signal<string>(CLASS_MODAL_CONTENT);
 
   ngOnInit() {
-    this.classListModal.set(CLASS_MODAL);
-    this.classListModalContent.set(CLASS_MODAL_CONTENT);
+    this.onShow();
   };
 
   onShow() {
@@ -60,12 +53,12 @@ export class FilterModalMoviesComponent implements OnInit {
 
   onClose() {
     const classModalContent = this.classListModalContent().replace('translate-y-0', 'translate-y-full').replace('opacity-100', 'opacity-0');
-      this.classListModalContent.set(classModalContent);
+    this.classListModalContent.set(classModalContent);
     setTimeout(() => {
       this.scrollService.blockWindow(false);
       const classModal = this.classListModal().replace('flex', 'hidden');
       this.classListModal.set(classModal);
-      this.emitClose.emit(false);
+      this.emitClose.emit();
     }, 200);
   };
 
@@ -76,15 +69,17 @@ export class FilterModalMoviesComponent implements OnInit {
   };
 
   onShowResults() {
-    if(!this.formFilter()?.onShowResults()) {
-      this.queryParamsService.set({
-        ...this.formFilter()?.queryParams(),
-        withGenres: this.filterGenresSelected()?.genresIdSelected(),
-        sortBy: this.filterOrderBy()?.selectedOption()
-      });
-      this.onClose();
-      this.activeActionService.set('filter');
-      this.router.navigateByUrl('/search');
-    }
+    const formComponent = this.formFilter();
+    if(!formComponent) return;
+    const isFormInvalid = formComponent.onShowResults();
+    if(isFormInvalid) return;
+    this.queryParamsService.set({
+      ...formComponent.queryParams(),
+      withGenres: this.filterGenresSelected()?.genresIdSelected(),
+      sortBy: this.filterOrderBy()?.selectedOption()
+    });
+    this.onClose();
+    this.activeActionService.set('filter');
+    this.router.navigateByUrl('/search');
   };
 }
