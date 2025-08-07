@@ -109,7 +109,7 @@
     "description": "Recommended movies based on:",
     "paragraph": {
       "highLightText": "Did you like this movie?",
-      "text": "Then we have other gems ready for you to watch. Here are some titles you might love if the last one already hooked you. Hit play on new adventures! But if these aren't enough, then surely these other ones are",
+      "text1": "Then we have other gems ready for you to watch. Here are some titles you might love if the last one already hooked you. Hit play on new adventures! But if these aren't enough, then surely these other ones are",
       "link": "similar",
       "text2": "will hook you. Different titles, same emotional impact."
     },
