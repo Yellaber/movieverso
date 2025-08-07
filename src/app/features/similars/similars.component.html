@@ -1,18 +1,20 @@
 @if(movie.hasValue()) {
   <div class="flex flex-col text-xs lg:text-sm gap-5 mt-10 lg:mt-15">
     <div class="flex flex-wrap items-center font-bold text-yellow-600 gap-3">
-      <h3>{{titleDescription()}}</h3>
+      <h3>{{ 'similar.description' | translate }}</h3>
       <a class="rounded-full bg-yellow-900/50 px-3 py-2"
-      [routerLink]="['/movie', `${idSlug()}`]">{{movie.value().title}}</a>
+      [routerLink]="['/movie', `${idSlug()}`]">{{ movie.value().title }}</a>
     </div>
     <p class="text-stone-300 leading-relaxed">
-      <span class="font-bold">¿Buscas algo con la misma vibra?</span> Estas películas tienen mucho en común con la que acabas de ver. Comparten género, energía o historia. ¡Una experiencia similar garantizada! Según esta película, podrías disfrutar también estas otras <a class="text-yellow-600 font-bold" [routerLink]="linkRecommendationsMovies()">recomendadas</a>.
+      <span class="font-bold">{{ 'similar.paragraph.highLightText' | translate }}</span> {{ 'similar.paragraph.text' | translate }} <a class="text-yellow-600 font-bold"
+      [routerLink]="linkRecommendationsMovies()">{{ 'similar.paragraph.link' | translate }}</a>.
     </p>
   </div>
   <categories [menuItems]="menuItems()"/>
   <load-relationed [movieId]="movie.value().id" typeResult="similar"/>
 } @else {
   <div class="flex mt-10 lg:mt-15">
-    <notification notificationTitle="¿Película fantasma?" message="Ups... no encontramos esta película. Tal vez se escapó del set o aún no ha sido estrenada. ¡Intenta con otra!"/>
+    <notification [notificationTitle]="'similar.notification.title' | translate"
+    [message]="'similar.notification.message' | translate"/>
   </div>
 }
