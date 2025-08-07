@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, OnInit, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 import { LoadResultsComponent } from '@shared/components/load-results/load-results.component';
 import { SearchService } from './services/search.service';
 import { SeoFriendlyService } from '@app/core/services';
@@ -16,11 +17,14 @@ const noMovieResponse: MovieResponse = {
 
 @Component({
   selector: 'search',
-  imports: [ LoadResultsComponent ],
+  imports: [
+    LoadResultsComponent,
+    TranslatePipe
+  ],
   template: `
     @if(typeSelectedOption() === 'search') {
       <div class="flex flex-wrap text-xs lg:text-sm items-center font-bold text-yellow-600 gap-3">
-        <h3>Resultados relacionados con:</h3>
+        <h3>{{ 'search.title' | translate }}</h3>
         <span class="rounded-full bg-yellow-900/50 text-yellow-600 px-3 py-2">
           {{ queryParams()?.query }}
         </span>
@@ -40,6 +44,7 @@ export default class SearchComponent implements OnInit {
   queryParams = this.queryParamsService.get();
   typeSelectedOption = this.activeActionService.get();
   loadResultsRef = viewChild(LoadResultsComponent);
+
   movies = rxResource({
     request: () => ({ typeSelectedOption: this.typeSelectedOption(), queryParams: this.queryParams(),
       page: this.loadResultsRef()?.page()! }),
@@ -56,6 +61,7 @@ export default class SearchComponent implements OnInit {
       if(queryFilter) {
         this.loadResultsRef()?.page.set(1);
         this.scrollService.scrollTop();
+
       }
     });
   };
@@ -64,8 +70,7 @@ export default class SearchComponent implements OnInit {
     this.seoFriendlyService.setMetaTags('Search', '');
   };
 
-  getResource(typeSelectedOption: string, queryParams: QueryParams, page: number):
-    Observable<MovieResponse[]> {
+  getResource(typeSelectedOption: string, queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
     return (typeSelectedOption === 'filter')? this.tmdbService.getMoviesFiltered(queryParams!, page):
       this.tmdbService.getMovieByTitle(queryParams?.query!, page);
   };
