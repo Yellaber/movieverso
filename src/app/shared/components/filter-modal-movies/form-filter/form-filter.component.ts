@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { FormUtils } from '@shared/utilities/form-utils';
 import { QueryParams } from '@shared/interfaces';
@@ -8,7 +9,8 @@ import { QueryParams } from '@shared/interfaces';
   selector: 'form-filter',
   imports: [
     ReactiveFormsModule,
-    RatingComponent
+    RatingComponent,
+    TranslatePipe
   ],
   templateUrl: './form-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +36,7 @@ export class FormFilterComponent {
   }, {
     validators: [FormUtils.isFieldLessThan('primaryReleaseDateGte', 'primaryReleaseDateLte')]
   });
+
 
   onShowResults() {
     if(this.formFilter.invalid) {
