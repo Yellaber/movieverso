@@ -10,6 +10,9 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "test": {
+          "builder": "@angular-builders/jest:run"
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
