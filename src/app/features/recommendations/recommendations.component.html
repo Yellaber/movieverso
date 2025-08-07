@@ -6,7 +6,7 @@
       [routerLink]="['/movie', `${idSlug()}`]">{{ movie.value().title }}</a>
     </div>
     <p class="text-stone-300 leading-relaxed">
-      <span class="font-bold">{{ 'recommendations.paragraph.highLightText' | translate }}</span> {{ 'recommendations.paragraph.text' | translate }} <a class="text-yellow-600 font-bold" [routerLink]="linkSimilarMovies()">{{ 'recommendations.paragraph.link' | translate }}</a> {{ 'recommendations.paragraph.text2' | translate }}
+      <span class="font-bold">{{ 'recommendations.paragraph.highLightText' | translate }}</span> {{ 'recommendations.paragraph.text1' | translate }} <a class="text-yellow-600 font-bold" [routerLink]="linkSimilarMovies()">{{ 'recommendations.paragraph.link' | translate }}</a> {{ 'recommendations.paragraph.text2' | translate }}
     </p>
   </div>
   <categories [menuItems]="menuItems()"/>
