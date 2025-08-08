@@ -1,7 +1,7 @@
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TagComponent } from './tag.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFire, faStar, faCalendarCheck, faArrowTrendUp, faFilm } from '@fortawesome/free-solid-svg-icons';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 describe('TagComponent.', () => {
   let fixture: ComponentFixture<TagComponent>;
