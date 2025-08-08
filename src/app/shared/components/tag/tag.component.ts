@@ -4,19 +4,19 @@ import { faFire, faStar, faCalendarCheck, faArrowTrendUp, faFilm, IconDefinition
 import { TypeTag } from '@shared/interfaces';
 
 interface Icon {
-  text: TypeTag,
+  type: TypeTag,
   faIcon: IconDefinition
 }
 
 const icons: Icon[] = [
-  {text: 'now-playing', faIcon: faFilm}, {text: 'popular', faIcon: faFire},
-  {text: 'top-rated', faIcon: faStar}, {text: 'calendar', faIcon: faCalendarCheck},
-  {text: 'trending', faIcon: faArrowTrendUp}
+  { type: 'now-playing', faIcon: faFilm }, { type: 'popular', faIcon: faFire },
+  { type: 'top-rated', faIcon: faStar }, { type: 'calendar', faIcon: faCalendarCheck },
+  { type: 'trending', faIcon: faArrowTrendUp }
 ];
 
 @Component({
   selector: 'tag',
-  imports: [FontAwesomeModule],
+  imports: [ FontAwesomeModule ],
   template: `
     @if(getIcon()) {
       <div class="flex items-center rounded-full bg-yellow-900/50 text-yellow-600 gap-2 px-3 py-2">
@@ -31,5 +31,5 @@ const icons: Icon[] = [
 export class TagComponent {
   text = input.required<string>();
   type = input<string>('');
-  getIcon = computed(() => icons.find(icon => icon.text === this.type()));
-}
+  getIcon = computed(() => icons.find(icon => icon.type === this.type()));
+};
