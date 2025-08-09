@@ -19,7 +19,6 @@ test('Should display a list of genres correctly.', async() => {
   await render(BadgeListComponent, {
     inputs: { badgeList: genres }
   });
-  expect(screen).toBeTruthy();
   const badge = screen.getAllByTestId('badge');
   expect(badge.length).toBe(genres.length);
   expect(badge[0]).toBeInTheDocument();
@@ -30,7 +29,6 @@ test('Should display a list of keywords correctly.', async() => {
   await render(BadgeListComponent, {
     inputs: { badgeList: keywords }
   });
-  expect(screen).toBeTruthy();
   const badge = screen.getAllByTestId('badge');
   expect(badge.length).toBe(keywords.length);
   expect(badge[0]).toBeInTheDocument();
@@ -41,7 +39,6 @@ test('Should display a list of spoken languages correctly.', async() => {
   await render(BadgeListComponent, {
     inputs: { badgeList: spokenLanguages }
   });
-  expect(screen).toBeTruthy();
   const badge = screen.getAllByTestId('badge');
   expect(badge.length).toBe(spokenLanguages.length);
   expect(badge[0]).toBeInTheDocument();
