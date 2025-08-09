@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, tap } from 'rxjs';
 import { UserGeolocation } from '@shared/interfaces';
+import { environment } from '@app/environments/environment.developments';
 
 const USER_LOCAL_LOCATION = 'userLocalLocation';
-const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 
 @Injectable({
   providedIn: 'root'
@@ -13,21 +14,28 @@ const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
 export class UserGeolocationService {
   private platformId = inject(PLATFORM_ID);
   private httpClient = inject(HttpClient);
+  private translateService = inject(TranslateService);
   private userGeolocation: UserGeolocation | undefined;
+
+  constructor() {
+    this.translateService.addLangs(['es', 'en']);
+    this.translateService.setFallbackLang('en');
+  };
 
   loadUserLocation(apiUrlGeolocation: string): Observable<UserGeolocation | undefined> {
     if(!isPlatformBrowser(this.platformId)) { return of(undefined); }
     const userLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocation) {
-      const geoLocation = <UserGeolocation>JSON.parse(userLocation);
+      const geoLocation = JSON.parse(userLocation) as UserGeolocation;
       this.userGeolocation = geoLocation;
+      this.translateService.use(this.userGeolocation.country_metadata.languages[0].split('-')[0]);
       return of(geoLocation);
     }
     return this.getLocation(apiUrlGeolocation);
   };
 
   private getLocation(apiUrlGeolocation: string): Observable<UserGeolocation> {
-    const url = `${apiUrlGeolocation}?apiKey=${API_KEY_IPGEOLOCATION}`;
+    const url = `${apiUrlGeolocation}?apiKey=${environment.ipGeolocationApiKey}`;
     return this.httpClient.get<UserGeolocation>(url)
       .pipe(
         tap(geoLocation => {
@@ -37,7 +45,8 @@ export class UserGeolocationService {
             ...geoLocation,
             country_metadata
           };
-          localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(geoLocation));
+          localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(this.userGeolocation));
+          this.translateService.use(country_metadata.languages[0].split('-')[0]);
         })
       );
   };
