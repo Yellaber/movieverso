@@ -9,7 +9,7 @@ type typeBadges = Genre[] | Keyword[] | SpokenLanguage[]
   template: `
     @for(badge of badgeList(); track $index) {
       @if(badge.name) {
-        <small class="bg-stone-100 rounded-full text-stone-900 font-semibold px-2.5 py-1.5">{{ badge.name }}</small>
+        <small data-testid="badge" class="bg-stone-100 rounded-full text-stone-900 font-semibold px-2.5 py-1.5">{{ badge.name }}</small>
       }
     }
   `,
