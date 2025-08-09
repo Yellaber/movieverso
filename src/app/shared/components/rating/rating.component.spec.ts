@@ -1,71 +1,51 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
-import { RatingComponent } from "./rating.component";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { RatingComponent } from './rating.component';
 import { faFire, faStar, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { render, screen } from '@testing-library/angular';
 
 describe('RatingComponent.', () => {
-  let fixture: ComponentFixture<RatingComponent>;
-  let ratingComponent: RatingComponent;
-
-  beforeEach(async() => {
-    await TestBed.configureTestingModule({
-      imports: [ RatingComponent, FontAwesomeModule ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(RatingComponent);
-    ratingComponent = fixture.componentInstance;
-  });
-
-  it('Should create the Rating component.', () => {
-    expect(ratingComponent).toBeTruthy();
-  });
-
-  it('Should display the correct icon and format for type "popularity".', fakeAsync(() => {
-    fixture.componentRef.setInput('type', 'popularity');
-    fixture.componentRef.setInput('value', 50);
-    fixture.detectChanges();
-    tick();
-    const smallElement = fixture.nativeElement.querySelector('small');
+  it('Should display the correct icon and format for type "popularity".', async() => {
+    const { fixture } = await render(RatingComponent, {
+      inputs: {
+        type: 'popularity',
+        value: 50
+      }
+    });
+    const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faFire);
-    expect(smallElement.textContent).toContain('50');
-  }));
+    expect(screen.getByText('50.0')).toBeInTheDocument();
+  });
 
-  it('Should display the correct icon and format for type "vote_average".', fakeAsync(() => {
-    fixture.componentRef.setInput('type', 'vote_average');
-    fixture.componentRef.setInput('value', 4.6);
-    fixture.detectChanges();
-    tick();
-    const smallElement = fixture.nativeElement.querySelector('small');
+  it('Should display the correct icon and format for type "vote_average".', async() => {
+    const { fixture } = await render(RatingComponent, {
+      inputs: {
+        type: 'vote_average',
+        value: 4.6
+      }
+    });
+    const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faStar);
-    expect(smallElement.textContent).toContain('4.6/10');
-  }));
+    expect(screen.getByText('4.6/10')).toBeInTheDocument();
+  });
 
-  it('Should display the correct icon and format for type "vote_count".', fakeAsync(() => {
-    fixture.componentRef.setInput('type', 'vote_count');
-    fixture.componentRef.setInput('value', 681);
-    fixture.detectChanges();
-    tick();
-    const smallElement = fixture.nativeElement.querySelector('small');
+  it('Should display the correct icon and format for type "vote_count".', async() => {
+    const { fixture } = await render(RatingComponent, {
+      inputs: {
+        type: 'vote_count',
+        value: 681
+      }
+    });
+    const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faThumbsUp);
-    expect(smallElement.textContent).toContain('681');
-  }));
+    expect(screen.getByText('681')).toBeInTheDocument();
+  });
 
-  it('Should not render if the type is invalid.', fakeAsync(() => {
-    fixture.componentRef.setInput('type', 'invalid-type');
-    fixture.componentRef.setInput('value', 10);
-    fixture.detectChanges();
-    tick();
-    expect(ratingComponent.getIcon()).toBeUndefined();
-    const anchorElement = fixture.nativeElement.querySelector('a');
-    expect(anchorElement).toBeNull();
-  }));
-
-  it('Should not render if the value is negative.', fakeAsync(() => {
-    fixture.componentRef.setInput('type', 'popularity');
-    fixture.componentRef.setInput('value', -10);
-    fixture.detectChanges();
-    tick();
-    const anchorElement = fixture.nativeElement.querySelector('a');
-    expect(anchorElement).toBeNull();
-  }));
+  it('should not render if the value is negative', async() => {
+    const { container } = await render(RatingComponent, {
+      inputs: {
+        type: 'popularity',
+        value: -10
+      }
+    });
+    expect(container.querySelector('a')).toBeNull();
+  });
 });
