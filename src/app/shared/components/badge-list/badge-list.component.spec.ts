@@ -15,32 +15,34 @@ const spokenLanguages: SpokenLanguage[] = [
   { english_name: 'Spanish', iso_639_1: 'es', name: 'Spanish' }
 ];
 
-test('Should display a list of genres correctly.', async() => {
-  await render(BadgeListComponent, {
-    inputs: { badgeList: genres }
+describe('BadgeListComponent.', () => {
+  it('Should display a list of genres correctly.', async() => {
+    await render(BadgeListComponent, {
+      inputs: { badgeList: genres }
+    });
+    const badges = screen.getAllByTestId('badge');
+    expect(badges.length).toBe(genres.length);
+    expect(badges[0].textContent).toBe(genres[0].name);
+    expect(badges[1].textContent).toBe(genres[1].name);
   });
-  const badge = screen.getAllByTestId('badge');
-  expect(badge.length).toBe(genres.length);
-  expect(badge[0]).toBeInTheDocument();
-  expect(badge[1]).toBeInTheDocument();
-});
 
-test('Should display a list of keywords correctly.', async() => {
-  await render(BadgeListComponent, {
-    inputs: { badgeList: keywords }
+  it('Should display a list of keywords correctly.', async() => {
+    await render(BadgeListComponent, {
+      inputs: { badgeList: keywords }
+    });
+    const badges = screen.getAllByTestId('badge');
+    expect(badges.length).toBe(keywords.length);
+    expect(badges[0].textContent).toBe(keywords[0].name);
+    expect(badges[1].textContent).toBe(keywords[1].name);
   });
-  const badge = screen.getAllByTestId('badge');
-  expect(badge.length).toBe(keywords.length);
-  expect(badge[0]).toBeInTheDocument();
-  expect(badge[1]).toBeInTheDocument();
-});
 
-test('Should display a list of spoken languages correctly.', async() => {
-  await render(BadgeListComponent, {
-    inputs: { badgeList: spokenLanguages }
+  it('Should display a list of spoken languages correctly.', async() => {
+    await render(BadgeListComponent, {
+      inputs: { badgeList: spokenLanguages }
+    });
+    const badges = screen.getAllByTestId('badge');
+    expect(badges.length).toBe(spokenLanguages.length);
+    expect(badges[0].textContent).toBe(spokenLanguages[0].name);
+    expect(badges[1].textContent).toBe(spokenLanguages[1].name);
   });
-  const badge = screen.getAllByTestId('badge');
-  expect(badge.length).toBe(spokenLanguages.length);
-  expect(badge[0]).toBeInTheDocument();
-  expect(badge[1]).toBeInTheDocument();
 });
