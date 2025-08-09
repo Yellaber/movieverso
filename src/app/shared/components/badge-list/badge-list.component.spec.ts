@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BadgeListComponent } from './bandge-list.component';
+import { BadgeListComponent } from './badge-list.component';
+import { render, screen } from '@testing-library/angular';
 import { Genre, Keyword, SpokenLanguage } from '@shared/interfaces';
 
 const genres: Genre[] = [
@@ -15,47 +15,35 @@ const spokenLanguages: SpokenLanguage[] = [
   { english_name: 'Spanish', iso_639_1: 'es', name: 'Spanish' }
 ];
 
-describe('BadgeListComponent.', () => {
-  let fixture: ComponentFixture<BadgeListComponent>;
-  let badgeListComponent: BadgeListComponent;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ BadgeListComponent ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(BadgeListComponent);
-    badgeListComponent = fixture.componentInstance;
+test('Should display a list of genres correctly.', async() => {
+  await render(BadgeListComponent, {
+    inputs: { badgeList: genres }
   });
+  expect(screen).toBeTruthy();
+  const badge = screen.getAllByTestId('badge');
+  expect(badge.length).toBe(genres.length);
+  expect(badge[0].textContent).toBe(genres[0].name);
+  expect(badge[1].textContent).toBe(genres[1].name);
+});
 
-  it('Should create the component.', () => {
-    expect(badgeListComponent).toBeTruthy();
+test('Should display a list of keywords correctly.', async() => {
+  await render(BadgeListComponent, {
+    inputs: { badgeList: keywords }
   });
+  expect(screen).toBeTruthy();
+  const badge = screen.getAllByTestId('badge');
+  expect(badge.length).toBe(keywords.length);
+  expect(badge[0].textContent).toBe(keywords[0].name);
+  expect(badge[1].textContent).toBe(keywords[1].name);
+});
 
-  it('Should display a list of genres correctly.', () => {
-    fixture.componentRef.setInput('badgeList', genres);
-    fixture.detectChanges();
-    const smallElements: HTMLElement[] = fixture.nativeElement.querySelectorAll('small');
-    expect(smallElements.length).toBe(genres.length);
-    expect(smallElements[0].textContent).toBe(genres[0].name);
-    expect(smallElements[1].textContent).toBe(genres[1].name);
+test('Should display a list of spoken languages correctly.', async() => {
+  await render(BadgeListComponent, {
+    inputs: { badgeList: spokenLanguages }
   });
-
-  it('Should display a list of keywords correctly.', () => {
-    fixture.componentRef.setInput('badgeList', keywords);
-    fixture.detectChanges();
-    const smallElements: HTMLElement[] = fixture.nativeElement.querySelectorAll('small');
-    expect(smallElements.length).toBe(keywords.length);
-    expect(smallElements[0].textContent).toBe(keywords[0].name);
-    expect(smallElements[1].textContent).toBe(keywords[1].name);
-  });
-
-  it('Should display a list of spoken languages correctly.', () => {
-    fixture.componentRef.setInput('badgeList', spokenLanguages);
-    fixture.detectChanges();
-    const smallElements: HTMLElement[] = fixture.nativeElement.querySelectorAll('small');
-    expect(smallElements.length).toBe(spokenLanguages.length);
-    expect(smallElements[0].textContent).toBe(spokenLanguages[0].name);
-    expect(smallElements[1].textContent).toBe(spokenLanguages[1].name);
-  });
+  expect(screen).toBeTruthy();
+  const badge = screen.getAllByTestId('badge');
+  expect(badge.length).toBe(spokenLanguages.length);
+  expect(badge[0].textContent).toBe(spokenLanguages[0].name);
+  expect(badge[1].textContent).toBe(spokenLanguages[1].name);
 });
