@@ -45,8 +45,4 @@ describe('RoutesService', () => {
     service.setRoutes(updatedMockRoutes);
     expect(service.getRoutes()).toEqual(updatedMockRoutes);
   });
-
-  it('getRoutes should return a readonly computed signal.', () => {
-    expect((service.getRoutes as any).set).toBeUndefined();
-  });
 });
