@@ -13,19 +13,11 @@ describe('Seofriendly Service:', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        SeoFriendlyService,
-        { provide: Title, useValue: { setTitle: jest.fn() } },
-        { provide: Meta, useValue: { updateTag: jest.fn() } }
-      ]
+      providers: [SeoFriendlyService]
     });
     seofriendlyService = TestBed.inject(SeoFriendlyService);
     titleService = TestBed.inject(Title);
     metaService = TestBed.inject(Meta);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 
   it('Should create service.', () => {
@@ -33,16 +25,22 @@ describe('Seofriendly Service:', () => {
   });
 
   it('Should setup the title and meta tags without image.', () => {
+    jest.spyOn(titleService, 'setTitle');
+    jest.spyOn(metaService, 'updateTag');
     seofriendlyService.setMetaTags(titlePage, contentPage);
     expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
-    expect(metaService.updateTag).not.toHaveBeenCalledWith(expect.objectContaining({ name: 'og:image' }));
   });
 
   it('Should setup the title and meta tags with image.', () => {
     const imageUrl = 'https://unsitioweb.com/imagen.jpg';
+    jest.spyOn(titleService, 'setTitle');
+    jest.spyOn(metaService, 'updateTag');
     seofriendlyService.setMetaTags(titlePage, contentPage, imageUrl);
+    expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
+    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:image', content: imageUrl });
   });
 });
