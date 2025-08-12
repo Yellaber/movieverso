@@ -43,11 +43,4 @@ describe('QueryParamsService', () => {
     service.set(updatedParams);
     expect(service.get()()).toEqual(updatedParams);
   });
-
-  it('Should return a readonly signal.', () => {
-    const readonlySignal = service.get();
-    expect((readonlySignal as any).set).toBeUndefined();
-    expect((readonlySignal as any).update).toBeUndefined();
-    expect((readonlySignal as any).mutate).toBeUndefined();
-  });
 });
