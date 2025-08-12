@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TagComponent } from '@shared/components/tag/tag.component';
-import { BadgeListComponent } from '@shared/components/badge-list/bandge-list.component';
+import { BadgeListComponent } from '@shared/components/badge-list/badge-list.component';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { DetailMovieResponse } from '@shared/interfaces';
 
