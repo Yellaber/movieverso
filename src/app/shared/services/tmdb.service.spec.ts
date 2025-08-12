@@ -150,7 +150,7 @@ describe('TmdbService', () => {
     const userGeolocationServiceMock = {
       getUserGeolocation: jest.fn().mockReturnValue({
         ...mockUserGeolocation,
-        country_metadata: { languages: ['en-US'] },
+        country_metadata: { languages: ['en_US'] },
         location: { country_code2: 'US' }
       })
     };
@@ -166,7 +166,6 @@ describe('TmdbService', () => {
         }
       ]
     });
-
     service = TestBed.inject(TmdbService);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -179,179 +178,132 @@ describe('TmdbService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('getMoviesFilteredByCategory should fetch movies for a given category and reset on page 1.', (done) => {
+  it('getMoviesFilteredByCategory should fetch movies for a given category and reset on page 1.', () => {
     const category = 'popular';
     service.getMoviesFilteredByCategory(category, 1).subscribe(response => {
-      expect(response.length).toBe(1);
-      expect(response[0]).toEqual(mockMovieResponse);
-      done();
+      expect(response).toEqual([mockMovieResponse]);
     });
-
-    const req = httpMock.expectOne(r =>
-        r.url === `${environment.tmdbApiUrl}/${category}` &&
-        r.params.get('api_key') === environment.tmdbApiKey &&
-        r.params.get('language') === 'en-US' &&
-        r.params.get('region') === 'US' &&
-        r.params.get('page') === '1'
-    );
-    expect(req.request.method).toBe('GET');
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=en_US&region=US&page=1`);
     req.flush(mockMovieResponse);
   });
 
-  it('getGenreMovieListByIds should fetch and filter genres by ids.', (done) => {
+  it('getGenreMovieListByIds should fetch and filter genres by ids.', () => {
     const genreIds = [28, 35];
     const expectedGenres = [{ id: 28, name: 'Action' }, { id: 35, name: 'Comedy' }];
-
     service.getGenreMovieListByIds(genreIds).subscribe(genres => {
       expect(genres).toEqual(expectedGenres);
-      done();
     });
-
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
-    expect(req.request.method).toBe('GET');
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
     req.flush(mockGenreMoviesResponse);
   });
 
-  it('getGenreMovieListByIds should return genres from cache on second call.', (done) => {
+  it('getGenreMovieListByIds should return genres from cache on second call.', () => {
     service.getGenreMovieListByIds([28]).subscribe();
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
     req.flush(mockGenreMoviesResponse);
-
     service.getGenreMovieListByIds([28]).subscribe(genres => {
-      expect(genres.length).toBe(1);
-      done();
+      expect(genres).toEqual([{ id: 28, name: 'Action' }]);
     });
-
-    httpMock.expectNone(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+    httpMock.expectNone(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
   });
 
-  it('getGenreMovieList should fetch and sort the full genre list.', (done) => {
+  it('getGenreMovieList should fetch and sort the full genre list.', () => {
     const unsorted = { genres: [{ id: 35, name: 'Comedy' }, { id: 28, name: 'Action' }]};
     const sorted = [{ id: 28, name: 'Action' }, { id: 35, name: 'Comedy' }];
-
-    service.getGenreMovieList().subscribe(genres => {
-      expect(genres).toEqual(sorted);
-      done();
-    });
-
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+    service.getGenreMovieList().subscribe(genres => { expect(genres).toEqual(sorted); });
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
     req.flush(unsorted);
   });
 
-  it('getMovieById should fetch a movie by its ID.', (done) => {
-      const movieId = 123;
-      service.getMovieById(movieId).subscribe(movie => {
-          expect(movie).toEqual(mockDetailMovieResponse);
-          done();
-      });
-
-      const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en-US`);
-      req.flush(mockDetailMovieResponse);
-  });
-
-  it('getMovieById should return movie from cache on second call.', (done) => {
+  it('getMovieById should fetch a movie by its ID.', () => {
     const movieId = 123;
-    service.getMovieById(movieId).subscribe();
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en-US`);
-    req.flush(mockDetailMovieResponse);
-
     service.getMovieById(movieId).subscribe(movie => {
       expect(movie).toEqual(mockDetailMovieResponse);
-      done();
     });
-
-    httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en-US`);
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en_US`);
+    req.flush(mockDetailMovieResponse);
   });
 
-  it('getMoviesBasedIn should fetch related movies and reset on page 1.', (done) => {
+  it('getMovieById should return movie from cache on second call.', () => {
+    const movieId = 123;
+    service.getMovieById(movieId).subscribe();
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en_US`);
+    req.flush(mockDetailMovieResponse);
+    service.getMovieById(movieId).subscribe(movie => {
+      expect(movie).toEqual(mockDetailMovieResponse);
+    });
+    httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=en_US`);
+  });
+
+  it('getMoviesBasedIn should fetch related movies and reset on page 1.', () => {
     const basedIn = 'recommendations';
     const movieId = 123;
-
     service.getMoviesBasedIn(basedIn, movieId, 1).subscribe(response => {
-      expect(response.length).toBe(1);
-      expect(response[0]).toEqual(mockMovieResponse);
-      done();
+      expect(response).toEqual([mockMovieResponse]);
     });
-
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=en-US&page=1`);
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=en_US&page=1`);
     req.flush(mockMovieResponse);
   });
 
-  it('getMoviesFilteredByCategory should append movies when page !== 1.', (done) => {
+  it('getMoviesFilteredByCategory should append movies when page !== 1.', () => {
     const category = 'popular';
     service.getMoviesFilteredByCategory(category, 1).subscribe(() => {
       service.getMoviesFilteredByCategory(category, 2).subscribe(response => {
         expect(response.length).toBe(2);
-        done();
       });
-      const req2 = httpMock.expectOne(r => r.params.get('page') === '2');
+      const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=en_US&region=US&page=2`);
       req2.flush(mockMovieResponse);
     });
-    const req1 = httpMock.expectOne(r => r.params.get('page') === '1');
+    const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=en_US&region=US&page=1`);
     req1.flush(mockMovieResponse);
   });
 
-  it('getMoviesFilteredByCategory should handle HTTP errors.', (done) => {
+  it('getMoviesFilteredByCategory should handle HTTP errors.', () => {
     const category = 'popular';
     service.getMoviesFilteredByCategory(category, 1).subscribe({
       next: () => {},
-      error: (err) => {
-        expect(err.status).toBe(500);
-        done();
-      }
+      error: (err) => { expect(err.status).toBe(500); }
     });
-    const req = httpMock.expectOne(r => r.params.get('page') === '1');
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=en_US&region=US&page=1`);
     req.flush(null, { status: 500, statusText: 'Server Error.' });
   });
 
-  it('getGenreMovieList should return genres from cache on second call.', (done) => {
+  it('getGenreMovieList should return genres from cache on second call.', () => {
     service.getGenreMovieList().subscribe();
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
     req.flush(mockGenreMoviesResponse);
-
-    service.getGenreMovieList().subscribe(genres => {
-      expect(genres).toEqual(mockGenres);
-      done();
-    });
-
-    httpMock.expectNone(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+    service.getGenreMovieList().subscribe(genres => { expect(genres).toEqual(mockGenres); });
+    httpMock.expectNone(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
   });
 
-  it('getMoviesBasedIn should append movies when page !== 1.', (done) => {
+  it('getMoviesBasedIn should append movies when page !== 1.', () => {
     const basedIn = 'recommendations';
     const movieId = 123;
     service.getMoviesBasedIn(basedIn, movieId, 1).subscribe(() => {
       service.getMoviesBasedIn(basedIn, movieId, 2).subscribe(response => {
         expect(response.length).toBe(2);
-        done();
       });
-      const req2 = httpMock.expectOne(r => r.url.includes(`/${movieId}/${basedIn}`) && r.params.get('page') === '2');
+      const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=en_US&page=2`);
       req2.flush(mockMovieResponse);
     });
-    const req1 = httpMock.expectOne(r => r.url.includes(`/${movieId}/${basedIn}`) && r.params.get('page') === '1');
+    const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=en_US&page=1`);
     req1.flush(mockMovieResponse);
   });
 
-  it('getMoviesBasedIn should handle HTTP errors.', (done) => {
+  it('getMoviesBasedIn should handle HTTP errors.', () => {
     const basedIn = 'recommendations';
     const movieId = 123;
     service.getMoviesBasedIn(basedIn, movieId, 1).subscribe({
       next: () => {},
-      error: (err) => {
-        expect(err.status).toBe(500);
-        done();
-      }
+      error: (err) => { expect(err.status).toBe(500); }
     });
-    const req = httpMock.expectOne(r => r.url.includes(`/${movieId}/${basedIn}`) && r.params.get('page') === '1');
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=en_US&page=1`);
     req.flush(null, { status: 500, statusText: 'Server Error.' });
   });
 
-  it('getGenreMovieList should handle empty genre list.', (done) => {
-    service.getGenreMovieList().subscribe(genres => {
-      expect(genres).toEqual([]);
-      done();
-    });
-    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en-US`);
+  it('getGenreMovieList should handle empty genre list.', () => {
+    service.getGenreMovieList().subscribe(genres => { expect(genres).toEqual([]); });
+    const req = httpMock.expectOne(`${environment.tmdbApiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}&language=en_US`);
     req.flush({ genres: [] });
   });
 });
