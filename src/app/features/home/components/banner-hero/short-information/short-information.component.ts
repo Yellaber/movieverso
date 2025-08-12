@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { BadgeListComponent } from '@shared/components/badge-list/bandge-list.component';
+import { BadgeListComponent } from '@shared/components/badge-list/badge-list.component';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { SlugifyService, TmdbService } from '@shared/services';
