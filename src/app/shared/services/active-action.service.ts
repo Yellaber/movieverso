@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 type ActiveAction = 'filter' | 'search';
 
@@ -7,12 +7,9 @@ type ActiveAction = 'filter' | 'search';
 })
 export class ActiveActionService {
   private activeAction = signal<ActiveAction | undefined>(undefined);
+  getActiveAction = computed(() => this.activeAction());
 
   set(activeAction: ActiveAction) {
     this.activeAction.set(activeAction);
-  };
-
-  get() {
-    return this.activeAction.asReadonly();
   };
 }
