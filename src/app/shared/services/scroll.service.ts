@@ -1,47 +1,44 @@
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScrollService {
-  private platform = inject(PLATFORM_ID);
+  private platformService = inject(PlatformService);
   private document = inject(DOCUMENT);
   private cacheScroll = new Map<string, number>();
 
   isAtBottom(offset: number = 300): boolean {
-    if(isPlatformBrowser(this.platform)) {
-      const scrollTop = this.document.documentElement.scrollTop;
-      const clientHeight = this.document.documentElement.clientHeight;
-      const scrollHeight = this.document.documentElement.scrollHeight;
+    if(this.platformService.isBrowser()) {
+      const { scrollTop, clientHeight, scrollHeight } = this.document.documentElement;
       return scrollTop + clientHeight + offset >= scrollHeight;
     }
-      return false;
+    return false;
   };
 
-  setScrollTo(top: number, behavior: ScrollBehavior = 'auto') {
-    if(isPlatformBrowser(this.platform)) {
-      this.document.documentElement.scrollTo({top, behavior});
-    }
+  private setScrollTo(top: number, behavior: ScrollBehavior = 'auto') {
+    this.document.documentElement.scrollTo({ top, behavior });
   };
 
   getScrollTop(): number {
-    return isPlatformBrowser(this.platform)? this.document.documentElement.scrollTop: 0;
+    return this.platformService.isBrowser()? this.document.documentElement.scrollTop: 0;
   };
 
   scrollTop(behavior: ScrollBehavior = 'auto') {
-    this.setScrollTo(0, behavior);
-  };
-
-  saveScrollPosition(key: string) {
-    if(isPlatformBrowser(this.platform)) {
-      const scrollPosition = this.getScrollTop();
-      this.cacheScroll.set(key, scrollPosition);
+    if(this.platformService.isBrowser()) {
+      this.setScrollTo(0, behavior);
     }
   };
 
+  saveScrollPosition(key: string) {
+    const scrollPosition = this.getScrollTop();
+    this.cacheScroll.set(key, scrollPosition);
+  };
+
   restoreScrollPosition(key: string, behavior: ScrollBehavior = 'auto') {
-    if(isPlatformBrowser(this.platform)) {
+    if(this.platformService.isBrowser()) {
       const scrollPosition = this.cacheScroll.get(key);
       if(scrollPosition) {
         this.setScrollTo(scrollPosition, behavior);
@@ -50,9 +47,9 @@ export class ScrollService {
   };
 
   blockWindow(isBlocked: boolean) {
-    if(isPlatformBrowser(this.platform)) {
+    if(this.platformService.isBrowser()) {
       isBlocked? this.document.querySelector('body')?.classList.add('overflow-hidden'):
       this.document.querySelector('body')?.classList.remove('overflow-hidden');
     }
   };
-}
+};
