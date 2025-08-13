@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, tap } from 'rxjs';
+import { PlatformService } from '@shared/services';
 import { UserGeolocation } from '@shared/interfaces';
 import { environment } from '@app/environments/environment.developments';
 
@@ -12,7 +12,7 @@ const USER_LOCAL_LOCATION = 'userLocalLocation';
   providedIn: 'root'
 })
 export class UserGeolocationService {
-  private platformId = inject(PLATFORM_ID);
+  private platformService = inject(PlatformService);
   private httpClient = inject(HttpClient);
   private translateService = inject(TranslateService);
   private userGeolocation: UserGeolocation | undefined;
@@ -23,13 +23,12 @@ export class UserGeolocationService {
   };
 
   loadUserLocation(apiUrlGeolocation: string): Observable<UserGeolocation | undefined> {
-    if(!isPlatformBrowser(this.platformId)) { return of(undefined); }
+    if(!this.platformService.isBrowser()) { return of(undefined); }
     const userLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocation) {
-      const geoLocation = JSON.parse(userLocation) as UserGeolocation;
-      this.userGeolocation = geoLocation;
+      this.userGeolocation = JSON.parse(userLocation) as UserGeolocation;
       this.translateService.use(this.userGeolocation.country_metadata.languages[0].split('-')[0]);
-      return of(geoLocation);
+      return of(this.userGeolocation);
     }
     return this.getLocation(apiUrlGeolocation);
   };
@@ -41,10 +40,7 @@ export class UserGeolocationService {
         tap(geoLocation => {
           const { country_metadata } = geoLocation;
           country_metadata.languages = this.getUserLanguage(country_metadata.languages[0]);
-          this.userGeolocation = {
-            ...geoLocation,
-            country_metadata
-          };
+          this.userGeolocation = { ...geoLocation, country_metadata };
           localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(this.userGeolocation));
           this.translateService.use(country_metadata.languages[0].split('-')[0]);
         })
@@ -52,7 +48,7 @@ export class UserGeolocationService {
   };
 
   private getUserLanguage(language: string): string[] {
-    return (language.includes('es'))? [language]: ['en_US'];
+    return (language.includes('es'))? [language]: ['en-US'];
   };
 
   getUserGeolocation(): UserGeolocation | undefined {
