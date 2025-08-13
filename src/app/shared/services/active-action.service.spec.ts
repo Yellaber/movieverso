@@ -16,30 +16,30 @@ describe('ActiveActionService', () => {
   });
 
   it('Should have an initial value of undefined.', () => {
-    expect(service.get()()).toBeUndefined();
+    expect(service.getActiveAction()).toBeUndefined();
   });
 
   it('Should set the action to "search".', () => {
     service.set('search');
-    expect(service.get()()).toBe('search');
+    expect(service.getActiveAction()).toBe('search');
   });
 
   it('Should set the action to "filter".', () => {
     service.set('filter');
-    expect(service.get()()).toBe('filter');
+    expect(service.getActiveAction()).toBe('filter');
   });
 
   it('Should update the action from "search" to "filter".', () => {
     service.set('search');
-    expect(service.get()()).toBe('search');
-
+    expect(service.getActiveAction()).toBe('search');
     service.set('filter');
-    expect(service.get()()).toBe('filter');
+    expect(service.getActiveAction()).toBe('filter');
   });
 
   it('Should return a readonly signal.', () => {
-    const readonlySignal = service.get();
+    const readonlySignal = service.getActiveAction;
     expect((readonlySignal as any).set).toBeUndefined();
     expect((readonlySignal as any).update).toBeUndefined();
+    expect((readonlySignal as any).mutate).toBeUndefined();
   });
 });
