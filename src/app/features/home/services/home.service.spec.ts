@@ -118,4 +118,27 @@ describe('HomeService.', () => {
       expect(moviesResponse).toEqual(mockMovies);
     });
   });
+
+  describe('If geolocation is not available.', () => {
+    beforeEach(() => {
+      const userGeolocationServiceMock = { getUserGeolocation: jest.fn().mockReturnValue(undefined) };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          HomeService,
+          { provide: UserGeolocationService, useValue: userGeolocationServiceMock }
+        ]
+      });
+      homeService = TestBed.inject(HomeService);
+      httpClientMock = TestBed.inject(HttpTestingController);
+    });
+
+    it('userLanguage and userCountry signals should be empty string.', () => {
+      expect((homeService as any).userLanguage()).toBe('');
+      expect((homeService as any).userCountry()).toBe('');
+    });
+  });
 });
