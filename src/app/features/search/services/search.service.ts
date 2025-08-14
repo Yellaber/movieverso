@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '@app/core/services';
 import { MovieResponse, QueryParams } from '@shared/interfaces';
@@ -25,39 +25,45 @@ export class SearchService {
   };
 
   getMovieByTitle(query: string, page: number): Observable<MovieResponse[]> {
-    if(page === 1) {
-      this.moviesFiltered = [];
-    }
-    const url = `${environment.tmdbApiUrl}/search/movie`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        query,
-        language: this.userLanguage(),
-        region: this.userCountry(),
-        page
+    if(page > 0) {
+      if(page === 1) {
+        this.moviesFiltered = [];
       }
-    }).pipe(
-        map(movieResponse => {
-          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-          return this.moviesFiltered;
-        })
-      );
+      const url = `${environment.tmdbApiUrl}/search/movie`;
+      return this.httpClient.get<MovieResponse>(url, {
+        params: {
+          api_key: environment.tmdbApiKey,
+          query,
+          language: this.userLanguage(),
+          region: this.userCountry(),
+          page
+        }
+      }).pipe(
+          map(movieResponse => {
+            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+            return this.moviesFiltered;
+          })
+        );
+    }
+    return of([]);
   };
 
   getMoviesFiltered(queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
-    if(page === 1) {
-      this.moviesFiltered = [];
+    if(page > 0) {
+      if(page === 1) {
+        this.moviesFiltered = [];
+      }
+      const url = `${environment.tmdbApiUrl}/discover/movie`;
+      const params = this.getHttpParamsCommons(queryParams, page);
+      return this.httpClient.get<MovieResponse>(url, { params })
+        .pipe(
+          map(movieResponse => {
+            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+            return this.moviesFiltered;
+          })
+        );
     }
-    const url = `${environment.tmdbApiUrl}/discover/movie`;
-    const params = this.getHttpParamsCommons(queryParams, page);
-    return this.httpClient.get<MovieResponse>(url, { params })
-      .pipe(
-        map(movieResponse => {
-          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-          return this.moviesFiltered;
-        })
-      );
+    return of([]);
   };
 
   private getHttpParamsCommons(queryParams: QueryParams, page: number): HttpParams {
