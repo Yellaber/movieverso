@@ -17,7 +17,7 @@ describe('QueryParamsService', () => {
   });
 
   it('Should have an initial value of undefined.', () => {
-    expect(service.get()()).toBeUndefined();
+    expect(service.getQueryParams()).toBeUndefined();
   });
 
   it('Should set and get query params correctly.', () => {
@@ -27,13 +27,13 @@ describe('QueryParamsService', () => {
       withGenres: '28,878'
     };
     service.set(mockParams);
-    expect(service.get()()).toEqual(mockParams);
+    expect(service.getQueryParams()).toEqual(mockParams);
   });
 
   it('Should update query params when set is called again.', () => {
     const initialParams: QueryParams = { query: 'Inception' };
     service.set(initialParams);
-    expect(service.get()()).toEqual(initialParams);
+    expect(service.getQueryParams()).toEqual(initialParams);
 
     const updatedParams: QueryParams = {
       query: 'Dune',
@@ -41,6 +41,13 @@ describe('QueryParamsService', () => {
     };
 
     service.set(updatedParams);
-    expect(service.get()()).toEqual(updatedParams);
+    expect(service.getQueryParams()).toEqual(updatedParams);
+  });
+
+  it('Should return a readonly signal.', () => {
+    const readonlySignal = service.getQueryParams;
+    expect((readonlySignal as any).set).toBeUndefined();
+    expect((readonlySignal as any).update).toBeUndefined();
+    expect((readonlySignal as any).mutate).toBeUndefined();
   });
 });
