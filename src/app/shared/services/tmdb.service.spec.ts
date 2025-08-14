@@ -192,8 +192,10 @@ describe('TmdbService', () => {
     httpMock.verify();
   });
 
-  it('Should be created.', () => {
+  it('Should be created and set language/country from geolocation.', () => {
     expect(service).toBeTruthy();
+    expect((service as any).userLanguage()).toBe('es-CO');
+    expect((service as any).userCountry()).toBe('CO');
   });
 
   describe('getMoviesFilteredByCategory().', () => {
@@ -270,7 +272,6 @@ describe('TmdbService', () => {
       httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=es-CO`);
       expect(detailMovieResponse).toEqual(mockDetailMovieResponse);
     });
-
   });
 
   describe('getGenreMovieList().', () => {
