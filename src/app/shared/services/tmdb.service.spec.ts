@@ -130,9 +130,7 @@ const mockMovieResponse: MovieResponse = {
   total_results: mockMovies.length
 };
 
-const mockGenres: Genre[] = [
-  { id: 28, name: 'Action' }, { id: 12, name: 'Adventure' }, { id: 35, name: 'Comedy' },
-];
+const mockGenres: Genre[] = [{ id: 28, name: 'Action' }, { id: 12, name: 'Adventure' }, { id: 35, name: 'Comedy' }];
 
 const mockGenreMoviesResponse: GenreMoviesResponse = { genres: mockGenres };
 
@@ -208,7 +206,7 @@ describe('TmdbService', () => {
       expect(moviesResponse).toEqual([mockMovieResponse]);
     });
 
-    it('Should append movies when page !== 1.', () => {
+    it('Should append movies when page > 1.', () => {
       const category = 'popular';
       service.getMoviesFilteredByCategory(category, 1).subscribe();
       const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
@@ -218,6 +216,13 @@ describe('TmdbService', () => {
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       req2.flush(mockMovieResponse);
       expect(moviesResponse?.length).toBe(2);
+    });
+
+    it('Should return an empty array when page <= 0.', () => {
+      const category = 'popular';
+      let moviesResponse: MovieResponse[] | undefined;
+      service.getMoviesFilteredByCategory(category, 0).subscribe(response => { moviesResponse = response; });
+      expect(moviesResponse).toEqual([]);
     });
   });
 
@@ -265,6 +270,7 @@ describe('TmdbService', () => {
       httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}&language=es-CO`);
       expect(detailMovieResponse).toEqual(mockDetailMovieResponse);
     });
+
   });
 
   describe('getGenreMovieList().', () => {
@@ -308,7 +314,7 @@ describe('TmdbService', () => {
       expect(moviesResponse).toEqual([mockMovieResponse]);
     });
 
-    it('Should append movies when page !== 1.', () => {
+    it('Should append movies when page > 1.', () => {
       const basedIn = 'recommendations';
       const movieId = 123;
       service.getMoviesBasedIn(basedIn, movieId, 1).subscribe();
@@ -319,6 +325,14 @@ describe('TmdbService', () => {
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=2`);
       req2.flush(mockMovieResponse);
       expect(moviesResponse?.length).toBe(2);
+    });
+
+    it('Should return an empty array when page <= 0.', () => {
+      const basedIn = 'recommendations';
+      const movieId = 123;
+      let moviesResponse: MovieResponse[] | undefined;
+      service.getMoviesBasedIn(basedIn, movieId, 0).subscribe(response => { moviesResponse = response; });
+      expect(moviesResponse).toEqual([]);
     });
   });
 
