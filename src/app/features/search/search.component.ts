@@ -41,8 +41,8 @@ export default class SearchComponent implements OnInit {
   private queryParamsService = inject(QueryParamsService);
   private scrollService = inject(ScrollService);
   private activeActionService = inject(ActiveActionService);
-  queryParams = this.queryParamsService.get();
-  typeSelectedOption = this.activeActionService.get();
+  queryParams = this.queryParamsService.getQueryParams;
+  typeSelectedOption = this.activeActionService.getActiveAction;
   loadResultsRef = viewChild(LoadResultsComponent);
 
   movies = rxResource({
@@ -61,7 +61,6 @@ export default class SearchComponent implements OnInit {
       if(queryFilter) {
         this.loadResultsRef()?.page.set(1);
         this.scrollService.scrollTop();
-
       }
     });
   };
@@ -70,7 +69,7 @@ export default class SearchComponent implements OnInit {
     this.seoFriendlyService.setMetaTags('Search', '');
   };
 
-  getResource(typeSelectedOption: string, queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
+  private getResource(typeSelectedOption: string, queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
     return (typeSelectedOption === 'filter')? this.tmdbService.getMoviesFiltered(queryParams!, page):
       this.tmdbService.getMovieByTitle(queryParams?.query!, page);
   };
