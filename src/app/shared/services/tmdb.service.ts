@@ -29,23 +29,26 @@ export class TmdbService {
   };
 
   getMoviesFilteredByCategory(category: string, page: number): Observable<MovieResponse[]> {
-    if(page === 1) {
-      this.moviesFiltered = [];
-    }
-    const url = `${environment.tmdbApiUrl}/${category}`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
-        region: this.userCountry(),
-        page
+    if(page > 0) {
+      if(page === 1) {
+        this.moviesFiltered = [];
       }
-    }).pipe(
-        map(movieResponse => {
-          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-          return this.moviesFiltered;
-        })
-      );
+      const url = `${environment.tmdbApiUrl}/${category}`;
+      return this.httpClient.get<MovieResponse>(url, {
+        params: {
+          api_key: environment.tmdbApiKey,
+          language: this.userLanguage(),
+          region: this.userCountry(),
+          page
+        }
+      }).pipe(
+          map(movieResponse => {
+            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+            return this.moviesFiltered;
+          })
+        );
+    }
+    return of([]);
   };
 
   getGenreMovieListByIds(genreIds: number[]): Observable<Genre[]> {
@@ -100,21 +103,24 @@ export class TmdbService {
   };
 
   getMoviesBasedIn(basedIn: string, movieId: number, page: number): Observable<MovieResponse[]> {
-    if(page === 1) {
-      this.moviesFiltered = [];
-    }
-    const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
-    return this.httpClient.get<MovieResponse>(url, {
-      params: {
-        api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
-        page
+    if(page > 0) {
+      if(page === 1) {
+        this.moviesFiltered = [];
       }
-    }).pipe(
-        map(movieResponse => {
-          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-          return this.moviesFiltered;
-        })
-      );
+      const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
+      return this.httpClient.get<MovieResponse>(url, {
+        params: {
+          api_key: environment.tmdbApiKey,
+          language: this.userLanguage(),
+          page
+        }
+      }).pipe(
+          map(movieResponse => {
+            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+            return this.moviesFiltered;
+          })
+        );
+    }
+    return of([]);
   };
 }
