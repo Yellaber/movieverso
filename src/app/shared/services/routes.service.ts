@@ -6,9 +6,9 @@ import { Route } from '@angular/router';
 })
 export class RoutesService {
   private routes = signal<Route[]>([]);
-  readonly getRoutes = computed(() => this.routes());
+  getRoutes = computed(() => this.routes());
 
   setRoutes(routes: Route[]) {
     this.routes.set(routes);
-  }
-}
+  };
+};
