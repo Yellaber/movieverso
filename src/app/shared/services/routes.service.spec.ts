@@ -3,17 +3,12 @@ import { Route } from '@angular/router';
 import { RoutesService } from './routes.service';
 
 const mockRoutes: Route[] = [
-  { path: 'home', title: 'Home' },
-  { path: 'upcoming', title: 'Upcoming' },
-  { path: 'popular', title: 'Popular' },
-  { path: 'top-rated', title: 'Top Rated' },
-  { path: 'now-playing', title: 'Now Playing' },
-  { path: 'trending', title: 'Trending' }
+  { path: 'home', title: 'Home' }, { path: 'upcoming', title: 'Upcoming' },
+  { path: 'popular', title: 'Popular' }, { path: 'top-rated', title: 'Top Rated' },
+  { path: 'now-playing', title: 'Now Playing' }, { path: 'trending', title: 'Trending' }
 ];
 
-const updatedMockRoutes: Route[] = [
-  { path: 'contact', title: 'Contact' }
-];
+const updatedMockRoutes: Route[] = [{ path: 'contact', title: 'Contact' }];
 
 describe('RoutesService', () => {
   let service: RoutesService;
@@ -41,8 +36,14 @@ describe('RoutesService', () => {
   it('Should update routes when setRoutes is called again.', () => {
     service.setRoutes(mockRoutes);
     expect(service.getRoutes()).toEqual(mockRoutes);
-
     service.setRoutes(updatedMockRoutes);
     expect(service.getRoutes()).toEqual(updatedMockRoutes);
+  });
+
+  it('Should return a readonly signal.', () => {
+    const readonlySignal = service.getRoutes;
+    expect((readonlySignal as any).set).toBeUndefined();
+    expect((readonlySignal as any).update).toBeUndefined();
+    expect((readonlySignal as any).mutate).toBeUndefined();
   });
 });
