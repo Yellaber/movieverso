@@ -1,10 +1,44 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 import { HomeService } from './home.service';
 import { UserGeolocationService } from '@app/core/services';
 import { environment } from '@environments/environment.developments';
-import { Movie, MovieResponse } from '@shared/interfaces';
+import { Movie, MovieResponse, UserGeolocation } from '@shared/interfaces';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+
+const mockGeolocation: UserGeolocation = {
+  ip: '1.2.3.4',
+  location: {
+    continent_code: 'SA',
+    continent_name: 'Sounth America',
+    country_code2: 'CO',
+    country_code3: 'COL',
+    country_name: 'Colombia',
+    country_name_official: 'Republic of Colombia',
+    country_capital: 'Bogota',
+    state_prov: 'Bolivar',
+    state_code: 'CO-BOL',
+    district: 'Cartagena Province',
+    city: 'Cartagena',
+    zipcode: '130008',
+    latitude: '10.48366',
+    longitude: '-75.45778',
+    is_eu: false,
+    country_flag: 'https://ipgeolocation.io/static/flags/co_64.png',
+    geoname_id: '3830557',
+    country_emoji: 'co'
+  },
+  country_metadata: {
+    calling_code: '+57',
+    tld: '.co',
+    languages: ['es-CO']
+  },
+  currency: {
+    code: 'COP',
+    name: 'Colombian Peso',
+    symbol: '$'
+  }
+};
 
 const mockMovies: Movie[] = [
   {
@@ -32,70 +66,56 @@ const mockMovieResponse: MovieResponse = {
   total_results: 1
 };
 
-describe('HomeService', () => {
-  let service: HomeService;
-  let httpClient: { get: jest.Mock };
-  let userGeolocationService: { getUserGeolocation: jest.Mock };
+describe('HomeService.', () => {
+  let homeService: HomeService;
+  let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
-    httpClient = { get: jest.fn() };
-    userGeolocationService = {
-      getUserGeolocation: jest.fn().mockReturnValue({
-        country_metadata: { languages: ['es-ES'] },
-        location: { country_code2: 'ES' }
-      })
-    };
+    const userGeolocationService = { getUserGeolocation: jest.fn().mockReturnValue(mockGeolocation) };
 
     TestBed.configureTestingModule({
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         HomeService,
-        { provide: HttpClient, useValue: httpClient },
         { provide: UserGeolocationService, useValue: userGeolocationService }
       ]
     });
 
-    service = TestBed.inject(HomeService);
+    homeService = TestBed.inject(HomeService);
+    httpClientMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    httpClientMock.verify();
   });
 
   it('Should be created and set language/country from geolocation.', () => {
-    expect(service).toBeTruthy();
-    expect(service['userLanguage']()).toBe('es-ES');
-    expect(service['userCountry']()).toBe('ES');
+    expect(homeService).toBeTruthy();
+    expect((homeService as any).userLanguage()).toBe('es-CO');
+    expect((homeService as any).userCountry()).toBe('CO');
   });
 
-  it('Should return movies from cache if present.', (done) => {
-    const endPoint = 'popular';
-    const url = `${environment.tmdbApiUrl}/${endPoint}`;
-    const key = `${url}/page=1`;
-    service['cacheQuery'].set(key, mockMovies);
-
-    service.getMovies(endPoint).subscribe(result => {
-      expect(result).toBe(mockMovies);
-      done();
+  describe('getMovies().', () => {
+    it('Should fetch movies from API if cache is empty.', () => {
+      const endPoint = 'top_rated';
+      let moviesResponse: Movie[] | undefined;
+      homeService.getMovies(endPoint).subscribe(response => { moviesResponse = response; });
+      const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/${endPoint}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req.flush(mockMovieResponse);
+      expect(moviesResponse).toEqual(mockMovies);
     });
-  });
 
-  it('Should fetch movies from API and cache them if not in cache.', (done) => {
-    const endPoint = 'top_rated';
-    const url = `${environment.tmdbApiUrl}/${endPoint}`;
-    httpClient.get.mockReturnValue(of(mockMovieResponse));
-
-    service.getMovies(endPoint).subscribe(result => {
-      expect(httpClient.get).toHaveBeenCalledWith(url, {
-        params: {
-          api_key: environment.tmdbApiKey,
-          language: 'es-ES',
-          region: 'ES',
-          page: 1
-        }
-      });
-      expect(result).toEqual(mockMovies);
-      expect(service['cacheQuery'].get(`${url}/page=1`)).toEqual(mockMovies);
-      done();
+    it('Should return movies from cache if available.', () => {
+      const endPoint = 'popular';
+      homeService.getMovies(endPoint).subscribe();
+      const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/${endPoint}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req.flush(mockMovieResponse);
+      let moviesResponse: Movie[] | undefined;
+      homeService.getMovies(endPoint).subscribe(response => { moviesResponse = response; });
+      httpClientMock.expectNone(`${environment.tmdbApiUrl}/${endPoint}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      expect(moviesResponse).toEqual(mockMovies);
     });
   });
 });
