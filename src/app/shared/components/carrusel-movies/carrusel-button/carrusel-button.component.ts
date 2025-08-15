@@ -1,13 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-
-interface Direction {
-  label: string,
-  faIcon: IconDefinition,
-  class: string
-};
+import { Direction } from '@shared/interfaces';
 
 const directions: Direction[] = [
   { label: 'previous', faIcon: faAngleLeft, class: 'left-0 bg-gradient-to-r' },
@@ -27,7 +21,7 @@ const directions: Direction[] = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarruselButtonComponent {
-  direction = input.required<string>();
+  direction = input.required<'previous' | 'next'>();
   bgButton = input.required<string>();
   emitDirection = output<string>();
   getDirection = computed(() => directions.find(angle => angle.label === this.direction()));
@@ -35,5 +29,5 @@ export class CarruselButtonComponent {
 
   handleChangeScrollState() {
     this.getDirection() && this.emitDirection.emit(this.getDirection()!.label);
-  }
+  };
 }
