@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { environment } from '@environments/environment.developments';
 import { SlugifyService } from '@shared/services';
@@ -11,7 +9,6 @@ import { Movie } from '@shared/interfaces';
   selector: 'carrusel-card-movies',
   imports: [
     RouterLink,
-    FontAwesomeModule,
     RatingComponent
   ],
   templateUrl: './carrusel-card-movies.component.html',
@@ -19,14 +16,17 @@ import { Movie } from '@shared/interfaces';
   host: { class: 'flex flex-col min-w-[160px] max-w-[160px] rounded-md shadow-md' }
 })
 export class CarruselCardMoviesComponent {
-  faBokmark = faBookmark;
+  private slugifyService = inject(SlugifyService);
   movie = input.required<Movie>();
   bgCardFooter = input.required<string>();
-  srcImage = computed(() => environment.imageUrl + this.movie().poster_path);
   bgClassCardFooter = computed<string>(() => `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`);
-  private slugifyService = inject(SlugifyService);
-
-  slugify(title: string): string {
-    return this.slugifyService.getSlug(title);
-  };
-}
+  srcImage = computed<string>(() => {
+    const posterPath = this.movie().poster_path;
+    return posterPath? `${environment.imageUrl}${posterPath}`: '/images/no-poster.jpg';
+  });
+  movieLink = computed<string[]>(() => {
+    const movie = this.movie();
+    const slug = this.slugifyService.getSlug(movie.title);
+    return ['/movie', `${movie.id}-${slug}`];
+  });
+};
