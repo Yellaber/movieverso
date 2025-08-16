@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -9,12 +9,12 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe
   ],
   template: `
-    @if(carruselTitle()) {
+    @if(isValidTitle()) {
       <div class="rounded-full bg-yellow-900/50 px-4 py-2">
         <h2 class="text-xl lg:text-2xl">{{ carruselTitle() }}</h2>
       </div>
     }
-    @if(route()) {
+    @if(isValidRoute()) {
       <a class="text-sm lg:text-xl" [routerLink]="route()">{{ 'carouselLink' | translate }}</a>
     }
   `,
@@ -24,4 +24,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class CarruselTitleComponent {
   carruselTitle = input.required<string>();
   route = input<string>();
-}
+  isValidTitle = computed<boolean>(() => !!this.carruselTitle() && this.carruselTitle().trim() !== '');
+  isValidRoute = computed<boolean>(() => !!this.route() && this.route()!.trim() !== '' && this.route()!.trim().startsWith('/'));
+};
