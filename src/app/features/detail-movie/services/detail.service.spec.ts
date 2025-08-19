@@ -4,64 +4,12 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { DetailService } from './detail.service';
 import { UserGeolocationService } from '@app/core/services';
 import { environment } from '@environments/environment.developments';
-import { Keyword, Movie, MovieCollectionResponse, MovieResponse, Trailer, UserGeolocation } from '@shared/interfaces';
-
-const mockGeolocation: UserGeolocation = {
-  ip: '1.2.3.4',
-  location: {
-    continent_code: 'SA',
-    continent_name: 'Sounth America',
-    country_code2: 'CO',
-    country_code3: 'COL',
-    country_name: 'Colombia',
-    country_name_official: 'Republic of Colombia',
-    country_capital: 'Bogota',
-    state_prov: 'Bolivar',
-    state_code: 'CO-BOL',
-    district: 'Cartagena Province',
-    city: 'Cartagena',
-    zipcode: '130008',
-    latitude: '10.48366',
-    longitude: '-75.45778',
-    is_eu: false,
-    country_flag: 'https://ipgeolocation.io/static/flags/co_64.png',
-    geoname_id: '3830557',
-    country_emoji: 'co'
-  },
-  country_metadata: {
-    calling_code: '+57',
-    tld: '.co',
-    languages: ['es-CO']
-  },
-  currency: {
-    code: 'COP',
-    name: 'Colombian Peso',
-    symbol: '$'
-  }
-};
+import { Keyword, MovieCollectionResponse, MovieResponse, Trailer } from '@shared/interfaces';
+import { mockMovieResponse, mockGeolocation } from '@app/testing';
 
 const mockKeywords: Keyword[] = [
   { id: 1, name: 'keyword 1' }, { id: 2, name: 'keyword 2' },
   { id: 3, name: 'keyword 3' }, { id: 4, name: 'keyword 4' }
-];
-
-const mockMovieSimilars: Movie[] = [
-  {
-    adult: false,
-    backdrop_path: '/backdrop.jpg',
-    genre_ids: [1, 2],
-    id: 1,
-    original_language: 'es',
-    original_title: 'Película',
-    overview: 'Resumen',
-    popularity: 10,
-    poster_path: '/poster.jpg',
-    release_date: new Date( '2024-01-01' ),
-    title: 'Película',
-    video: false,
-    vote_average: 8.5,
-    vote_count: 100
-  }
 ];
 
 const mockTrailers: Trailer[] = [
@@ -78,13 +26,6 @@ const mockTrailers: Trailer[] = [
     id: 'abc'
   }
 ];
-
-const mockMovieResponse: MovieResponse = {
-  page: 1,
-  results: mockMovieSimilars,
-  total_pages: 1,
-  total_results: 1
-};
 
 const mockCollection: MovieCollectionResponse = {
   id: 1,
