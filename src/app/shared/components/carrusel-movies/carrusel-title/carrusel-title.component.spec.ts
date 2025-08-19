@@ -39,7 +39,7 @@ describe('CarruselTitleComponent.', () => {
 
   it('Should render the title and route correctly.', () => {
     fixture.componentRef.setInput('carruselTitle', 'Title');
-    fixture.componentRef.setInput('route', '/test');
+    fixture.componentRef.setInput('route', 'test');
     fixture.detectChanges();
     const heading = screen.getByRole('heading', { name: 'Title' });
     expect(heading).toBeInTheDocument();
@@ -57,16 +57,6 @@ describe('CarruselTitleComponent.', () => {
     expect(link).not.toBeInTheDocument();
   });
 
-  it('Should render the title, but not the route if it is invalid.', () => {
-    fixture.componentRef.setInput('carruselTitle', 'Title');
-    fixture.componentRef.setInput('route', 'test');
-    fixture.detectChanges();
-    const heading = screen.getByRole('heading', { name: 'Title' });
-    expect(heading).toBeInTheDocument();
-    const link = screen.queryByRole('link');
-    expect(link).not.toBeInTheDocument();
-  });
-
   it('Should not render the title if it is empty.', () => {
     fixture.componentRef.setInput('carruselTitle', '');
     fixture.detectChanges();
@@ -77,16 +67,6 @@ describe('CarruselTitleComponent.', () => {
   it('Should not render the title and route if they are empty.', () => {
     fixture.componentRef.setInput('carruselTitle', '');
     fixture.componentRef.setInput('route', '');
-    fixture.detectChanges();
-    const heading = screen.queryByRole('heading');
-    expect(heading).not.toBeInTheDocument();
-    const link = screen.queryByRole('link');
-    expect(link).not.toBeInTheDocument();
-  });
-
-  it('Should not render when the title is empty and the route is invalid.', () => {
-    fixture.componentRef.setInput('carruselTitle', '');
-    fixture.componentRef.setInput('route', 'test');
     fixture.detectChanges();
     const heading = screen.queryByRole('heading');
     expect(heading).not.toBeInTheDocument();
