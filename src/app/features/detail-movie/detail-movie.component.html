@@ -10,7 +10,7 @@
         <trailer [movieId]="movieSelected.value().id"/>
         <movie-list [movieId]="movieSelected.value().id" typeMovieList="recommendations"/>
         <movie-list [movieId]="movieSelected.value().id" typeMovieList="similar"/>
-        <movie-list [movieId]="idCollection()?? -1" typeMovieList="collection" [hasRoute]="false"/>
+        <movie-list [movieId]="idCollection()" typeMovieList="collection"/>
       </div>
     </section>
   } @else {
