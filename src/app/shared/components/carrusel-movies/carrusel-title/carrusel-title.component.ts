@@ -25,5 +25,5 @@ export class CarruselTitleComponent {
   carruselTitle = input.required<string>();
   route = input<string>();
   isValidTitle = computed<boolean>(() => !!this.carruselTitle() && this.carruselTitle().trim() !== '');
-  isValidRoute = computed<boolean>(() => !!this.route() && this.route()!.trim() !== '' && this.route()!.trim().startsWith('/'));
+  isValidRoute = computed<boolean>(() => !!this.route() && this.route()!.trim() !== '');
 };
