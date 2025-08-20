@@ -1,19 +1,22 @@
-@if(carouselConfig().carouselTitle || carouselConfig().route) {
-  <carrusel-title [carruselTitle]="carouselConfig().carouselTitle" [route]="carouselConfig().route"/>
-}
-@if(carouselConfig().text !== '') {
-  <p class="text-xs lg:text-sm leading-relaxed pb-5">{{ carouselConfig().text }}</p>
-}
-<div class="relative overflow-hidden" #carouselContainer>
-  <div class="flex transition-transform duration-500 ease-in-out gap-4" [style.transform]="`translateX(-${scrollStep()}px)`">
-    @for(movie of carouselConfig().movies; track $index) {
-      <carrusel-card-movies [movie]="movie" [bgCardFooter]="carouselConfig().bgCardFooter"/>
+@if(carouselConfig().movies.length > 0) {
+  @if(carouselConfig().carouselTitle || carouselConfig().route) {
+    <carrusel-title [carruselTitle]="carouselConfig().carouselTitle?? ''" [route]="carouselConfig().route"/>
+  }
+  @if(carouselConfig().text) {
+    <p class="text-xs lg:text-sm leading-relaxed pb-5">{{ carouselConfig().text }}</p>
+  }
+  <div class="relative overflow-hidden" #carouselContainer>
+    <div class="flex transition-transform duration-500 ease-in-out gap-4"
+    [style.transform]="`translateX(-${getScrollStep()}px)`">
+    @for(movie of carouselConfig().movies; track movie.id) {
+      <carrusel-card-movies [movie]="movie" [bgCardFooter]="carouselConfig().bgCardFooter ?? 'bg-stone-800'"/>
+    }
+    </div>
+    @if(isPrevious()) {
+      <carrusel-control direction="previous" [bgButton]="carouselConfig().bgButtons!"/>
+    }
+    @if(isNext()) {
+      <carrusel-control direction="next" [bgButton]="carouselConfig().bgButtons!"/>
     }
   </div>
-  @if(scrollStep() > 0) {
-    <carrusel-button direction="previous" (emitDirection)="onClick($event)" [bgButton]="carouselConfig().bgButtons"/>
-  }
-  @if(scrollStep() < totalScrollStep() - getPartNotVisible()) {
-    <carrusel-button direction="next" (emitDirection)="onClick($event)" [bgButton]="carouselConfig().bgButtons"/>
-  }
-</div>
+}
