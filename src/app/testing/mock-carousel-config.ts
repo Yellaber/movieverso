@@ -1,5 +1,5 @@
 import { CarouselConfig } from '@shared/interfaces';
-import { mockMovies } from './mock-movie-response';
+import { mockMovies } from './mock-tmdb-service';
 
 export const MockCarouselConfig: CarouselConfig = {
   carouselTitle: 'Carousel Title',
