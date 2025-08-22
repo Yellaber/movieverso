@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/angular';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies.component';
 import { SlugifyService } from '@shared/services';
-import { mockRoute } from '@app/testing/mock-route';
+import { mockRoutes } from '@app/testing/mock-route';
 import { Movie } from '@shared/interfaces';
 import { provideRouter } from '@angular/router';
 import { environment } from '@app/environments/environment.developments';
@@ -37,7 +37,7 @@ describe('CarruselCardMoviesComponent.', () => {
     return render(CarruselCardMoviesComponent, {
       imports: [ StubRatingComponent ],
       providers: [
-        provideRouter([ mockRoute ]),
+        provideRouter([ mockRoutes[0] ]),
         { provide: SlugifyService, useValue: { getSlug: jest.fn().mockImplementation(() => mockMovie.title) } }
       ],
       inputs
@@ -49,11 +49,15 @@ describe('CarruselCardMoviesComponent.', () => {
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', `/movie/${mockMovie.id}-${mockMovie.title}`);
+
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', `${environment.imageUrl}${mockMovie.poster_path}`);
+
     const ratingsComponent = container.querySelectorAll('rating');
+    const footer = ratingsComponent[0].parentElement;
     expect(ratingsComponent.length).toBe(2);
+    expect(footer).toHaveClass(bgCardFooter);
   });
 
   it('Should render the component when the movie not contain a poster path.', async() => {
@@ -64,10 +68,14 @@ describe('CarruselCardMoviesComponent.', () => {
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', `/movie/${mockMovie.id}-${mockMovie.title}`);
+
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', '/images/no-poster.jpg');
+
     const ratingsComponent = container.querySelectorAll('rating');
+    const footer = ratingsComponent[0].parentElement;
     expect(ratingsComponent.length).toBe(2);
+    expect(footer).toHaveClass(bgCardFooter);
   });
 });
