@@ -1,15 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CategoriesComponent } from './categories.component';
-import { MockTranslatePipe, MockTranslateService } from '@app/testing';
-import { Component } from '@angular/core';
+import { MockTranslatePipe, MockTranslateService, StubNavigationComponent } from '@app/testing';
 import { NavigationComponent } from './navigation/navigation.component';
-
-@Component({
-  selector: 'navigation',
-  template: '<li>StubNavigationComponent</li>'
-})
-class StubNavigationComponent {};
 
 describe('CategoriesComponent.', () => {
   let fixture: ComponentFixture<CategoriesComponent>;
@@ -33,7 +26,7 @@ describe('CategoriesComponent.', () => {
   });
 
   it('Should render the categories correctly.', () => {
-    fixture.componentRef.setInput('menuItems', [ 'test-1', 'test-2', 'test-3' ]);
+    fixture.componentRef.setInput('menuItems', [ 'category-1', 'category-2', 'category-3' ]);
     fixture.detectChanges();
     const spanElement = fixture.nativeElement.querySelector('span');
     const navigationElement = fixture.nativeElement.querySelector('navigation');
