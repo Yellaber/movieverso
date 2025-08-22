@@ -43,7 +43,6 @@ export class NavigationComponent implements OnInit {
       this.routesCategories.update(routes => [ ...routes, { title: category, path: `/${path}` } ]));
   };
 
-
   private transformPath(path: string): string {
     if(path.includes('-')) {
       const words = path.split('-');
@@ -56,4 +55,4 @@ export class NavigationComponent implements OnInit {
     }
     return path;
   };
-}
+};
