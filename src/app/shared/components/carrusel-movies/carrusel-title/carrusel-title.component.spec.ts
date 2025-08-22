@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CarruselTitleComponent } from './carrusel-title.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockTranslatePipe, MockTranslateService } from '@app/testing/mock-translate';
-import { mockRoute } from '@app/testing/mock-route';
+import { mockRoutes } from '@app/testing/mock-route';
 
 describe('CarruselTitleComponent.', () => {
   let fixture: ComponentFixture<CarruselTitleComponent>;
@@ -13,7 +13,7 @@ describe('CarruselTitleComponent.', () => {
     TestBed.configureTestingModule({
       imports: [ CarruselTitleComponent ],
       providers: [
-        provideRouter([ mockRoute ]),
+        provideRouter([ mockRoutes[0] ]),
         { provide: TranslateService, useClass: MockTranslateService }
       ]
     })
