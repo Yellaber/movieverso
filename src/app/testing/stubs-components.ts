@@ -1,19 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { Movie } from '@shared/interfaces';
 
 @Component({
   selector: 'carrusel-title',
-  template: `<li>Stub Carrusel Title Component</li>`
+  template: `<li>StubCarruselTitleComponent</li>`
 })
-export class StubCarruselTitleComponent {};
+export class StubCarruselTitleComponent {
+  carruselTitle = input.required<string>();
+  route = input.required<string>();
+};
 
 @Component({
   selector: 'carrusel-card-movies',
-  template: `<li>Stub Carrusel Card Movies Component</li>`
+  template: `<li>StubCarruselCardMoviesComponent</li>`
 })
-export class StubCarruselCardMoviesComponent {};
+export class StubCarruselCardMoviesComponent {
+  movie = input.required<Movie>();
+  bgCardFooter = input.required<string>();
+};
 
 @Component({
   selector: 'carrusel-control',
-  template: `<li>Stub Carrusel Control Component</li>`
+  template: `<li>StubCarruselControlComponent</li>`
 })
-export class StubCarruselControlComponent {};
+export class StubCarruselControlComponent {
+  direction = input.required<string>();
+  bgButton = input.required<string>();
+};
+
+@Component({
+  selector: 'navigation',
+  template: '<li>StubNavigationComponent</li>'
+})
+export class StubNavigationComponent {
+  menuItems = input.required<string[]>();
+};
