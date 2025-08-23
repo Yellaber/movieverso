@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilterOrderByComponent } from './filter-order-by.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { QueryParamsService } from '@shared/services';
-import { MockQueryParamsService, MockTranslatePipe, MockTranslateService } from '@app/testing';
+import { MockQueryParamsService, MockQueryParamsServiceEmpty, MockTranslatePipe, MockTranslateService } from '@app/testing';
 
 describe('FilterOderByComponent.', () => {
   let component: FilterOrderByComponent;
@@ -75,17 +75,12 @@ describe('FilterOderByComponent.', () => {
   });
 
   describe('When the queryParams does not exist.', () => {
-    class MockQueryParams {
-      getQueryParams = jest.fn().mockReturnValue(undefined);
-      set = jest.fn();
-    };
-
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ FilterOrderByComponent ],
         providers: [
           { provide: TranslateService, useClass: MockTranslateService },
-          { provide: QueryParamsService, useClass: MockQueryParams }
+          { provide: QueryParamsService, useClass: MockQueryParamsServiceEmpty }
         ]
       })
       .overrideComponent(FilterOrderByComponent, {
