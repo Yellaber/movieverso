@@ -1,6 +1,20 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { QueryParamsService } from '@shared/services';
 import { OptionDropdown, TypeSort } from '@shared/interfaces';
+
+const OPTIONS_BY_SORT: OptionDropdown[] = [
+  { label: 'filter.sortBy.mostPopular', value: 'popularity.desc' },
+  { label: 'filter.sortBy.leastPopular', value: 'popularity.asc' },
+  { label: 'filter.sortBy.bestRated', value: 'vote_average.desc' },
+  { label: 'filter.sortBy.worstRated', value: 'vote_average.asc' },
+  { label: 'filter.sortBy.mostVoted', value: 'vote_count.desc' },
+  { label: 'filter.sortBy.leastVoted', value: 'vote_count.asc' },
+  { label: 'filter.sortBy.newest', value: 'primary_release_date.desc' },
+  { label: 'filter.sortBy.oldest', value: 'primary_release_date.asc' },
+  { label: 'filter.sortBy.titleAsc', value: 'title.asc' },
+  { label: 'filter.sortBy.titleDesc', value: 'title.desc' }
+];
 
 @Component({
   selector: 'filter-order',
@@ -8,11 +22,11 @@ import { OptionDropdown, TypeSort } from '@shared/interfaces';
   template: `
     <span class="text-sm font-bold">{{ 'filter.sortBy.label' | translate }}</span>
     <div class="flex flex-wrap gap-3">
-      @for(option of options(); track $index) {
-        <button class="rounded-full text-xs lg:text-sm hover:font-bold cursor-pointer duration-300 transition-all px-3 py-2" [class.bg-yellow-600]="isSelected(option)" [class.font-bold]="isSelected(option)"
-        [class.bg-stone-400]="!isSelected(option)" [class.text-stone-700]="!isSelected(option)"
+      @for(option of options(); track option.value) {
+        <button
+        class="rounded-full text-xs lg:text-sm hover:font-bold cursor-pointer duration-300 transition-all px-3 py-2" [class]="isSelected(option)? 'bg-yellow-600 font-bold': 'bg-stone-400 text-stone-700'"
         (click)="onSelect(option)">
-          {{option.label}}
+          {{ option.label }}
         </button>
       }
     </div>
@@ -22,12 +36,12 @@ import { OptionDropdown, TypeSort } from '@shared/interfaces';
 })
 export class FilterOrderByComponent implements OnInit {
   private translateService = inject(TranslateService);
+  private queryParamsService = inject(QueryParamsService);
   options = signal<OptionDropdown[]>([]);
   selectedOption = signal<TypeSort | undefined>(undefined);
 
   ngOnInit() {
     this.initializeOptions();
-    this.reset();
   };
 
   onSelect(option: OptionDropdown) {
@@ -39,20 +53,19 @@ export class FilterOrderByComponent implements OnInit {
   };
 
   reset() {
-    this.selectedOption.set(this.options()[0].value);
+    if(this.options().length > 0) {
+      this.selectedOption.set(this.options()[0].value);
+    }
   };
 
   private initializeOptions() {
-    this.loadTranslations('filter.sortBy.mostPopular', 'popularity.desc');
-    this.loadTranslations('filter.sortBy.leastPopular', 'popularity.asc');
-    this.loadTranslations('filter.sortBy.bestRated', 'vote_average.desc');
-    this.loadTranslations('filter.sortBy.worstRated', 'vote_average.asc');
-    this.loadTranslations('filter.sortBy.mostVoted', 'vote_count.desc');
-    this.loadTranslations('filter.sortBy.leastVoted', 'vote_count.asc');
-    this.loadTranslations('filter.sortBy.newest', 'primary_release_date.desc');
-    this.loadTranslations('filter.sortBy.oldest', 'primary_release_date.asc');
-    this.loadTranslations('filter.sortBy.titleAsc', 'title.asc');
-    this.loadTranslations('filter.sortBy.titleDesc', 'title.desc');
+    OPTIONS_BY_SORT.forEach(option => this.loadTranslations(option.label, option.value));
+    const queryParams = this.queryParamsService.getQueryParams();
+    if(queryParams) {
+      this.selectedOption.set(queryParams.sortBy);
+      return;
+    }
+    this.reset();
   };
 
   private loadTranslations(key: string, value: TypeSort) {
@@ -60,4 +73,4 @@ export class FilterOrderByComponent implements OnInit {
       this.options.update(options => [ ...options, { label, value } ])
     );
   };
-}
+};
