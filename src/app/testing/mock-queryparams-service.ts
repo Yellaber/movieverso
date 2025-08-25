@@ -6,7 +6,7 @@ export const mockQueryParams: QueryParams = {
   voteAverageGte: 8,
   voteCountGte: 200,
   sortBy: 'vote_average.desc',
-  withGenres: '1,2,3'
+  withGenres: '1'
 };
 
 export class MockQueryParamsService {
