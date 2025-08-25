@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TmdbService } from '@shared/services';
+import { QueryParamsService, TmdbService } from '@shared/services';
 import { Genre } from '@shared/interfaces';
 
 @Component({
@@ -23,16 +23,31 @@ import { Genre } from '@shared/interfaces';
 })
 export class FilterGenreComponent implements OnInit {
   private tmdbService = inject(TmdbService);
+  private queryParamsService = inject(QueryParamsService);
   private genresSelected = signal<Genre[]>([]);
   genres = signal<Genre[]>([]);
   genresIdSelected = computed(() => this.genresSelected().map(genre => genre.id).toString());
 
   ngOnInit() {
     this.loadGenreMovieList();
-  }
+  };
 
   private loadGenreMovieList() {
-    this.tmdbService.getGenreMovieList().subscribe(genres => this.genres.set(genres));
+    this.tmdbService.getGenreMovieList().subscribe(genres => {
+      this.genres.set(genres)
+      this.loadGenresIdsFromQueryParamsService();
+    });
+  };
+
+  private loadGenresIdsFromQueryParamsService() {
+    const queryParams = this.queryParamsService.getQueryParams();
+    if(queryParams) {
+      const genresIdsSelected = queryParams.withGenres;
+      if(genresIdsSelected) {
+        const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
+        this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
+      }
+    }
   };
 
   onSelect(genre: Genre) {
@@ -41,7 +56,7 @@ export class FilterGenreComponent implements OnInit {
       if(index > -1) {
         return currentGenres.filter(g => g.id !== genre.id);
       }
-      return [...currentGenres, genre];
+      return [ ...currentGenres, genre ];
     });
   };
 
