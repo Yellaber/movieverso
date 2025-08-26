@@ -25,6 +25,7 @@ export class FilterGenreComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private queryParamsService = inject(QueryParamsService);
   private genresSelected = signal<Genre[]>([]);
+  queryParams = signal(this.queryParamsService.getQueryParams());
   genres = signal<Genre[]>([]);
   genresIdSelected = computed(() => this.genresSelected().map(genre => genre.id).toString());
 
@@ -40,28 +41,25 @@ export class FilterGenreComponent implements OnInit {
   };
 
   private loadGenresIdsFromQueryParamsService() {
-    const queryParams = this.queryParamsService.getQueryParams();
-    if(queryParams) {
-      const genresIdsSelected = queryParams.withGenres;
-      if(genresIdsSelected) {
-        const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
-        this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
-      }
+    const genresIdsSelected = this.queryParams().withGenres;
+    if(genresIdsSelected) {
+      const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
+      this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
     }
   };
 
-  onSelect(genre: Genre) {
-    this.genresSelected.update(currentGenres => {
-      const index = currentGenres.findIndex(g => g.id === genre.id);
+  onSelect(genreSelected: Genre) {
+    this.genresSelected.update(genres => {
+      const index = genres.findIndex(genre => genre.id === genreSelected.id);
       if(index > -1) {
-        return currentGenres.filter(g => g.id !== genre.id);
+        return genres.filter(genre => genre.id !== genreSelected.id);
       }
-      return [ ...currentGenres, genre ];
+      return [ ...genres, genreSelected ];
     });
   };
 
-  isSelected(genre: Genre): boolean {
-    return this.genresSelected().some(g => g.id === genre.id);
+  isSelected(genreSelected: Genre): boolean {
+    return this.genresSelected().some(genre => genre.id === genreSelected.id);
   };
 
   reset() {
