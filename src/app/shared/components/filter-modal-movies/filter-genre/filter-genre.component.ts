@@ -25,7 +25,7 @@ export class FilterGenreComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private queryParamsService = inject(QueryParamsService);
   private genresSelected = signal<Genre[]>([]);
-  private queryParams = signal(this.queryParamsService.getQueryParams());
+  private queryParams = this.queryParamsService.getQueryParams;
   genres = signal<Genre[]>([]);
   genresIdSelected = computed(() => this.genresSelected().map(genre => genre.id).toString());
 
