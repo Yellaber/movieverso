@@ -37,11 +37,24 @@ const OPTIONS_BY_SORT: OptionDropdown[] = [
 export class FilterOrderByComponent implements OnInit {
   private translateService = inject(TranslateService);
   private queryParamsService = inject(QueryParamsService);
+  private queryParams = this.queryParamsService.getQueryParams;
   options = signal<OptionDropdown[]>([]);
   selectedOption = signal<TypeSort | undefined>(undefined);
 
   ngOnInit() {
     this.initializeOptions();
+  };
+
+  private initializeOptions() {
+    OPTIONS_BY_SORT.forEach(option => this.loadTranslations(option.label, option.value));
+    const sortBy = this.queryParams().sortBy;
+    this.selectedOption.set(sortBy);
+  };
+
+  private loadTranslations(key: string, value: TypeSort) {
+    this.translateService.get(key).subscribe((label: string) =>
+      this.options.update(options => [ ...options, { label, value } ])
+    );
   };
 
   onSelect(option: OptionDropdown) {
@@ -56,21 +69,5 @@ export class FilterOrderByComponent implements OnInit {
     if(this.options().length > 0) {
       this.selectedOption.set(this.options()[0].value);
     }
-  };
-
-  private initializeOptions() {
-    OPTIONS_BY_SORT.forEach(option => this.loadTranslations(option.label, option.value));
-    const queryParams = this.queryParamsService.getQueryParams();
-    if(queryParams) {
-      this.selectedOption.set(queryParams.sortBy);
-      return;
-    }
-    this.reset();
-  };
-
-  private loadTranslations(key: string, value: TypeSort) {
-    this.translateService.get(key).subscribe((label: string) =>
-      this.options.update(options => [ ...options, { label, value } ])
-    );
   };
 };
