@@ -25,7 +25,7 @@ export class FilterGenreComponent implements OnInit {
   private tmdbService = inject(TmdbService);
   private queryParamsService = inject(QueryParamsService);
   private genresSelected = signal<Genre[]>([]);
-  queryParams = signal(this.queryParamsService.getQueryParams());
+  private queryParams = signal(this.queryParamsService.getQueryParams());
   genres = signal<Genre[]>([]);
   genresIdSelected = computed(() => this.genresSelected().map(genre => genre.id).toString());
 
@@ -42,10 +42,8 @@ export class FilterGenreComponent implements OnInit {
 
   private loadGenresIdsFromQueryParamsService() {
     const genresIdsSelected = this.queryParams().withGenres;
-    if(genresIdsSelected) {
-      const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
-      this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
-    }
+    const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
+    this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
   };
 
   onSelect(genreSelected: Genre) {
