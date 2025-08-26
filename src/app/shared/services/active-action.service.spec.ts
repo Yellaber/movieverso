@@ -15,8 +15,8 @@ describe('ActiveActionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('Should have an initial value of undefined.', () => {
-    expect(service.getActiveAction()).toBeUndefined();
+  it('Should have an empty string as initial value.', () => {
+    expect(service.getActiveAction()).toBe('');
   });
 
   it('Should set the action to "search".', () => {
@@ -34,6 +34,11 @@ describe('ActiveActionService', () => {
     expect(service.getActiveAction()).toBe('search');
     service.set('filter');
     expect(service.getActiveAction()).toBe('filter');
+  });
+
+  it('Should set the action to an empty string.', () => {
+    service.set('');
+    expect(service.getActiveAction()).toBe('');
   });
 
   it('Should return a readonly signal.', () => {
