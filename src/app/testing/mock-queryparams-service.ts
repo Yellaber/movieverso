@@ -1,11 +1,13 @@
 import { QueryParams } from '@shared/interfaces';
+import { initialQueryParams } from '@shared/services/query-params.service';
 
 export const mockQueryParams: QueryParams = {
   primaryReleaseDateGte: '2025-01-01',
   primaryReleaseDateLte: '2025-02-01',
+  query: 'Inception',
+  sortBy: 'vote_average.desc',
   voteAverageGte: 8,
   voteCountGte: 200,
-  sortBy: 'vote_average.desc',
   withGenres: '1'
 };
 
@@ -14,7 +16,7 @@ export class MockQueryParamsService {
   set = jest.fn();
 };
 
-export class MockQueryParamsServiceEmpty {
-  getQueryParams = jest.fn().mockReturnValue(undefined);
+export class MockDefaultQueryParamsService {
+  getQueryParams = jest.fn().mockReturnValue(initialQueryParams);
   set = jest.fn();
 };
