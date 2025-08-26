@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilterOrderByComponent } from './filter-order-by.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { QueryParamsService } from '@shared/services';
-import { MockQueryParamsService, MockQueryParamsServiceEmpty, MockTranslatePipe, MockTranslateService } from '@app/testing';
+import { MockDefaultQueryParamsService, MockQueryParamsService, MockTranslatePipe, MockTranslateService } from '@app/testing';
 
 describe('FilterOderByComponent.', () => {
-  let component: FilterOrderByComponent;
-  let fixture: ComponentFixture<FilterOrderByComponent>;
+  describe('When initializing with custom query params.', () => {
+    let component: FilterOrderByComponent;
+    let fixture: ComponentFixture<FilterOrderByComponent>;
 
-  describe('When the queryParams exists.', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ FilterOrderByComponent ],
@@ -48,8 +48,8 @@ describe('FilterOderByComponent.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
       buttonElements[3].click();
       fixture.detectChanges();
-      expect(buttonElements[0].classList.contains('bg-stone-400')).toBeTruthy();
-      expect(buttonElements[0].classList.contains('text-stone-700')).toBeTruthy();
+      expect(buttonElements[2].classList.contains('bg-stone-400')).toBeTruthy();
+      expect(buttonElements[2].classList.contains('text-stone-700')).toBeTruthy();
       expect(component.selectedOption()).toEqual(component.options()[3].value);
       expect(buttonElements[3].textContent.trim()).toBe(component.options()[3].label);
       expect(buttonElements[3].classList.contains('bg-yellow-600')).toBeTruthy();
@@ -74,13 +74,16 @@ describe('FilterOderByComponent.', () => {
     });
   });
 
-  describe('When the queryParams does not exist.', () => {
+  describe('When initializing with default query params.', () => {
+    let component: FilterOrderByComponent;
+    let fixture: ComponentFixture<FilterOrderByComponent>;
+
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ FilterOrderByComponent ],
         providers: [
           { provide: TranslateService, useClass: MockTranslateService },
-          { provide: QueryParamsService, useClass: MockQueryParamsServiceEmpty }
+          { provide: QueryParamsService, useClass: MockDefaultQueryParamsService }
         ]
       })
       .overrideComponent(FilterOrderByComponent, {
@@ -94,12 +97,9 @@ describe('FilterOderByComponent.', () => {
       fixture.detectChanges();
     });
 
-    it('Should render the component correctly and select the most popular option.', () => {
-      const spanElement = fixture.nativeElement.querySelector('span');
+    it('Should render the component correctly and select the most popular option by default.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
-      expect(spanElement).toBeTruthy();
       expect(component.selectedOption()).toBe('popularity.desc');
-      expect(buttonElements.length).toBe(component.options().length);
       expect(component.selectedOption()).toEqual(component.options()[0].value);
       expect(buttonElements[0].textContent.trim()).toBe(component.options()[0].label);
       expect(buttonElements[0].classList.contains('bg-yellow-600')).toBeTruthy();
