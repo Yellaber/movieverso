@@ -1,4 +1,4 @@
-<form [formGroup]="searchingForm" class="w-full">
+<form [formGroup]="searchingForm" class="w-full" (ngSubmit)="navigateToSearch()">
   <div class="flex w-full">
     <input type="search" formControlName="search"
     class="w-full lg:w-180 text-xs lg:text-sm text-stone-500 focus:outline-none px-5"

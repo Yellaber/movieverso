@@ -26,19 +26,19 @@ export class SearchBarComponent {
   faSliders = faSliders;
   isOpenedFilter = signal<boolean>(false);
   searchingForm = this.formBuilder.group({
-    search: [
-      '',
-      [Validators.required]
-    ]
+    search: [ '', [ Validators.required ] ]
   });
 
   private getSearchValue(): string {
     return this.searchingForm.get('search')?.value || '';
-  }
+  };
 
   navigateToSearch() {
     if(!this.searchingForm.invalid) {
-      this.queryParamsService.set({ query: this.getSearchValue() });
+      this.queryParamsService.set({
+        ...this.queryParamsService.getQueryParams(),
+        query: this.getSearchValue()
+      });
       this.activeActionService.set('search');
       this.router.navigateByUrl('/search');
     }
@@ -47,4 +47,4 @@ export class SearchBarComponent {
   onOpenFilter() {
     this.isOpenedFilter.set(true);
   };
-}
+};
