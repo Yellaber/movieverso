@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { FormUtils } from '@shared/utilities/form-utils';
-import { QueryParams } from '@shared/interfaces';
+import { initialQueryParams, QueryParamsService } from '@shared/services/query-params.service';
 
 @Component({
   selector: 'form-filter',
@@ -13,54 +13,45 @@ import { QueryParams } from '@shared/interfaces';
     TranslatePipe
   ],
   templateUrl: './form-filter.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormFilterComponent {
   private formBuilder = inject(FormBuilder);
+  private queryParamsService = inject(QueryParamsService);
+  queryParams = this.queryParamsService.getQueryParams;
   formUtils = FormUtils;
-  queryParams = signal<QueryParams>({});
   formFilter: FormGroup = this.formBuilder.group({
-    voteAverageMinimum: ['7'],
+    voteAverageMinimum: [ this.queryParams().voteAverageGte ],
     voteMinimum: [
-      '100',
-      [Validators.required, Validators.min(1), Validators.max(25000)]
+      this.queryParams().voteCountGte,
+      [ Validators.required, Validators.min(1), Validators.max(25000) ]
     ],
     primaryReleaseDateGte: [
-      '',
-      [FormUtils.dateValidator()]
+      this.queryParams().primaryReleaseDateGte,
+      [ FormUtils.dateValidator() ]
     ],
     primaryReleaseDateLte: [
-      '',
-      [FormUtils.dateValidator()]
+      this.queryParams().primaryReleaseDateLte,
+      [ FormUtils.dateValidator() ]
     ]
   }, {
-    validators: [FormUtils.isFieldLessThan('primaryReleaseDateGte', 'primaryReleaseDateLte')]
+    validators: [ FormUtils.isFieldLessThan('primaryReleaseDateGte', 'primaryReleaseDateLte') ]
   });
 
-  onShowResults() {
+  isInvalid(): boolean {
     if(this.formFilter.invalid) {
       this.formFilter.markAllAsTouched();
       return true;
     }
-    this.queryParams.set({
-      voteAverageGte: this.formFilter.controls['voteAverageMinimum'].value,
-      voteCountGte: this.formFilter.controls['voteMinimum'].value,
-      primaryReleaseDateGte: this.formFilter.controls['primaryReleaseDateGte'].value,
-      primaryReleaseDateLte: this.formFilter.controls['primaryReleaseDateLte'].value,
-    });
     return false;
   };
 
   reset() {
     this.formFilter.reset({
-      voteAverageMinimum: '7',
-      voteMinimum: '100',
-      primaryReleaseDateGte: '',
-      primaryReleaseDateLte: ''
+      voteAverageMinimum: initialQueryParams.voteAverageGte,
+      voteMinimum: initialQueryParams.voteCountGte,
+      primaryReleaseDateGte: initialQueryParams.primaryReleaseDateGte,
+      primaryReleaseDateLte: initialQueryParams.primaryReleaseDateLte
     });
   };
-
-  getVoteAverageValue(): number {
-    return this.formFilter.controls['voteAverageMinimum'].value;
-  };
-}
+};
