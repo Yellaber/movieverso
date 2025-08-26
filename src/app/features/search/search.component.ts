@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -26,7 +26,7 @@ const noMovieResponse: MovieResponse = {
       <div class="flex flex-wrap text-xs lg:text-sm items-center font-bold text-yellow-600 gap-3">
         <h3>{{ 'search.title' | translate }}</h3>
         <span class="rounded-full bg-yellow-900/50 text-yellow-600 px-3 py-2">
-          {{ queryParams()?.query }}
+          {{ queryParams().query }}
         </span>
       </div>
     }
@@ -41,17 +41,19 @@ export default class SearchComponent implements OnInit {
   private queryParamsService = inject(QueryParamsService);
   private scrollService = inject(ScrollService);
   private activeActionService = inject(ActiveActionService);
-  queryParams = this.queryParamsService.getQueryParams;
+  queryParams = signal(this.queryParamsService.getQueryParams());
   typeSelectedOption = this.activeActionService.getActiveAction;
   loadResultsRef = viewChild(LoadResultsComponent);
-
   movies = rxResource({
-    request: () => ({ typeSelectedOption: this.typeSelectedOption(), queryParams: this.queryParams(),
-      page: this.loadResultsRef()?.page()! }),
+    request: () => ({
+      typeSelectedOption: this.typeSelectedOption(),
+      queryParams: this.queryParams(),
+      page: this.loadResultsRef()?.page()!
+    }),
     loader: ({ request }) => {
       const { typeSelectedOption, queryParams, page } = request;
       return (typeSelectedOption && queryParams)?
-        this.getResource(typeSelectedOption!, queryParams!, page): of([ noMovieResponse ]);
+        this.getResource(typeSelectedOption, queryParams, page): of([ noMovieResponse ]);
     }
   });
 
@@ -70,7 +72,7 @@ export default class SearchComponent implements OnInit {
   };
 
   private getResource(typeSelectedOption: string, queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
-    return (typeSelectedOption === 'filter')? this.tmdbService.getMoviesFiltered(queryParams!, page):
-      this.tmdbService.getMovieByTitle(queryParams?.query!, page);
+    return (typeSelectedOption === 'filter')? this.tmdbService.getMoviesFiltered(queryParams, page):
+      this.tmdbService.getMovieByTitle(queryParams.query!, page);
   };
-}
+};
