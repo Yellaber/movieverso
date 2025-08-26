@@ -35,3 +35,12 @@ export class StubCarruselControlComponent {
 export class StubNavigationComponent {
   menuItems = input.required<string[]>();
 };
+
+@Component({
+  selector: 'rating',
+  template: '<li>StubRatingComponent</li>'
+})
+export class StubRatingComponent {
+  type = input.required<'popularity' | 'vote_average' | 'vote_count'>();
+  value = input.required<number>();
+};
