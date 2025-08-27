@@ -13,6 +13,11 @@ describe('UserGeolocationService', () => {
   let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true
+    });
+
     TestBed.configureTestingModule({
       providers: [
         UserGeolocationService,
@@ -25,13 +30,12 @@ describe('UserGeolocationService', () => {
 
     geolocationService = TestBed.inject(UserGeolocationService);
     httpClientMock = TestBed.inject(HttpTestingController);
-    localStorage.clear();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
     httpClientMock.verify();
-    localStorage.clear();
+    mockLocalStorage.clear();
   });
 
   it('Should be created.', () => {
@@ -52,14 +56,15 @@ describe('UserGeolocationService', () => {
 
     it('Should return geolocation if localStorage is present.', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
+      localStorage.setItem('userLocalLocation', JSON.stringify(mockGeolocation));
       const useSpy = jest.spyOn(geolocationService['translateService'], 'use');
-      mockLocalStorage.setItem('userLocalLocation', JSON.stringify(mockGeolocation));
       let userLocation: UserGeolocation | undefined;
 
       geolocationService.loadUserLocation('http://api').subscribe(response => {
         userLocation = response;
       });
 
+      expect(localStorage.getItem).toHaveBeenCalledWith('userLocalLocation');
       expect(userLocation).toEqual(mockGeolocation);
       expect(useSpy).toHaveBeenCalledWith('es');
     });
@@ -67,19 +72,19 @@ describe('UserGeolocationService', () => {
     it('Should fetch geolocation from API if localStorage is not present.', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
       const getLocationSpy = jest.spyOn(geolocationService as any, 'getLocation');
+      const setItemSpy = jest.spyOn(localStorage, 'setItem');
       const useSpy = jest.spyOn(geolocationService['translateService'], 'use');
-      const setItemSpy = jest.spyOn(mockLocalStorage, 'setItem');
       let userLocation: UserGeolocation | undefined;
 
       geolocationService.loadUserLocation('http://api').subscribe(response => {
         userLocation = response;
-        expect(setItemSpy).toHaveBeenCalledWith('userLocalLocation', JSON.stringify(mockGeolocation));
       });
 
       const request = httpClientMock.expectOne(`http://api?apiKey=${environment.ipGeolocationApiKey}`);
       request.flush(mockGeolocation);
       expect(getLocationSpy).toHaveBeenCalledWith('http://api');
       expect(userLocation).toEqual(mockGeolocation);
+      expect(setItemSpy).toHaveBeenCalledWith('userLocalLocation', JSON.stringify(mockGeolocation));
       expect(useSpy).toHaveBeenCalledWith('es');
     });
   });
