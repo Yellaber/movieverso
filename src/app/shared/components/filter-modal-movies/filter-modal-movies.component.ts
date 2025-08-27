@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -8,8 +8,8 @@ import { FormFilterComponent } from './form-filter/form-filter.component';
 import { FilterOrderByComponent } from './filter-order-by/filter-order-by.component';
 import { ActiveActionService, QueryParamsService, ScrollService } from '@shared/services';
 
-const CLASS_MODAL = 'fixed inset-0 bg-stone-900/60 items-center justify-center z-50 hidden';
-const CLASS_MODAL_CONTENT = 'w-full max-w-md bg-stone-300 text-stone-700 rounded-md shadow-md transform transition-all duration-300 translate-y-full opacity-0';
+const CLASS_LIST_OVERLAY = 'fixed inset-0 bg-stone-900/60 items-center justify-center z-50 hidden';
+const CLASS_LIST_MODAL = 'w-full max-w-md bg-stone-300 text-stone-700 rounded-md shadow-md transform transition-all duration-300 translate-y-full opacity-0';
 
 @Component({
   selector: 'filter-modal-movies',
@@ -30,40 +30,46 @@ export class FilterModalMoviesComponent implements OnInit {
   private activeActionService = inject(ActiveActionService);
   faCircleXmark = faCircleXmark;
   faSpinner = faSpinner;
-  emitClose = output();
-  filterGenresSelected = viewChild(FilterGenreComponent);
+  filterGenre = viewChild(FilterGenreComponent);
   formFilter = viewChild(FormFilterComponent);
   filterOrderBy = viewChild(FilterOrderByComponent);
-  classListModal = signal<string>(CLASS_MODAL);
-  classListModalContent = signal<string>(CLASS_MODAL_CONTENT);
+  activeAction = this.activeActionService.getActiveAction;
+  classListOverlay = signal<string>(CLASS_LIST_OVERLAY);
+  classListModal = signal<string>(CLASS_LIST_MODAL);
 
   ngOnInit() {
     this.onShow();
   };
 
+  private setClassListOverlay(oldClass: string, newClass: string) {
+    const classListOverlay = this.classListOverlay().replace(oldClass, newClass);
+    this.classListOverlay.set(classListOverlay);
+  };
+
+  private setClassListModal(oldClass: string, newClass: string) {
+    const classListModal = this.classListModal().replace(oldClass, newClass);
+    this.classListModal.set(classListModal);
+  };
+
   onShow() {
-    const classModal = this.classListModal().replace('hidden', 'flex');
-    this.classListModal.set(classModal);
+    this.setClassListOverlay('hidden', 'flex');
     setTimeout(() => {
       this.scrollService.blockWindow(true);
-      const classModalContent = this.classListModalContent().replace('translate-y-full', 'translate-y-0').replace('opacity-0', 'opacity-100');
-      this.classListModalContent.set(classModalContent);
+      this.setClassListModal('translate-y-full opacity-0', 'translate-y-0 opacity-100');
     }, 10);
   };
 
   onClose() {
-    const classModalContent = this.classListModalContent().replace('translate-y-0', 'translate-y-full').replace('opacity-100', 'opacity-0');
-    this.classListModalContent.set(classModalContent);
+    this.setClassListModal('translate-y-0 opacity-100', 'translate-y-full opacity-0');
     setTimeout(() => {
       this.scrollService.blockWindow(false);
-      const classModal = this.classListModal().replace('flex', 'hidden');
-      this.classListModal.set(classModal);
-      this.emitClose.emit();
-    }, 200);
+      this.setClassListOverlay('flex', 'hidden');
+      this.activeActionService.set('none');
+    }, 300);
   };
 
   onResetFilter() {
-    this.filterGenresSelected()?.reset();
+    this.filterGenre()?.reset();
     this.formFilter()?.reset();
     this.filterOrderBy()?.reset();
   };
@@ -71,15 +77,17 @@ export class FilterModalMoviesComponent implements OnInit {
   onShowResults() {
     const formComponent = this.formFilter();
     if(!formComponent) return;
-    const isFormInvalid = formComponent.onShowResults();
-    if(isFormInvalid) return;
+    if(formComponent.isInvalid()) return;
     this.queryParamsService.set({
-      ...formComponent.queryParams(),
-      withGenres: this.filterGenresSelected()?.genresIdSelected(),
-      sortBy: this.filterOrderBy()?.selectedOption()
+      primaryReleaseDateGte: formComponent.formFilter.controls[ 'primaryReleaseDateGte' ].value,
+      primaryReleaseDateLte: formComponent.formFilter.controls[ 'primaryReleaseDateLte' ].value,
+      query: '',
+      sortBy: this.filterOrderBy()?.selectedOption()!,
+      voteAverageGte: formComponent.formFilter.controls[ 'voteAverageMinimum' ].value,
+      voteCountGte: formComponent.formFilter.controls[ 'voteMinimum' ].value,
+      withGenres: this.filterGenre()?.genresIdSelected()!,
     });
     this.onClose();
-    this.activeActionService.set('filter');
     this.router.navigateByUrl('/search');
   };
-}
+};
