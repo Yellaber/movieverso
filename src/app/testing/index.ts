@@ -1,5 +1,7 @@
 export * from './mock-carousel-config';
 export * from './mock-geolocation';
+export * from './mock-localstorage';
+export * from './mock-platform-service';
 export * from './mock-queryparams-service';
 export * from './mock-route';
 export * from './mock-tmdb-service';
