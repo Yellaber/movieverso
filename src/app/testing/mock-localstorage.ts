@@ -1,18 +1,8 @@
-export const mockLocalStorage = (() => {
-  let store: { [key: string]: string } = {};
+import { mockGeolocation } from './mock-geolocation';
 
-  return {
-    getItem: jest.fn((key: string) => {
-      return store[key] || null;
-    }),
-    setItem: jest.fn((key: string, value: string) => {
-      store[key] = value.toString();
-    }),
-    removeItem: jest.fn((key: string) => {
-      delete store[key];
-    }),
-    clear: jest.fn(() => {
-      store = {};
-    }),
-  };
-})();
+export const mockLocalStorage = {
+  getItem: jest.fn().mockReturnValue(JSON.stringify(mockGeolocation)),
+  setItem: jest.fn().mockImplementation((key, value) => {
+    localStorage.setItem(key, value);
+  })
+};
