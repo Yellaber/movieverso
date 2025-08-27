@@ -1,19 +1,12 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoadResultsComponent } from '@shared/components/load-results/load-results.component';
 import { SearchService } from './services/search.service';
 import { SeoFriendlyService } from '@app/core/services';
-import { ActiveActionService, QueryParamsService, ScrollService } from '@shared/services';
+import { QueryParamsService, ScrollService } from '@shared/services';
 import { MovieResponse, QueryParams } from '@shared/interfaces';
-
-const noMovieResponse: MovieResponse = {
-  page: 1,
-  results: [],
-  total_pages: 1,
-  total_results: 0
-};
 
 @Component({
   selector: 'search',
@@ -22,7 +15,7 @@ const noMovieResponse: MovieResponse = {
     TranslatePipe
   ],
   template: `
-    @if(typeSelectedOption() === 'search') {
+    @if(queryParams().query) {
       <div class="flex flex-wrap text-xs lg:text-sm items-center font-bold text-yellow-600 gap-3">
         <h3>{{ 'search.title' | translate }}</h3>
         <span class="rounded-full bg-yellow-900/50 text-yellow-600 px-3 py-2">
@@ -40,20 +33,16 @@ export default class SearchComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   private queryParamsService = inject(QueryParamsService);
   private scrollService = inject(ScrollService);
-  private activeActionService = inject(ActiveActionService);
-  queryParams = signal(this.queryParamsService.getQueryParams());
-  typeSelectedOption = this.activeActionService.getActiveAction;
+  queryParams = this.queryParamsService.getQueryParams;
   loadResultsRef = viewChild(LoadResultsComponent);
   movies = rxResource({
     request: () => ({
-      typeSelectedOption: this.typeSelectedOption(),
       queryParams: this.queryParams(),
       page: this.loadResultsRef()?.page()!
     }),
     loader: ({ request }) => {
-      const { typeSelectedOption, queryParams, page } = request;
-      return (typeSelectedOption && queryParams)?
-        this.getResource(typeSelectedOption, queryParams, page): of([ noMovieResponse ]);
+      const { queryParams, page } = request;
+      return this.getResource(queryParams, page);
     }
   });
 
@@ -71,8 +60,8 @@ export default class SearchComponent implements OnInit {
     this.seoFriendlyService.setMetaTags('Search', '');
   };
 
-  private getResource(typeSelectedOption: string, queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
-    return (typeSelectedOption === 'filter')? this.tmdbService.getMoviesFiltered(queryParams, page):
-      this.tmdbService.getMovieByTitle(queryParams.query!, page);
+  private getResource(queryParams: QueryParams, page: number): Observable<MovieResponse[]> {
+    return (queryParams.query)? this.tmdbService.getMovieByTitle(queryParams.query, page):
+      this.tmdbService.getMoviesFiltered(queryParams, page);
   };
 };
