@@ -1,12 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
 
-type ActiveAction = 'filter' | 'search' | '';
+type ActiveAction = 'filter' | 'search' | 'none';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActiveActionService {
-  private activeAction = signal<ActiveAction>('');
+  private activeAction = signal<ActiveAction>('none');
   getActiveAction = computed(() => this.activeAction());
 
   set(activeAction: ActiveAction) {
