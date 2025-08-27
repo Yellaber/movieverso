@@ -1,16 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons';
 import { ActiveActionService, QueryParamsService } from '@shared/services';
+import { FilterModalMoviesComponent } from '@shared/components/filter-modal-movies/filter-modal-movies.component';
 
 @Component({
   selector: 'search-bar',
   imports: [
     ReactiveFormsModule,
     FontAwesomeModule,
+    FilterModalMoviesComponent,
     TranslatePipe
   ],
   templateUrl: './search-bar.component.html',
@@ -22,9 +24,9 @@ export class SearchBarComponent {
   private formBuilder = inject(FormBuilder);
   private queryParamsService = inject(QueryParamsService);
   private activeActionService = inject(ActiveActionService);
+  activeAction = this.activeActionService.getActiveAction;
   faMagnifyingGlass = faMagnifyingGlass;
   faSliders = faSliders;
-  isOpenedFilter = signal<boolean>(false);
   searchingForm = this.formBuilder.group({
     search: [ '', [ Validators.required ] ]
   });
@@ -45,6 +47,6 @@ export class SearchBarComponent {
   };
 
   onOpenFilter() {
-    this.isOpenedFilter.set(true);
+    this.activeActionService.set('filter');
   };
 };
