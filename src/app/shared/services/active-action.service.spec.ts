@@ -15,8 +15,8 @@ describe('ActiveActionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('Should have an empty string as initial value.', () => {
-    expect(service.getActiveAction()).toBe('');
+  it('Should have "none" as initial value.', () => {
+    expect(service.getActiveAction()).toBe('none');
   });
 
   it('Should set the action to "search".', () => {
@@ -36,9 +36,9 @@ describe('ActiveActionService', () => {
     expect(service.getActiveAction()).toBe('filter');
   });
 
-  it('Should set the action to an empty string.', () => {
-    service.set('');
-    expect(service.getActiveAction()).toBe('');
+  it('Should set the action to "none".', () => {
+    service.set('none');
+    expect(service.getActiveAction()).toBe('none');
   });
 
   it('Should return a readonly signal.', () => {
