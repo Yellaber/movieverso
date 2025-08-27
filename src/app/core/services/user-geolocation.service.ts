@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, tap } from 'rxjs';
 import { PlatformService } from '@shared/services';
@@ -15,7 +15,8 @@ export class UserGeolocationService {
   private platformService = inject(PlatformService);
   private httpClient = inject(HttpClient);
   private translateService = inject(TranslateService);
-  private userGeolocation: UserGeolocation | undefined;
+  private userGeolocation = signal<UserGeolocation | undefined>(undefined);
+  getUserGeolocation = computed(() => this.userGeolocation());
 
   constructor() {
     this.translateService.addLangs(['es', 'en']);
@@ -26,9 +27,9 @@ export class UserGeolocationService {
     if(!this.platformService.isBrowser()) { return of(undefined); }
     const userLocation = localStorage.getItem(USER_LOCAL_LOCATION);
     if(userLocation) {
-      this.userGeolocation = JSON.parse(userLocation) as UserGeolocation;
-      this.translateService.use(this.userGeolocation.country_metadata.languages[0].split('-')[0]);
-      return of(this.userGeolocation);
+      this.userGeolocation.set(JSON.parse(userLocation) as UserGeolocation);
+      this.translateService.use(this.userGeolocation()!.country_metadata.languages[0].split('-')[0]);
+      return of(this.userGeolocation());
     }
     return this.getLocation(apiUrlGeolocation);
   };
@@ -40,8 +41,8 @@ export class UserGeolocationService {
         tap(geoLocation => {
           const { country_metadata } = geoLocation;
           country_metadata.languages = this.getUserLanguage(country_metadata.languages[0]);
-          this.userGeolocation = { ...geoLocation, country_metadata };
-          localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(this.userGeolocation));
+          this.userGeolocation.set({ ...geoLocation, country_metadata });
+          localStorage.setItem(USER_LOCAL_LOCATION, JSON.stringify(this.userGeolocation()));
           this.translateService.use(country_metadata.languages[0].split('-')[0]);
         })
       );
@@ -50,8 +51,4 @@ export class UserGeolocationService {
   private getUserLanguage(language: string): string[] {
     return (language.includes('es'))? [language]: ['en-US'];
   };
-
-  getUserGeolocation(): UserGeolocation | undefined {
-    return this.userGeolocation;
-  };
-}
+};
