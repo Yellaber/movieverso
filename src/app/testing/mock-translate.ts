@@ -11,11 +11,11 @@ export class MockTranslatePipe implements PipeTransform {
 @Injectable()
 export class MockTranslateService {
   addLangs = jest.fn();
-  setDefaultLang = jest.fn();
+  setFallbackLang = jest.fn();
   use = jest.fn().mockReturnValue(of('es'));
   getLangs = jest.fn().mockReturnValue(['es', 'en']);
   get = jest.fn().mockImplementation((key: string) => of(`translated:${key}`));
-  instant = jest.fn((key: string) => key);
+  instant = jest.fn((key: string) => `translated:${key}`);
   onLangChange = of({ lang: 'en' });
   onTranslationChange = of();
   onDefaultLangChange = of();
