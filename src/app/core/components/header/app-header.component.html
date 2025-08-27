@@ -7,6 +7,3 @@
   <search-bar/>
   <div class="pointer-events-none absolute top-0 left-0 w-full h-100 bg-gradient-to-b from-stone-900 to-transparent z-[-1]"></div>
 </nav>
-@if(searchBarRef()?.isOpenedFilter()) {
-  <filter-modal-movies (emitClose)="onCloseModal()"/>
-}
