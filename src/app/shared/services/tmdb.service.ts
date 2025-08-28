@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '../../core/services/user-geolocation.service';
-import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse, Trailer, Keyword, MovieCollectionResponse } from '@shared/interfaces';
+import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse } from '@shared/interfaces';
 
-type TypeQuery = DetailMovieResponse | MovieResponse | MovieCollectionResponse | Movie[] | Genre[] | Trailer[] | Keyword[];
+type TypeQuery = DetailMovieResponse | MovieResponse | Movie[] | Genre[];
 
 @Injectable({
   providedIn: 'root'
@@ -15,40 +15,27 @@ export class TmdbService {
   private httpClient = inject(HttpClient);
   private cacheQuery = new Map<string, TypeQuery>();
   private moviesFiltered: MovieResponse[] = [];
-  private userLanguage = signal<string>('');
-  private userCountry = signal<string>('');
-
-
-  constructor() {
-    const userGeolocation = this.userGeolocationService.getUserGeolocation();
-    if(userGeolocation) {
-      const { country_metadata, location } = userGeolocation;
-      this.userLanguage.set(country_metadata.languages[0]);
-      this.userCountry.set(location.country_code2);
-    }
-  };
+  private userGeolocation = this.userGeolocationService.getUserGeolocation;
+  private userLanguage = computed<string>(() => this.userGeolocation()?.country_metadata.languages[0]!);
+  private userCountry = computed<string>(() => this.userGeolocation()?.location.country_code2!);
 
   getMoviesFilteredByCategory(category: string, page: number): Observable<MovieResponse[]> {
-    if(page > 0) {
-      if(page === 1) {
-        this.moviesFiltered = [];
-      }
-      const url = `${environment.tmdbApiUrl}/${category}`;
-      return this.httpClient.get<MovieResponse>(url, {
-        params: {
-          api_key: environment.tmdbApiKey,
-          language: this.userLanguage(),
+    if(page <= 0) { return of([]); }
+    if(page === 1) { this.moviesFiltered = []; }
+    const url = `${environment.tmdbApiUrl}/${category}`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language: this.userLanguage(),
           region: this.userCountry(),
           page
         }
-      }).pipe(
-          map(movieResponse => {
-            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-            return this.moviesFiltered;
-          })
-        );
-    }
-    return of([]);
+    }).pipe(
+      map(movieResponse => {
+        this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+        return this.moviesFiltered;
+      })
+    );
   };
 
   getGenreMovieListByIds(genreIds: number[]): Observable<Genre[]> {
@@ -103,24 +90,20 @@ export class TmdbService {
   };
 
   getMoviesBasedIn(basedIn: string, movieId: number, page: number): Observable<MovieResponse[]> {
-    if(page > 0) {
-      if(page === 1) {
-        this.moviesFiltered = [];
+    if(page <= 0) { return of([]); }
+    if(page === 1) { this.moviesFiltered = []; }
+    const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
+    return this.httpClient.get<MovieResponse>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language: this.userLanguage(),
+        page
       }
-      const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
-      return this.httpClient.get<MovieResponse>(url, {
-        params: {
-          api_key: environment.tmdbApiKey,
-          language: this.userLanguage(),
-          page
-        }
-      }).pipe(
-          map(movieResponse => {
-            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-            return this.moviesFiltered;
-          })
-        );
-    }
-    return of([]);
+    }).pipe(
+      map(movieResponse => {
+        this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+        return this.moviesFiltered;
+      })
+    );
   };
-}
+};
