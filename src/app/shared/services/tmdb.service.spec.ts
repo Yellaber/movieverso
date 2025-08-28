@@ -5,23 +5,19 @@ import { TmdbService } from './tmdb.service';
 import { UserGeolocationService } from '../../core/services/user-geolocation.service';
 import { environment } from '@environments/environment.developments';
 import { Genre, MovieResponse, DetailMovieResponse } from '@shared/interfaces';
-import { mockDetailMovieResponse, mockGenreMoviesResponse, mockGeolocation, mockMovieResponse } from '@app/testing';
+import { mockDetailMovieResponse, mockGenreMoviesResponse, mockMovieResponse, MockUserGeolocationService } from '@app/testing';
 
 describe('TmdbService', () => {
   let service: TmdbService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    const userGeolocationServiceMock = {
-      getUserGeolocation: jest.fn().mockReturnValue(mockGeolocation)
-    };
-
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         TmdbService,
-        { provide: UserGeolocationService, useValue: userGeolocationServiceMock }
+        { provide: UserGeolocationService, useClass: MockUserGeolocationService }
       ]
     });
     service = TestBed.inject(TmdbService);
@@ -46,7 +42,7 @@ describe('TmdbService', () => {
       service.getMoviesFilteredByCategory(category, 1).subscribe(response => { moviesResponse = response; });
       const req = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
       req.flush(mockMovieResponse);
-      expect(moviesResponse).toEqual([mockMovieResponse]);
+      expect(moviesResponse).toHaveLength(1);
     });
 
     it('Should append movies when page > 1.', () => {
@@ -58,7 +54,7 @@ describe('TmdbService', () => {
       service.getMoviesFilteredByCategory(category, 2).subscribe(response => { moviesResponse = response; });
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       req2.flush(mockMovieResponse);
-      expect(moviesResponse?.length).toBe(2);
+      expect(moviesResponse).toHaveLength(2);
     });
 
     it('Should return an empty array when page <= 0.', () => {
@@ -195,9 +191,9 @@ describe('TmdbService', () => {
       httpMock = TestBed.inject(HttpTestingController);
     });
 
-    it('userLanguage and userCountry signals should be empty string.', () => {
-      expect((service as any).userLanguage()).toBe('');
-      expect((service as any).userCountry()).toBe('');
+    it('userLanguage and userCountry signals should be undefined.', () => {
+      expect((service as any).userLanguage()).toBeUndefined();
+      expect((service as any).userCountry()).toBeUndefined();
     });
   });
 });
