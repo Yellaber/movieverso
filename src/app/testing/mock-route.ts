@@ -12,6 +12,9 @@ export const mockRoutes: Route[] = [
   { path: 'popular', component: StubComponentTesting }, { path: 'top-rated', component: StubComponentTesting }
 ];
 
-export class MockRouterService {
+export const mockUpdateRoutes: Route[] = [{ path: 'contact', title: 'Contact' }];
+
+export class MockRoutesService {
   getRoutes = jest.fn().mockReturnValue(mockRoutes);
+  setRoutes = jest.fn();
 };
