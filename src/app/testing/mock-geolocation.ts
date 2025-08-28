@@ -1,3 +1,5 @@
+import { computed, signal } from '@angular/core';
+import { of } from 'rxjs';
 import { UserGeolocation } from '@shared/interfaces';
 
 export const mockGeolocation: UserGeolocation = {
@@ -32,4 +34,10 @@ export const mockGeolocation: UserGeolocation = {
     name: 'Colombian Peso',
     symbol: '$'
   }
+};
+
+export class MockUserGeolocationService {
+  private userGeolocation = signal<UserGeolocation | undefined>(mockGeolocation);
+  getUserGeolocation = computed(() => this.userGeolocation());
+  loadUserLocation = jest.fn().mockReturnValue(of(mockGeolocation));
 };
