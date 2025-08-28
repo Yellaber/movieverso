@@ -33,7 +33,7 @@ export class TmdbService {
     }).pipe(
       map(movieResponse => {
         this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-        return this.moviesFiltered;
+          return this.moviesFiltered;
       })
     );
   };
