@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { UserGeolocationService } from './user-geolocation.service';
@@ -21,7 +21,7 @@ describe('UserGeolocationService', () => {
     TestBed.configureTestingModule({
       providers: [
         UserGeolocationService,
-        provideHttpClient(),
+        provideHttpClient(withFetch()),
         provideHttpClientTesting(),
         { provide: TranslateService, useClass: MockTranslateService },
         { provide: PlatformService, useValue: mockPlatformService }
@@ -38,10 +38,9 @@ describe('UserGeolocationService', () => {
     mockLocalStorage.clear();
   });
 
-  it('Should be created.', () => {
+  it('Should add languages and set fallback language.', () => {
     const addLangsSpy = jest.spyOn(geolocationService['translateService'], 'addLangs');
     const setFallbackLangSpy = jest.spyOn(geolocationService['translateService'], 'setFallbackLang');
-    expect(geolocationService).toBeTruthy();
     expect(addLangsSpy).toHaveBeenCalledWith(['es', 'en']);
     expect(setFallbackLangSpy).toHaveBeenCalledWith('en');
   });
@@ -54,9 +53,10 @@ describe('UserGeolocationService', () => {
       });
     });
 
-    it('Should return geolocation if localStorage is present.', () => {
+    it('Should use localStorage if it has a value.', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
       localStorage.setItem('userLocalLocation', JSON.stringify(mockGeolocation));
+      const getItemSpy = jest.spyOn(localStorage, 'getItem');
       const useSpy = jest.spyOn(geolocationService['translateService'], 'use');
       let userLocation: UserGeolocation | undefined;
 
@@ -64,7 +64,7 @@ describe('UserGeolocationService', () => {
         userLocation = response;
       });
 
-      expect(localStorage.getItem).toHaveBeenCalledWith('userLocalLocation');
+      expect(getItemSpy).toHaveBeenCalledWith('userLocalLocation');
       expect(userLocation).toEqual(mockGeolocation);
       expect(useSpy).toHaveBeenCalledWith('es');
     });
@@ -83,8 +83,8 @@ describe('UserGeolocationService', () => {
       const request = httpClientMock.expectOne(`http://api?apiKey=${environment.ipGeolocationApiKey}`);
       request.flush(mockGeolocation);
       expect(getLocationSpy).toHaveBeenCalledWith('http://api');
-      expect(userLocation).toEqual(mockGeolocation);
       expect(setItemSpy).toHaveBeenCalledWith('userLocalLocation', JSON.stringify(mockGeolocation));
+      expect(userLocation).toEqual(mockGeolocation);
       expect(useSpy).toHaveBeenCalledWith('es');
     });
   });
