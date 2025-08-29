@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { signal, inject, Injectable } from '@angular/core';
+import { inject, Injectable, computed } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '@app/core/services';
@@ -15,11 +15,10 @@ export class DetailService {
   private httpClient = inject(HttpClient);
   private cacheQuery = new Map<string, TypeQuery>();
   private userGeolocation = this.userGeolocationService.getUserGeolocation;
-  private userLanguage = signal<string>('');
-
-  constructor() {
-    this.userLanguage.set(this.userGeolocation()?.country_metadata.languages[0]!);
-  };
+  private userLanguage = computed<string>(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.country_metadata.languages[0]: '';
+  });
 
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/keywords`;
