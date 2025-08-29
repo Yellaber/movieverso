@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from "@ngx-translate/core";
 import { LogoComponent } from '@app/core/components/header/logo/logo.component';
@@ -20,6 +20,10 @@ export class AppHeaderComponent {
   private router = inject(Router);
   private userGeolocationService = inject(UserGeolocationService);
   userGeolocation = this.userGeolocationService.getUserGeolocation;
+  countryFlag = computed(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.location.country_flag: '';
+  });
 
   navigateToUpcoming() {
     this.router.navigateByUrl('/upcoming');
