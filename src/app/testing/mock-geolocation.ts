@@ -39,5 +39,11 @@ export const mockGeolocation: UserGeolocation = {
 export class MockUserGeolocationService {
   private userGeolocation = signal<UserGeolocation | undefined>(mockGeolocation);
   getUserGeolocation = computed(() => this.userGeolocation());
-  loadUserLocation = jest.fn().mockReturnValue(of(mockGeolocation));
+  loadUserLocation = jest.fn();
+};
+
+export class MockUserGeolocationServiceUndefined {
+  private userGeolocation = signal<UserGeolocation | undefined>(undefined);
+  getUserGeolocation = computed(() => this.userGeolocation());
+  loadUserLocation = jest.fn();
 };
