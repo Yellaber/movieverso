@@ -3,7 +3,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '../../core/services/user-geolocation.service';
-import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse } from '@shared/interfaces';
+import { Movie, MovieResponse, Genre, GenreMoviesResponse, DetailMovieResponse, UserGeolocation } from '@shared/interfaces';
 
 type TypeQuery = DetailMovieResponse | MovieResponse | Movie[] | Genre[];
 
@@ -16,8 +16,14 @@ export class TmdbService {
   private cacheQuery = new Map<string, TypeQuery>();
   private moviesFiltered: MovieResponse[] = [];
   private userGeolocation = this.userGeolocationService.getUserGeolocation;
-  private userLanguage = computed<string>(() => this.userGeolocation()?.country_metadata.languages[0]!);
-  private userCountry = computed<string>(() => this.userGeolocation()?.location.country_code2!);
+  private userLanguage = computed<string>(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.country_metadata.languages[0]: '';
+  });
+  private userCountry = computed<string>(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.location.country_code2: '';
+  });
 
   getMoviesFilteredByCategory(category: string, page: number): Observable<MovieResponse[]> {
     if(page <= 0) { return of([]); }
