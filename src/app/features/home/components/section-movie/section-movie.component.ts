@@ -61,8 +61,8 @@ export class SectionMovieComponent {
       });
     }
   });
-  movies = computed<Movie[]>(() => this.sectionData.value()?.movies?? []);
-  text = computed<string>(() => this.sectionData.value()?.text?? '');
+  movies = computed<Movie[]>(() => this.sectionData.hasValue()? this.sectionData.value().movies: []);
+  text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
   route = computed(() => `/${this.section().heroType}`);
   carouselConfig = computed<CarouselConfig>(() => ({
     carouselTitle: this.section().carruselTitle,
@@ -72,4 +72,4 @@ export class SectionMovieComponent {
     bgButtons: 'from-stone-900',
     bgCardFooter: 'bg-stone-800'
   }));
-}
+};
