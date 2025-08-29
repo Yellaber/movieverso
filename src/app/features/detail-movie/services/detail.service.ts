@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { signal, inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '@app/core/services';
