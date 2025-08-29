@@ -9,19 +9,16 @@ import { Movie, MovieResponse } from '@shared/interfaces';
   providedIn: 'root'
 })
 export class HomeService {
-  private userGeolocationService = inject(UserGeolocationService);
   private httpClient = inject(HttpClient);
+  private userGeolocationService = inject(UserGeolocationService);
   private cacheQuery = new Map<string, Movie[]>();
+  private userGeolocation = this.userGeolocationService.getUserGeolocation;
   private userLanguage = signal<string>('');
   private userCountry = signal<string>('');
 
   constructor() {
-    const userGeolocation = this.userGeolocationService.getUserGeolocation();
-    if(userGeolocation) {
-      const { country_metadata, location } = userGeolocation;
-      this.userLanguage.set(country_metadata.languages[0]);
-      this.userCountry.set(location.country_code2);
-    }
+    this.userLanguage.set(this.userGeolocation()?.country_metadata.languages[0]!);
+    this.userCountry.set(this.userGeolocation()?.location.country_code2!);
   };
 
   getMovies(endPoint: string): Observable<Movie[]> {
@@ -39,7 +36,9 @@ export class HomeService {
       }
     }).pipe(
       map(({ results }) => results),
-      tap(movies => this.cacheQuery.set(key, movies))
+      tap(movies => {
+        this.cacheQuery.set(key, movies);
+      })
     );
   };
-}
+};
