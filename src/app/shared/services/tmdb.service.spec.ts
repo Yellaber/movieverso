@@ -191,9 +191,9 @@ describe('TmdbService', () => {
       httpMock = TestBed.inject(HttpTestingController);
     });
 
-    it('userLanguage and userCountry signals should be undefined.', () => {
-      expect((service as any).userLanguage()).toBeUndefined();
-      expect((service as any).userCountry()).toBeUndefined();
+    it('userLanguage and userCountry signals should be an empty string.', () => {
+      expect(service['userLanguage']()).toBe('');
+      expect(service['userCountry']()).toBe('');
     });
   });
 });
