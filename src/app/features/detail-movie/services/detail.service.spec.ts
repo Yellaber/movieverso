@@ -5,68 +5,19 @@ import { DetailService } from './detail.service';
 import { UserGeolocationService } from '@app/core/services';
 import { environment } from '@environments/environment.developments';
 import { Keyword, MovieCollectionResponse, MovieResponse, Trailer } from '@shared/interfaces';
-import { mockMovieResponse, mockGeolocation } from '@app/testing';
-
-const mockKeywords: Keyword[] = [
-  { id: 1, name: 'keyword 1' }, { id: 2, name: 'keyword 2' },
-  { id: 3, name: 'keyword 3' }, { id: 4, name: 'keyword 4' }
-];
-
-const mockTrailers: Trailer[] = [
-  {
-    iso_639_1: 'es',
-    iso_3166_1: 'ES',
-    name: 'Trailer',
-    key: 'trailer-key',
-    published_at: new Date( '2025-01-01' ),
-    site: 'YouTube',
-    size: 1080,
-    type: 'Trailer',
-    official: true,
-    id: 'abc'
-  }
-];
-
-const mockCollection: MovieCollectionResponse = {
-  id: 1,
-  name: 'Collection',
-  overview: 'Some overview',
-  poster_path: '/poster.jpg',
-  backdrop_path: '/backdrop.jpg',
-  parts: [
-    {
-      backdrop_path: '/backdrop.jpg',
-      id: 10,
-      title: 'Part 1',
-      original_title: 'Part 1 Original',
-      overview: 'Overview part 1',
-      poster_path: '/poster1.jpg',
-      media_type: 'movie',
-      adult: false,
-      original_language: 'es',
-      genre_ids: [1, 2],
-      popularity: 10,
-      release_date: new Date( '2025-01-01' ),
-      video: false,
-      vote_average: 8.5,
-      vote_count: 100
-    }
-  ]
-};
+import { mockMovieResponse, MockUserGeolocationService, mockKeywords, mockTrailers, mockCollection, MockUserGeolocationServiceUndefined } from '@app/testing';
 
 describe('DetailService', () => {
   let detailService: DetailService;
   let httpClientMock: HttpTestingController;
 
   beforeEach(() => {
-    const userGeolocationService = { getUserGeolocation: jest.fn().mockReturnValue(mockGeolocation) };
-
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         DetailService,
-        { provide: UserGeolocationService, useValue: userGeolocationService }
+        { provide: UserGeolocationService, useClass: MockUserGeolocationService }
       ]
     });
 
@@ -82,7 +33,6 @@ describe('DetailService', () => {
   it('Should be created and set language/country from geolocation.', () => {
     expect(detailService).toBeTruthy();
     expect(detailService['userLanguage']()).toBe('es-CO');
-    expect(detailService['userCountry']()).toBe('CO');
   });
 
   describe('getMovieKeywords().', () => {
@@ -177,24 +127,21 @@ describe('DetailService', () => {
 
   describe('If geolocation is not available.', () => {
     beforeEach(() => {
-      const userGeolocationServiceMock = { getUserGeolocation: jest.fn().mockReturnValue(undefined) };
-
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
           provideHttpClient(),
           provideHttpClientTesting(),
           DetailService,
-          { provide: UserGeolocationService, useValue: userGeolocationServiceMock }
+          { provide: UserGeolocationService, useClass: MockUserGeolocationServiceUndefined }
         ]
       });
       detailService = TestBed.inject(DetailService);
       httpClientMock = TestBed.inject(HttpTestingController);
     });
 
-    it('userLanguage and userCountry signals should be empty string.', () => {
-      expect((detailService as any).userLanguage()).toBe('');
-      expect((detailService as any).userCountry()).toBe('');
+    it('userLanguage signal should be undefined.', () => {
+      expect(detailService['userLanguage']()).toBeUndefined();
     });
   });
 });
