@@ -140,8 +140,8 @@ describe('DetailService', () => {
       httpClientMock = TestBed.inject(HttpTestingController);
     });
 
-    it('userLanguage signal should be undefined.', () => {
-      expect(detailService['userLanguage']()).toBeUndefined();
+    it('userLanguage signal should be an empty string.', () => {
+      expect(detailService['userLanguage']()).toBe('');
     });
   });
 });
