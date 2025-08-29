@@ -73,9 +73,9 @@ describe('HomeService.', () => {
       httpClientMock = TestBed.inject(HttpTestingController);
     });
 
-    it('userLanguage and userCountry signals should be undefined.', () => {
-      expect(homeService['userLanguage']()).toBeUndefined();
-      expect(homeService['userCountry']()).toBeUndefined();
+    it('userLanguage and userCountry signals should be an empty string.', () => {
+      expect(homeService['userLanguage']()).toBe('');
+      expect(homeService['userCountry']()).toBe('');
     });
   });
 });
