@@ -6,6 +6,7 @@ import { UserGeolocationService } from './user-geolocation.service';
 import { PlatformService } from '@shared/services';
 import { environment } from '@app/environments/environment.developments';
 import { mockGeolocation, mockLocalStorage, mockPlatformService, MockTranslateService } from '@app/testing';
+import { UserGeolocation } from '@app/shared/interfaces';
 
 describe('UserGeolocationService', () => {
   let geolocationService: UserGeolocationService;
@@ -68,11 +69,13 @@ describe('UserGeolocationService', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
       const getUserLanguageSpy = jest.spyOn(geolocationService as any, 'getUserLanguage');
       const useSpy = jest.spyOn(geolocationService['translateService'], 'use');
+      let userGeolocation: UserGeolocation | undefined = undefined;
+      geolocationService['loadUserLocation']().subscribe(geolocation => userGeolocation = geolocation);
       const request = httpClientMock.expectOne(`${environment.ipGeolocationApiUrl}?apiKey=${environment.ipGeolocationApiKey}`);
       request.flush(mockGeolocation);
       expect(getUserLanguageSpy).toHaveBeenCalledWith(mockGeolocation.country_metadata.languages[0]);
       expect(useSpy).toHaveBeenCalledWith('es');
-      expect(geolocationService['getUserGeolocation']()).toEqual(mockGeolocation);
+      expect(geolocationService['getUserGeolocation']()).toEqual(userGeolocation);
       httpClientMock.verify();
     });
   });
