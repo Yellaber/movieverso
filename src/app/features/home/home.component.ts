@@ -1,6 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-
 import { SectionMovieComponent } from './components/section-movie/section-movie.component';
 import { SeoFriendlyService } from '@app/core/services';
 import { ScrollService } from '@shared/services';
@@ -13,7 +12,7 @@ import { SectionMovie, TypeTag } from '@shared/interfaces';
     TranslatePipe
   ],
   template: `
-    @for(section of sections; track $index) {
+    @for(section of sections(); track $index) {
       <section-movie [section]="section"/>
     }
     <div class="flex flex-col justify-center items-center gap-5 py-20">
@@ -29,7 +28,7 @@ export default class HomeComponent implements OnInit, AfterViewInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   private scrollService = inject(ScrollService);
   private translateService = inject(TranslateService);
-  sections: SectionMovie[] = [];
+  sections = signal<SectionMovie[]>([]);
   @HostListener('window:scroll', [])
   onWindowScroll() {
     if(this.scrollService.getScrollTop() > 0) {
@@ -41,10 +40,10 @@ export default class HomeComponent implements OnInit, AfterViewInit {
     this.translateService.get('home.metaTags').subscribe((metaTags: { title: string, description: string }) => {
       this.seoFriendlyService.setMetaTags(metaTags.title, metaTags.description);
     });
-    this.loadSections();
   };
 
   ngAfterViewInit() {
+    this.loadSections();
     this.scrollService.restoreScrollPosition('home');
   };
 
@@ -52,11 +51,11 @@ export default class HomeComponent implements OnInit, AfterViewInit {
     const keys: string[] = [ 'home.nowPlayingSection', 'home.popularSection', 'home.topRatedSection', 'home.trendingSection' ];
     keys.forEach(key =>
       this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string,
-        carouselTitle: string }) => {
-          const { heroType, heroTitle, carouselTitle } = section;
-          this.sections.push({ heroType, heroTitle, carruselTitle: carouselTitle });
+        carruselTitle: string }) => {
+          const { heroType, heroTitle, carruselTitle } = section;
+          this.sections.update(sections => [ ...sections, { heroType, heroTitle, carruselTitle } ]);
         }
       )
     );
   };
-}
+};
