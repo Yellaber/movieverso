@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, of, tap } from 'rxjs';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.developments';
 import { UserGeolocationService } from '@app/core/services';
 import { Movie, MovieResponse } from '@shared/interfaces';
@@ -13,13 +13,14 @@ export class HomeService {
   private userGeolocationService = inject(UserGeolocationService);
   private cacheQuery = new Map<string, Movie[]>();
   private userGeolocation = this.userGeolocationService.getUserGeolocation;
-  private userLanguage = signal<string>('');
-  private userCountry = signal<string>('');
-
-  constructor() {
-    this.userLanguage.set(this.userGeolocation()?.country_metadata.languages[0]!);
-    this.userCountry.set(this.userGeolocation()?.location.country_code2!);
-  };
+  private userLanguage = computed<string>(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.country_metadata.languages[0]: '';
+  });
+  private userCountry = computed<string>(() => {
+    const userGeolocation = this.userGeolocation();
+    return userGeolocation? userGeolocation.location.country_code2: '';
+  });
 
   getMovies(endPoint: string): Observable<Movie[]> {
     const url = `${environment.tmdbApiUrl}/${endPoint}`;
