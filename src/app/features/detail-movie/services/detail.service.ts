@@ -14,16 +14,11 @@ export class DetailService {
   private userGeolocationService = inject(UserGeolocationService);
   private httpClient = inject(HttpClient);
   private cacheQuery = new Map<string, TypeQuery>();
+  private userGeolocation = this.userGeolocationService.getUserGeolocation;
   private userLanguage = signal<string>('');
-  private userCountry = signal<string>('');
 
   constructor() {
-    const userGeolocation = this.userGeolocationService.getUserGeolocation();
-    if(userGeolocation) {
-      const { country_metadata, location } = userGeolocation;
-      this.userLanguage.set(country_metadata.languages[0]);
-      this.userCountry.set(location.country_code2);
-    }
+    this.userLanguage.set(this.userGeolocation()?.country_metadata.languages[0]!);
   };
 
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
@@ -81,4 +76,4 @@ export class DetailService {
       }
     }).pipe(tap(movieCollection => this.cacheQuery.set(url, movieCollection)));
   };
-}
+};
