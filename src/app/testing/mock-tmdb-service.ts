@@ -1,5 +1,52 @@
 import { of } from 'rxjs';
-import { DetailMovieResponse, GenreMoviesResponse, Movie, MovieResponse } from '@shared/interfaces';
+import { DetailMovieResponse, GenreMoviesResponse, Keyword, Movie, MovieCollectionResponse, MovieResponse, Trailer } from '@shared/interfaces';
+
+export const mockKeywords: Keyword[] = [
+  { id: 1, name: 'keyword 1' }, { id: 2, name: 'keyword 2' },
+  { id: 3, name: 'keyword 3' }, { id: 4, name: 'keyword 4' }
+];
+
+export const mockTrailers: Trailer[] = [
+  {
+    iso_639_1: 'es',
+    iso_3166_1: 'ES',
+    name: 'Trailer',
+    key: 'trailer-key',
+    published_at: new Date( '2025-01-01' ),
+    site: 'YouTube',
+    size: 1080,
+    type: 'Trailer',
+    official: true,
+    id: 'abc'
+  }
+];
+
+export const mockCollection: MovieCollectionResponse = {
+  id: 1,
+  name: 'Collection',
+  overview: 'Some overview',
+  poster_path: '/poster.jpg',
+  backdrop_path: '/backdrop.jpg',
+  parts: [
+    {
+      backdrop_path: '/backdrop.jpg',
+      id: 10,
+      title: 'Part 1',
+      original_title: 'Part 1 Original',
+      overview: 'Overview part 1',
+      poster_path: '/poster1.jpg',
+      media_type: 'movie',
+      adult: false,
+      original_language: 'es',
+      genre_ids: [1, 2],
+      popularity: 10,
+      release_date: new Date( '2025-01-01' ),
+      video: false,
+      vote_average: 8.5,
+      vote_count: 100
+    }
+  ]
+};
 
 export const mockGenreMoviesResponse: GenreMoviesResponse = {
   genres: [
