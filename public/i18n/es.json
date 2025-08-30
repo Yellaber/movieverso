@@ -18,25 +18,25 @@
     "nowPlayingSection": {
       "heroType": "now-playing",
       "heroTitle": "En cartelera",
-      "carouselTitle": "Top 20 - En cartelera",
+      "carouselTitle": "En cartelera",
       "paragraph": "¡Directo desde la pantalla grande! Aquí reunimos las 20 películas que están encendiendo las salas de cine en este preciso instante. El ranking se basa en fechas de estreno recientes, disponibilidad en cartelera y, claro, en ese aroma irresistible a crispetas recién hechas."
     },
     "popularSection": {
       "heroType": "popular",
       "heroTitle": "Más popular",
-      "carouselTitle": "Top 20 - Más populares",
+      "carouselTitle": "Más populares",
       "paragraph": "Estas son las estrellas del momento. Las 20 películas que están rompiendo internet, acumulando clics, likes y miradas curiosas. No importa si son nuevas o antiguas, ¡la popularidad no entiende de edad!"
     },
     "topRatedSection": {
       "heroType": "top-rated",
       "heroTitle": "Mejor valorada",
-      "carouselTitle": "Top 20 - Mejor valoradas",
+      "carouselTitle": "Mejor valoradas",
       "paragraph": "Aquí no entran por fama, entran por mérito. Estas 20 joyas del cine llevan la puntuación por las nubes gracias a miles de votos. Si buscas calidad garantizada, este es tu asiento en primera fila."
     },
     "trendingSection": {
       "heroType": "trending",
       "heroTitle": "En tendencia",
-      "carouselTitle": "Top 20 - En tendencia",
+      "carouselTitle": "En tendencia",
       "paragraph": "¿Qué se está viendo, comentando o viralizando HOY? Estas 20 películas están en pleno apogeo: algunas recién salidas del horno, otras revividas por la magia del internet. Si quieres estar en la onda, empieza por aquí."
     },
     "title": "¿Nada interesante a la vista?",
