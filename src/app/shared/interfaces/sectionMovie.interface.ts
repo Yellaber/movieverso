@@ -4,5 +4,5 @@ export type TypeTag = 'now-playing' | 'popular' | 'top-rated' | 'trending' | 'ca
 export interface SectionMovie {
   heroType: TypeTag,
   heroTitle: string,
-  carruselTitle: string
-}
+  carouselTitle: string
+};
