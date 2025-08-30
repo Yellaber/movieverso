@@ -15,7 +15,7 @@ import { MovieResponse } from '@shared/interfaces';
     TranslatePipe
   ],
   template: `
-    <div class="flex flex-wrap justify-evenly gap-5">
+    <div class="flex flex-wrap justify-evenly gap-5 mb-5 lg:mb-10">
       @if(!movies().isLoading()) {
         @for(movie of allMovies(); track movie.id) {
           <carrusel-card-movies [movie]="movie" bgCardFooter="bg-stone-800"/>
@@ -57,4 +57,4 @@ export class LoadResultsComponent implements OnInit {
   ngOnInit() {
     this.scrollService.scrollTop();
   };
-}
+};
