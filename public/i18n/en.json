@@ -18,25 +18,25 @@
     "nowPlayingSection": {
       "heroType": "now-playing",
       "heroTitle": "Now Playing",
-      "carouselTitle": "Top 20 - Now Playing",
+      "carouselTitle": "Now Playing",
       "paragraph": "Straight from the big screen! Here we've gathered the 20 movies lighting up theaters right now. The ranking is based on recent release dates, current theater availability, and of course, that irresistible smell of freshly popped popcorn."
     },
     "popularSection": {
       "heroType": "popular",
       "heroTitle": "Most Popular",
-      "carouselTitle": "Top 20 - Most Popular",
+      "carouselTitle": "Most Popular",
       "paragraph": "These are the stars of the moment. The 20 movies breaking the internet, racking up clicks, likes, and curious glances. Whether new or old, popularity knows no age!"
     },
     "topRatedSection": {
       "heroType": "top-rated",
       "heroTitle": "Top Rated",
-      "carouselTitle": "Top 20 - Top Rated",
+      "carouselTitle": "Top Rated",
       "paragraph": "They're not here for the fame — they're here on merit. These 20 cinematic gems are scoring sky-high thanks to thousands of votes. If you're looking for guaranteed quality, this is your front-row seat."
     },
     "trendingSection": {
       "heroType": "trending",
       "heroTitle": "Trending",
-      "carouselTitle": "Top 20 - Trending",
+      "carouselTitle": "Trending",
       "paragraph": "What's being watched, talked about, or going viral TODAY? These 20 films are in full swing — some fresh out of the oven, others revived by the magic of the internet. Want to stay in the loop? Start here."
     },
     "title": "Nothing interesting in sight?",
