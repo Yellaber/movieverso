@@ -65,7 +65,7 @@ export class SectionMovieComponent {
   text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
   route = computed(() => `/${this.section().heroType}`);
   carouselConfig = computed<CarouselConfig>(() => ({
-    carouselTitle: this.section().carruselTitle,
+    carouselTitle: this.section().carouselTitle,
     text: this.text(),
     movies: this.movies(),
     route: this.route(),
