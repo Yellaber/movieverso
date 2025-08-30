@@ -51,9 +51,10 @@ export default class HomeComponent implements OnInit, AfterViewInit {
     const keys: string[] = [ 'home.nowPlayingSection', 'home.popularSection', 'home.topRatedSection', 'home.trendingSection' ];
     keys.forEach(key =>
       this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string,
-        carruselTitle: string }) => {
-          const { heroType, heroTitle, carruselTitle } = section;
-          this.sections.update(sections => [ ...sections, { heroType, heroTitle, carruselTitle } ]);
+        carouselTitle: string }) => {
+          const { heroType, heroTitle, carouselTitle } = section;
+          console.log('carouselTitle: ', carouselTitle);
+          this.sections.update(sections => [ ...sections, { heroType, heroTitle, carouselTitle } ]);
         }
       )
     );
