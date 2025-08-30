@@ -53,7 +53,6 @@ export default class HomeComponent implements OnInit, AfterViewInit {
       this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string,
         carouselTitle: string }) => {
           const { heroType, heroTitle, carouselTitle } = section;
-          console.log('carouselTitle: ', carouselTitle);
           this.sections.update(sections => [ ...sections, { heroType, heroTitle, carouselTitle } ]);
         }
       )
