@@ -88,6 +88,13 @@ export class FilterModalMoviesComponent implements OnInit {
       withGenres: this.filterGenre()?.genresIdSelected()!,
     });
     this.onClose();
-    this.router.navigateByUrl('/search');
+    this.router.navigate(['/search'], { queryParams: {
+      genres: this.queryParamsService.getQueryParams().withGenres,
+      voteAverageGte: this.queryParamsService.getQueryParams().voteAverageGte,
+      voteCountGte: this.queryParamsService.getQueryParams().voteCountGte,
+      primaryReleaseDateGte: this.queryParamsService.getQueryParams().primaryReleaseDateGte,
+      primaryReleaseDateLte: this.queryParamsService.getQueryParams().primaryReleaseDateLte,
+      sortBy: this.queryParamsService.getQueryParams().sortBy
+    }});
   };
 };
