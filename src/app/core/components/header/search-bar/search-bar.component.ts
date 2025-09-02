@@ -42,7 +42,7 @@ export class SearchBarComponent {
         query: this.getSearchValue()
       });
       this.activeActionService.set('search');
-      this.router.navigateByUrl('/search');
+      this.router.navigate(['/search'], { queryParams: { query: this.queryParamsService.getQueryParams().query } });
     }
   };
 
