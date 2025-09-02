@@ -1,14 +1,9 @@
 import { Routes } from '@angular/router';
 
-export const authRoutes: Routes = [
+const authRoutes: Routes = [
   {
-    path: 'auth',
+    path: '',
     children: [
-      {
-        path: '',
-        redirectTo: 'sign-in',
-        pathMatch: 'full'
-      },
       {
         path: 'sign-in',
         loadComponent: () => import('./pages/sign-in/sign-in.component')
@@ -24,3 +19,5 @@ export const authRoutes: Routes = [
     ]
   }
 ];
+
+export default authRoutes;
