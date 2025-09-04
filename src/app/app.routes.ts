@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authRoutes } from './features/auth/auth.routes';
 import { detailMovieRoutes } from './features/detail-movie/detail-movie.routes';
 
 export const routes: Routes = [
@@ -32,7 +31,10 @@ export const routes: Routes = [
     path: 'search',
     loadComponent: () => import('./features/search/search.component')
   },
-  ...authRoutes,
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes')
+  },
   {
     path: '**',
     redirectTo: ''
