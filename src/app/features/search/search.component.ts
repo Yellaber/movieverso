@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LoadResultsComponent } from '@shared/components/load-results/load-results.component';
+import { InfiniteScrollComponent } from '@shared/components/infinite-scroll/infinite-scroll.component';
 import { SearchService } from './services/search.service';
 import { SeoFriendlyService } from '@app/core/services';
 import { QueryParamsService, ScrollService } from '@shared/services';
@@ -11,8 +11,8 @@ import { MovieResponse, QueryParams } from '@shared/interfaces';
 @Component({
   selector: 'search',
   imports: [
-    LoadResultsComponent,
-    TranslatePipe
+    InfiniteScrollComponent,
+    TranslatePipe,
   ],
   template: `
     @if(queryParams().query) {
@@ -23,7 +23,7 @@ import { MovieResponse, QueryParams } from '@shared/interfaces';
         </span>
       </div>
     }
-    <load-results [movies]="movies"/>
+    <infinite-scroll [moviesResponse]="moviesResponse"/>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col gap-10 mt-10 lg:mt-15' }
@@ -33,16 +33,17 @@ export default class SearchComponent implements OnInit {
   private seoFriendlyService = inject(SeoFriendlyService);
   private queryParamsService = inject(QueryParamsService);
   private scrollService = inject(ScrollService);
+  private infiniteScroll = viewChild(InfiniteScrollComponent);
+  private currentPage = computed(() => this.infiniteScroll()?.getPage());
   queryParams = this.queryParamsService.getQueryParams;
-  loadResultsRef = viewChild(LoadResultsComponent);
-  movies = rxResource({
+  moviesResponse = rxResource({
     request: () => ({
       queryParams: this.queryParams(),
-      page: this.loadResultsRef()?.page()!
+      page: this.currentPage()
     }),
     loader: ({ request }) => {
       const { queryParams, page } = request;
-      return this.getResource(queryParams, page);
+      return (queryParams && page)? this.getResource(queryParams, page): of(undefined);
     }
   });
 
@@ -50,7 +51,7 @@ export default class SearchComponent implements OnInit {
     effect(() => {
       const queryFilter = this.queryParams();
       if(queryFilter) {
-        this.loadResultsRef()?.page.set(1);
+        this.infiniteScroll()?.reset();
         this.scrollService.scrollTop();
       }
     });
