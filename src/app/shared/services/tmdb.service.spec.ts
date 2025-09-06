@@ -36,7 +36,7 @@ describe('TmdbService', () => {
   });
 
   describe('getMoviesFilteredByCategory().', () => {
-    it('Should fetch movies for a given category and reset on page 1.', () => {
+    it('Should fetch movies for a given category when page == 1 and cache is not present.', () => {
       const category = 'popular';
       let moviesResponse: MovieResponse[] | undefined;
       service.getMoviesFilteredByCategory(category, 1).subscribe(response => { moviesResponse = response; });
@@ -45,15 +45,30 @@ describe('TmdbService', () => {
       expect(moviesResponse).toHaveLength(1);
     });
 
-    it('Should append movies when page > 1.', () => {
+    it('Should return movies from cache when page == 1.', () => {
       const category = 'popular';
       service.getMoviesFilteredByCategory(category, 1).subscribe();
       const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
       req1.flush(mockMovieResponse);
       let moviesResponse: MovieResponse[] | undefined;
-      service.getMoviesFilteredByCategory(category, 2).subscribe(response => { moviesResponse = response; });
+      service.getMoviesFilteredByCategory(category, 1).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      expect(moviesResponse).toHaveLength(1);
+    });
+
+    it('Should return movies from cache when page is least than the length of moviesResponse.', () => {
+      const category = 'popular';
+      service.getMoviesFilteredByCategory(category, 1).subscribe();
+      const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req1.flush(mockMovieResponse);
+      service.getMoviesFilteredByCategory(category, 2).subscribe();
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       req2.flush(mockMovieResponse);
+      service.getMoviesFilteredByCategory(category, 1).subscribe();
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      let moviesResponse: MovieResponse[] | undefined;
+      service.getMoviesFilteredByCategory(category, 2).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       expect(moviesResponse).toHaveLength(2);
     });
 
@@ -142,7 +157,7 @@ describe('TmdbService', () => {
   });
 
   describe('getMoviesBasedIn().', () => {
-    it('Should fetch related movies and reset on page 1.', () => {
+    it('Should fetch movies for a given movieId and basedIn when page == 1 and cache is not present.', () => {
       const basedIn = 'recommendations';
       const movieId = 123;
       let moviesResponse: MovieResponse[] | undefined;
@@ -152,17 +167,33 @@ describe('TmdbService', () => {
       expect(moviesResponse).toEqual([mockMovieResponse]);
     });
 
-    it('Should append movies when page > 1.', () => {
+    it('Should return movies from cache when page == 1.', () => {
       const basedIn = 'recommendations';
       const movieId = 123;
       service.getMoviesBasedIn(basedIn, movieId, 1).subscribe();
       const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       req1.flush(mockMovieResponse);
       let moviesResponse: MovieResponse[] | undefined;
-      service.getMoviesBasedIn(basedIn, movieId, 2).subscribe(response => { moviesResponse = response; });
+      service.getMoviesBasedIn(basedIn, movieId, 1).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
+      expect(moviesResponse).toHaveLength(1);
+    });
+
+    it('Should return movies from cache when page is least than the length of moviesResponse.', () => {
+      const basedIn = 'recommendations';
+      const movieId = 123;
+      service.getMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
+      req1.flush(mockMovieResponse);
+      service.getMoviesBasedIn(basedIn, movieId, 2).subscribe();
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=2`);
       req2.flush(mockMovieResponse);
-      expect(moviesResponse?.length).toBe(2);
+      service.getMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
+      let moviesResponse: MovieResponse[] | undefined;
+      service.getMoviesBasedIn(basedIn, movieId, 2).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}?api_key=${environment.tmdbApiKey}&language=es-CO&page=2`);
+      expect(moviesResponse).toHaveLength(2);
     });
 
     it('Should return an empty array when page <= 0.', () => {
