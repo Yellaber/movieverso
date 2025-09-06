@@ -3,10 +3,10 @@
   require('dotenv').config();
   const fs = require( 'fs' );
 
-  const API_URL_TMDB = 'https://api.themoviedb.org/3';
-  const API_KEY_TMDB = 'c6eb6487500a7727c7f8fec7a57eb1ab';
-  const API_URL_IPGEOLOCATION = 'https://api.ipgeolocation.io/v2/ipgeo';
-  const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
+  const API_URL_TMDB = process.env.API_URL_TMDB;
+  const API_KEY_TMDB = process.env.API_KEY_TMDB;
+  const API_URL_IPGEOLOCATION = process.env.API_URL_IPGEOLOCATION;
+  const API_KEY_IPGEOLOCATION = process.env.API_KEY_IPGEOLOCATION;
   let countryCode = '';
   let language = '';
 
