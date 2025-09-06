@@ -1,12 +1,14 @@
 
 (async() => {
+  require('dotenv').config();
+  const fs = require( 'fs' );
+
   const API_URL_TMDB = 'https://api.themoviedb.org/3';
   const API_KEY_TMDB = 'c6eb6487500a7727c7f8fec7a57eb1ab';
   const API_URL_IPGEOLOCATION = 'https://api.ipgeolocation.io/v2/ipgeo';
   const API_KEY_IPGEOLOCATION = '65139d689b9a48b2b125c9365c130b1f';
   let countryCode = '';
   let language = '';
-  const fs = require( 'fs' );
 
   const getUserLocation = async() => {
     const userLocation = await fetch(`${API_URL_IPGEOLOCATION}?apiKey=${API_KEY_IPGEOLOCATION}`)
