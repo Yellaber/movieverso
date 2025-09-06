@@ -36,7 +36,7 @@ describe('TmdbService', () => {
   });
 
   describe('getMoviesFilteredByCategory().', () => {
-    it('Should fetch movies for a given category and reset on page 1.', () => {
+    it('Should fetch movies for a given category when page == 1 and cache is not present.', () => {
       const category = 'popular';
       let moviesResponse: MovieResponse[] | undefined;
       service.getMoviesFilteredByCategory(category, 1).subscribe(response => { moviesResponse = response; });
@@ -45,15 +45,30 @@ describe('TmdbService', () => {
       expect(moviesResponse).toHaveLength(1);
     });
 
-    it('Should append movies when page > 1.', () => {
+    it('Should return movies from cache when page == 1.', () => {
       const category = 'popular';
       service.getMoviesFilteredByCategory(category, 1).subscribe();
       const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
       req1.flush(mockMovieResponse);
       let moviesResponse: MovieResponse[] | undefined;
-      service.getMoviesFilteredByCategory(category, 2).subscribe(response => { moviesResponse = response; });
+      service.getMoviesFilteredByCategory(category, 1).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      expect(moviesResponse).toHaveLength(1);
+    });
+
+    it('Should return movies from cache when page is least than the length of moviesResponse.', () => {
+      const category = 'popular';
+      service.getMoviesFilteredByCategory(category, 1).subscribe();
+      const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req1.flush(mockMovieResponse);
+      service.getMoviesFilteredByCategory(category, 2).subscribe();
       const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       req2.flush(mockMovieResponse);
+      service.getMoviesFilteredByCategory(category, 1).subscribe();
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      let moviesResponse: MovieResponse[] | undefined;
+      service.getMoviesFilteredByCategory(category, 2).subscribe(response => { moviesResponse = response; });
+      httpMock.expectNone(`${environment.tmdbApiUrl}/${category}?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=2`);
       expect(moviesResponse).toHaveLength(2);
     });
 
