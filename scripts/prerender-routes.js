@@ -10,6 +10,14 @@
   let countryCode = '';
   let language = '';
 
+  if(API_URL_TMDB === undefined || API_KEY_TMDB === undefined) {
+    throw new Error('API TMDB environment variables not found.');
+  }
+
+  if(API_URL_IPGEOLOCATION === undefined || API_KEY_IPGEOLOCATION === undefined) {
+    throw new Error('API IPGEOLOCATION environment variables not found.');
+  }
+
   const getUserLocation = async() => {
     const userLocation = await fetch(`${API_URL_IPGEOLOCATION}?apiKey=${API_KEY_IPGEOLOCATION}`)
     .then(response => response.json());
