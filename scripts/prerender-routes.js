@@ -10,11 +10,11 @@
   let countryCode = '';
   let language = '';
 
-  if(API_URL_TMDB === undefined || API_KEY_TMDB === undefined) {
+  if(!API_URL_TMDB || !API_KEY_TMDB) {
     throw new Error('API TMDB environment variables not found.');
   }
 
-  if(API_URL_IPGEOLOCATION === undefined || API_KEY_IPGEOLOCATION === undefined) {
+  if(!API_URL_IPGEOLOCATION || !API_KEY_IPGEOLOCATION) {
     throw new Error('API IPGEOLOCATION environment variables not found.');
   }
 
