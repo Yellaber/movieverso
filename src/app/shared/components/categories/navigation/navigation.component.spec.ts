@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NavigationComponent } from './navigation.component';
-import { MockRouterService, mockRoutes, MockTranslateService } from '@app/testing';
+import { MockRoutesService, mockRoutes, MockTranslateService } from '@app/testing';
 import { RoutesService } from '@shared/services';
 
 describe('NavigationComponent.', () => {
@@ -11,7 +11,7 @@ describe('NavigationComponent.', () => {
       imports: [ NavigationComponent ],
       providers: [
         provideRouter(mockRoutes),
-        { provide: RoutesService, useClass: MockRouterService },
+        { provide: RoutesService, useClass: MockRoutesService },
         { provide: TranslateService, useClass: MockTranslateService }
       ],
       inputs

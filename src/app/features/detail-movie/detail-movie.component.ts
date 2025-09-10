@@ -13,7 +13,7 @@ import { CarruselMoviesSkeletonComponent } from '@shared/components/carrusel-mov
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { NotificationComponent } from '@shared/components/notification/notification.component';
 import { TrailerComponent } from './components/trailer/trailer.component';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { ScrollService, TmdbService } from '@shared/services';
 import { SeoFriendlyService } from '@app/core/services';
 

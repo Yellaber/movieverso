@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { environment } from '@environments/environment';
 import { TranslatePipe } from "@ngx-translate/core";
-import { environment } from '@environments/environment.developments';
 
 @Component({
   selector: 'logo',

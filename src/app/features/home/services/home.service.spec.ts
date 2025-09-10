@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HomeService } from './home.service';
 import { UserGeolocationService } from '@app/core/services';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { Movie } from '@shared/interfaces';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { mockMovieResponse, MockUserGeolocationService, MockUserGeolocationServiceUndefined } from '@app/testing';

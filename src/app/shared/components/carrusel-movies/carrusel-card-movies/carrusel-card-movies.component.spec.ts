@@ -4,7 +4,7 @@ import { SlugifyService } from '@shared/services';
 import { mockRoutes } from '@app/testing/mock-route';
 import { Movie } from '@shared/interfaces';
 import { provideRouter } from '@angular/router';
-import { environment } from '@app/environments/environment.developments';
+import { environment } from '@environments/environment';
 import { Component } from '@angular/core';
 
 const mockMovie: Movie = {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBookmark, faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { DetailMovieResponse } from '@shared/interfaces';
 
 @Component({
