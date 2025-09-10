@@ -12,7 +12,8 @@
     "audit": "npm audit --audit-level=high",
     "outdated": "npm outdated",
     "serve:ssr": "node dist/movieverso/server/server.mjs",
-    "prerender:routes": "node scripts/prerender-routes.js"
+    "prerender:routes": "node scripts/prerender-routes.js",
+    "set:envs": "node scripts/set-envs.js"
   },
   "private": true,
   "dependencies": {
