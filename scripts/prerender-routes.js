@@ -2,15 +2,10 @@
 (async() => {
   require('dotenv').config();
 
-  const APP_NAME = process.env.APP_NAME;
   const API_URL_TMDB = process.env.API_URL_TMDB;
   const API_KEY_TMDB = process.env.API_KEY_TMDB;
   const API_URL_IPGEOLOCATION = process.env.API_URL_IPGEOLOCATION;
   const API_KEY_IPGEOLOCATION = process.env.API_KEY_IPGEOLOCATION;
-
-  if(!APP_NAME) {
-    throw new Error('APP_NAME environment variable not found.');
-  }
 
   if(!API_URL_TMDB || !API_KEY_TMDB) {
     throw new Error('API TMDB environment variables not found.');
