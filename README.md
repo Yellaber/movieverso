@@ -40,7 +40,8 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
 
 -   Node.js (versión 18.x o superior)
 -   Angular CLI instalado globalmente: `npm install -g @angular/cli`
--   Una clave de API de The Movie Database (TMDb). Es gratuita y fácil de obtener.
+-   Una API KEY para The Movie Database (TMDb).
+-   Una API KEY para IPGeolocation.
 
 ### Instalación
 
@@ -55,40 +56,40 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
     npm install
     ```
 
-3.  **Configura las variables de entorno:**
-    Crea un archivo `environment.ts` dentro de la carpeta `src/environments/`. Puedes copiar el contenido de `environment.development.ts` y modificarlo.
-
-    `src/environments/environment.ts`:
+3.  **Configurar el archivo `.env`:**
+    Renombra el archivo `.env.template` por `.env` y reemplaza el valor de las API KEYS correspondientes.
+    
+    `.env.template`:
     ```typescript
-    export const environment = {
-      production: false,
-      // Añade tu clave de API de TMDb aquí
-      tmdbApiKey: 'TU_CLAVE_DE_API_DE_TMDB',
-      // URL base de la API de TMDb
-      tmdbApiUrl: 'https://api.themoviedb.org/3',
-      // URL base para las imágenes
-      tmdbImageUrl: 'https://image.tmdb.org/t/p/original'
-    };
+    API_URL_TMDB='https://api.themoviedb.org/3'
+    API_KEY_TMDB=API_KEY_TMDB
+    API_URL_IMAGE_TMDB='https://image.tmdb.org/t/p/original'
+    API_URL_IPGEOLOCATION='https://api.ipgeolocation.io/v2/ipgeo'
+    API_KEY_IPGEOLOCATION=API_KEY_IPGEOLOCATION
     ```
-    *Asegúrate de reemplazar `TU_CLAVE_DE_API_DE_TMDB` con tu clave real.*
 
 ### Scripts Disponibles
+-   **Generar las variables de entorno para producción y desarrollo:**
+    ```bash
+    npm run set:envs
+    ```
+    Crea la carpeta `src/environments/` y los archivos `environment.ts` y `environment.development.ts` a partir del archivo `.env`.
 
 -   **Iniciar el servidor de desarrollo:**
     ```bash
-    ng serve -o
+    npm start
     ```
     La aplicación se abrirá automáticamente en `http://localhost:4200/`.
 
 -   **Construir para producción:**
     ```bash
-    ng build
+    npm run build
     ```
     Los archivos optimizados se generarán en la carpeta `dist/movieverso`.
 
 -   **Ejecutar pruebas unitarias:**
     ```bash
-    ng test
+    npm run test
     ```
 
 ## 📂 Estructura del Proyecto (Simplificada)
