@@ -60,7 +60,7 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
     Renombra el archivo `.env.template` por `.env` y reemplaza el valor de las API KEYS correspondientes.
     
     `.env.template`:
-    ```typescript
+    ```bash
     API_URL_TMDB='https://api.themoviedb.org/3'
     API_KEY_TMDB=API_KEY_TMDB
     API_URL_IMAGE_TMDB='https://image.tmdb.org/t/p/original'
