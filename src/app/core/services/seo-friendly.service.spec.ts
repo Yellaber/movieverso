@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SeoFriendlyService } from './seo-friendly.service';
 import { Meta, Title } from '@angular/platform-browser';
-import { environment } from '@app/environments/environment.developments';
+import { environment } from '@environments/environment';
 
 const titlePage = 'Inicio';
 const contentPage = 'Esta es la página de inicio.';

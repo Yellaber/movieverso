@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'backdrop-image',

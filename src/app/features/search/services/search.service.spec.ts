@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { SearchService } from './search.service';
 import { UserGeolocationService } from '@app/core/services';
 import { MovieResponse } from '@shared/interfaces';
-import { environment } from '@app/environments/environment.developments';
+import { environment } from '@environments/environment';
 import { initialQueryParams } from '@shared/services/query-params.service';
 import { mockGeolocation, mockMovieResponse } from '@app/testing';
 

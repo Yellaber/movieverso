@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TmdbService } from './tmdb.service';
 import { UserGeolocationService } from '../../core/services/user-geolocation.service';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { Genre, MovieResponse, DetailMovieResponse } from '@shared/interfaces';
 import { mockDetailMovieResponse, mockGenreMoviesResponse, mockMovieResponse, MockUserGeolocationService } from '@app/testing';
 

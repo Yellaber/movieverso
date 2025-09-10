@@ -4,7 +4,7 @@ import { map, Observable, of, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '@shared/services';
 import { UserGeolocation } from '@shared/interfaces';
-import { environment } from '@app/environments/environment.developments';
+import { environment } from '@environments/environment';
 
 const USER_LOCAL_LOCATION = 'userLocalLocation';
 

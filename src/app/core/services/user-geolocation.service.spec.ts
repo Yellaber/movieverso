@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TranslateService } from '@ngx-translate/core';
 import { UserGeolocationService } from './user-geolocation.service';
 import { PlatformService } from '@shared/services';
-import { environment } from '@app/environments/environment.developments';
+import { environment } from '@environments/environment';
 import { mockGeolocation, mockLocalStorage, mockPlatformService, MockTranslateService } from '@app/testing';
 import { UserGeolocation } from '@app/shared/interfaces';
 

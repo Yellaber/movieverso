@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CardDetailComponent } from './card-detail/card-detail.component';
 import { ShortDetailComponent } from './short-detail/short-detail.component';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { DetailMovieResponse } from '@shared/interfaces';
 
 @Component({

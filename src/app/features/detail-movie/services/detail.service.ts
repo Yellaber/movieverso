@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, computed } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { UserGeolocationService } from '@app/core/services';
 import { DetailMovieResponse, Keyword, MovieCollectionResponse, MovieKeywordResponse, MovieResponse, MovieTrailerResponse, Trailer } from '@shared/interfaces';
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppHeaderComponent } from './core/components/header/app-header.component';
-import { environment } from './environments/environment.developments';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-root',

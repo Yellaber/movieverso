@@ -6,7 +6,7 @@
       "@app/*": ["src/app/*"],
       "@app/": ["src/app/"],
       "@components/*": ["src/app/components/*"],
-      "@environments/*": ["src/app/environments/*"],
+      "@environments/*": ["src/environments/*"],
       "@interfaces/*": ["src/app/shared/interfaces/*"],
       "@interfaces/": ["src/app/shared/interfaces/index.ts"],
       "@pages/*": ["src/app/pages/*"],

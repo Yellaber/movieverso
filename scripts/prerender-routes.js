@@ -1,14 +1,11 @@
 
 (async() => {
   require('dotenv').config();
-  const fs = require( 'fs' );
 
   const API_URL_TMDB = process.env.API_URL_TMDB;
   const API_KEY_TMDB = process.env.API_KEY_TMDB;
   const API_URL_IPGEOLOCATION = process.env.API_URL_IPGEOLOCATION;
   const API_KEY_IPGEOLOCATION = process.env.API_KEY_IPGEOLOCATION;
-  let countryCode = '';
-  let language = '';
 
   if(!API_URL_TMDB || !API_KEY_TMDB) {
     throw new Error('API TMDB environment variables not found.');
@@ -17,6 +14,10 @@
   if(!API_URL_IPGEOLOCATION || !API_KEY_IPGEOLOCATION) {
     throw new Error('API IPGEOLOCATION environment variables not found.');
   }
+
+  const fs = require( 'fs' );
+  let countryCode = '';
+  let language = '';
 
   const getUserLocation = async() => {
     const userLocation = await fetch(`${API_URL_IPGEOLOCATION}?apiKey=${API_KEY_IPGEOLOCATION}`)

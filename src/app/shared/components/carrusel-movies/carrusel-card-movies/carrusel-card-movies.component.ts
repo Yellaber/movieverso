@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RatingComponent } from '@shared/components/rating/rating.component';
-import { environment } from '@environments/environment.developments';
+import { environment } from '@environments/environment';
 import { SlugifyService } from '@shared/services';
 import { Movie } from '@shared/interfaces';
 
