@@ -30,9 +30,9 @@
       ipGeolocationApiKey: '${API_KEY_IPGEOLOCATION}',
       ipGeolocationApiUrl: '${API_URL_IPGEOLOCATION}'
     };
-  `;
+  `.trim();
   mkdirSync(baseDir, { recursive: true });
   writeFileSync(targetPathDev, fileContent);
-  writeFileSync(targetPath, fileContent.replace('production: false', 'production: true'));
+  writeFileSync(targetPath, fileContent.replace("production: 'false'", "production: 'true'"));
   console.log('environment.ts and environment.development.ts files generated.');
 })();
