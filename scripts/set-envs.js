@@ -22,6 +22,7 @@
   const targetPathDev = `${baseDir}/environment.development.ts`;
   const fileContent = `
     export const environment = {
+      production: 'false',
       appName: '${APP_NAME}',
       tmdbApiKey: '${API_KEY_TMDB}',
       tmdbApiUrl: '${API_URL_TMDB}',
@@ -31,7 +32,7 @@
     };
   `;
   mkdirSync(baseDir, { recursive: true });
-  writeFileSync(targetPath, fileContent);
   writeFileSync(targetPathDev, fileContent);
+  writeFileSync(targetPath, fileContent.replace('production: false', 'production: true'));
   console.log('environment.ts and environment.development.ts files generated.');
 })();
