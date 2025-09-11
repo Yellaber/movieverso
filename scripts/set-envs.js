@@ -20,9 +20,9 @@
   const baseDir = './src/environments';
   const targetPath = `${baseDir}/environment.ts`;
   const targetPathDev = `${baseDir}/environment.development.ts`;
-  const fileContent = `
+  const createFileContent = (isProduction) => `
     export const environment = {
-      production: 'false',
+      production: ${isProduction},
       appName: '${APP_NAME}',
       tmdbApiKey: '${API_KEY_TMDB}',
       tmdbApiUrl: '${API_URL_TMDB}',
@@ -30,9 +30,9 @@
       ipGeolocationApiKey: '${API_KEY_IPGEOLOCATION}',
       ipGeolocationApiUrl: '${API_URL_IPGEOLOCATION}'
     };
-  `;
+  `.trim();
   mkdirSync(baseDir, { recursive: true });
-  writeFileSync(targetPathDev, fileContent);
-  writeFileSync(targetPath, fileContent.replace('production: false', 'production: true'));
+  writeFileSync(targetPathDev, createFileContent(false));
+  writeFileSync(targetPath, createFileContent(true));
   console.log('environment.ts and environment.development.ts files generated.');
 })();
