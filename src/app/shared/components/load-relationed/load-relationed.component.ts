@@ -22,15 +22,13 @@ export class LoadRelationedComponent {
   movieId = input.required<number>();
   typeResult = input.required<TypeResults>();
   moviesResponse = rxResource({
-    request: () => ({
+    params: () => ({
       typeResult: this.typeResult(),
       movieId: this.movieId(),
       page: this.currentPage()
     }),
-    loader: ({ request }) => {
-      const typeResult = request.typeResult;
-      const movieId = request.movieId;
-      const page = request.page;
+    stream: ({ params }) => {
+      const { typeResult, movieId, page } = params;
       return (typeResult && movieId && page)? this.tmdbService.getMoviesBasedIn(typeResult, movieId, page): of(undefined);
     }
   });

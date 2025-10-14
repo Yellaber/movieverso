@@ -29,8 +29,8 @@ export class ShortInformationComponent {
   private slugifyService = inject(SlugifyService);
   private movieGenreIds = computed<number[]>(() => this.movie().genre_ids);
   private genresResource = rxResource({
-    request: this.movieGenreIds,
-    loader: ({ request }) => this.tmdbService.getGenreMovieListByIds(request)
+    params: this.movieGenreIds,
+    stream: ({ params }) => this.tmdbService.getGenreMovieListByIds(params)
   });
   genres = computed<Genre[]>(() => this.genresResource.value()?? []);
 

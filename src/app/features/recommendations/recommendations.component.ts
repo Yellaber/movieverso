@@ -33,8 +33,8 @@ export default class RecommendationsComponent implements OnInit {
   movieId = signal<number | undefined>(undefined);
   linkSimilarMovies = signal<string>('');
   movie = rxResource({
-    request: this.movieId,
-    loader: ({ request }) => this.tmdbService.getMovieById(request)
+    params: this.movieId,
+    stream: ({ params }) => this.tmdbService.getMovieById(params)
   });
 
   ngOnInit() {

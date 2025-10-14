@@ -35,11 +35,11 @@ export class TrailerComponent {
   movieId = input.required<number>();
 
   movieTrailers = rxResource({
-    request: this.movieId,
-    loader: () => this.movieId()? this.detailService.getMovieTrailers(this.movieId()): of([])
+    params: this.movieId,
+    stream: ({ params }) => params? this.detailService.getMovieTrailers(params): of([])
   });
 
   getSafeYoutubeUrl(key: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${key}`);
-  }
+  };
 }

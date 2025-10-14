@@ -37,12 +37,12 @@ export default class SearchComponent implements OnInit {
   private currentPage = computed(() => this.infiniteScroll()?.getPage());
   queryParams = this.queryParamsService.getQueryParams;
   moviesResponse = rxResource({
-    request: () => ({
+    params: () => ({
       queryParams: this.queryParams(),
       page: this.currentPage()
     }),
-    loader: ({ request }) => {
-      const { queryParams, page } = request;
+    stream: ({ params }) => {
+      const { queryParams, page } = params;
       return (queryParams && page)? this.getResource(queryParams, page): of(undefined);
     }
   });

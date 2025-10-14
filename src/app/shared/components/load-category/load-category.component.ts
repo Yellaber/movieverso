@@ -19,13 +19,12 @@ export class LoadCategoryComponent {
   private currentPage = computed(() => this.infiniteScroll()?.getPage());
   endPoint = input.required<string>();
   MoviesResponse = rxResource({
-    request: () => ({
+    params: () => ({
       endPoint: this.endPoint(),
       page: this.currentPage()
     }),
-    loader: ({ request }) => {
-      const endPoint = request.endPoint;
-      const page = request.page;
+    stream: ({ params }) => {
+      const { endPoint, page } = params;
       return (endPoint && page)? this.tmdbService.getMoviesFilteredByCategory(endPoint, page): of(undefined);
     }
   });

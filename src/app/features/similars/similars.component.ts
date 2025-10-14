@@ -33,8 +33,8 @@ export default class SimilarsComponent implements OnInit {
   movieId = signal<number | undefined>(undefined);
   linkRecommendationsMovies = signal<string>('');
   movie = rxResource({
-    request: this.movieId,
-    loader: () => this.tmdbService.getMovieById(this.movieId()!)
+    params: this.movieId,
+    stream: ({ params }) => this.tmdbService.getMovieById(params)
   });
 
   ngOnInit() {

@@ -45,8 +45,8 @@ export default class DetailMovieComponent implements OnInit {
   menuItems = signal<string[]>([]);
   idMovie = signal<number | undefined>(undefined);
   movieSelected = rxResource({
-    request: this.idMovie,
-    loader: ({ request }) => this.tmdbService.getMovieById(request)
+    params: this.idMovie,
+    stream: ({ params }) => this.tmdbService.getMovieById(params)
       .pipe(
         tap(detailMovie => {
           const movieYear = detailMovie.release_date.toString().split('-')[0];

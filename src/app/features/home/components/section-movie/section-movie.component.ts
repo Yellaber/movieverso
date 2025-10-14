@@ -33,11 +33,11 @@ export class SectionMovieComponent {
   private homeService = inject(HomeService);
   section = input.required<SectionMovie>();
   private sectionData = rxResource({
-    request: this.section,
-    loader: ({ request }) => {
+    params: this.section,
+    stream: ({ params }) => {
       let endpoint: EndPointValid;
       let textKey: string;
-      switch(request.heroType) {
+      switch(params.heroType) {
         case 'now-playing':
           endpoint = EndPointValid.nowPlaying;
           textKey = 'home.nowPlayingSection.paragraph';
