@@ -1,0 +1,25 @@
+@if(movie.hasValue()) {
+  <div class="flex flex-col text-xs lg:text-sm gap-5 mt-10 lg:mt-15">
+    <div class="flex flex-wrap items-center font-bold text-yellow-600 gap-3">
+      <h3>{{ `${type()}.description` | translate }}</h3>
+      <a class="rounded-full bg-yellow-900/50 px-3 py-2"
+      [routerLink]="['/movie', `${idSlug()}`]">{{ movie.value().title }}</a>
+    </div>
+    <p class="text-stone-300 leading-relaxed">
+      <span class="font-bold">{{ `${type()}.paragraph.highLightText` | translate }}</span>
+      @if(type() === 'similar') {
+        {{ `${type()}.paragraph.text` | translate }} <a class="text-yellow-600 font-bold"
+        [routerLink]="linkRelatedMovie()">{{ `${type()}.paragraph.link` | translate }}</a>.
+      } @else {
+        {{ `${type()}.paragraph.text1` | translate }} <a class="text-yellow-600 font-bold" [routerLink]="linkRelatedMovie()">{{ `${type()}.paragraph.link` | translate }}</a> {{ `${type()}.paragraph.text2` | translate }}
+      }
+    </p>
+  </div>
+  <categories [menuItems]="menuItems()"/>
+  <load-related [movieId]="movie.value().id" [type]="type()"/>
+} @else {
+  <div class="flex mt-10 lg:mt-15">
+    <notification [notificationTitle]="`${type()}.notification.title` | translate"
+    [message]="`${type()}.notification.message` | translate"/>
+  </div>
+}
