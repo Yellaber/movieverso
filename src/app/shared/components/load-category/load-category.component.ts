@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 import { InfiniteScrollComponent } from '../infinite-scroll/infinite-scroll.component';
 import { TmdbService } from '@shared/services';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'load-category',
   imports: [ InfiniteScrollComponent ],
-  template: `
-    <infinite-scroll [moviesResponse]="MoviesResponse"/>
-  `,
+  template: `<infinite-scroll [moviesResponse]="MoviesResponse"/>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col gap-10 pt-12 lg:pt-15' }
 })
