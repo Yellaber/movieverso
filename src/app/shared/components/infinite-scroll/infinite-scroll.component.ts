@@ -46,7 +46,7 @@ export class InfiniteScrollComponent implements OnInit {
   });
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    if(this.scrollService.isAtBottom()) {
+    if(this.scrollService.isAtBottom() && !this.moviesResponse().isLoading()) {
       this.infiniteScrollService.nextPage();
     }
   };
