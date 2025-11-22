@@ -1,5 +1,5 @@
 @if(movieDetail()) {
-  <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImageUrl()" width="1280" height="720" [alt]="movieDetail().title">
+  <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImageUrl()" width="1280" height="720" [alt]="movieDetail().title" priority/>
   <card-detail [movieDetail]="movieDetail()"/>
   <short-detail [movieDetail]="movieDetail()"/>
   <div class="absolute inset-0 bg-stone-900/80 z-0"></div>

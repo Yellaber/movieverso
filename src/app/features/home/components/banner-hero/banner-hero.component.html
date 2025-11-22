@@ -1,5 +1,5 @@
 @if(movie()) {
-  <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImageUrl()" width="1280" height="720"/>
+  <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImageUrl()" width="1280" height="720" [alt]="movie().title" priority/>
   <short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"/>
   <div class="absolute inset-0 bg-stone-900/80"></div>
   <backdrop-image [backdropPath]="movie().backdrop_path" [originalTitle]="movie().original_title"/>
