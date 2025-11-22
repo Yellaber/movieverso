@@ -1,7 +1,7 @@
 @if(movie()) {
   <a [routerLink]="movieLink()">
     <img class="w-full h-60 rounded-t-md bg-stone-700 object-cover object-center"
-    [src]="srcImage()" [alt]="movie().title" loading="lazy">
+    [ngSrc]="srcImage()" width="160" height="240" [alt]="movie().title">
   </a>
   <div [class]="bgClassCardFooter()">
     <rating type="popularity" [value]="movie().popularity"/>

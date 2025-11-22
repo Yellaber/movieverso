@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { ShortInformationComponent } from './short-information/short-information.component';
 import { BackdropImageComponent } from './backdrop-image/backdrop-image.component';
 import { environment } from '@environments/environment';
@@ -8,7 +9,8 @@ import { Movie } from '@shared/interfaces';
   selector: 'banner-hero',
   imports: [
     ShortInformationComponent,
-    BackdropImageComponent
+    BackdropImageComponent,
+    NgOptimizedImage
   ],
   templateUrl: './banner-hero.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,5 +22,8 @@ export class BannerHeroComponent {
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  getBackdropImageUrl = computed<string>(() => `${environment.imageUrl}${this.movie().backdrop_path}`);
-}
+  getBackdropImageUrl = computed<string>(() => {
+    const backdropPath = this.movie().backdrop_path;
+    return (backdropPath)? `${environment.imageUrl}${backdropPath}`: '/images/no-backdrop.jpg';
+  });
+};

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { environment } from '@environments/environment';
@@ -9,6 +10,7 @@ import { Movie } from '@shared/interfaces';
   selector: 'carrusel-card-movies',
   imports: [
     RouterLink,
+    NgOptimizedImage,
     RatingComponent
   ],
   templateUrl: './carrusel-card-movies.component.html',
