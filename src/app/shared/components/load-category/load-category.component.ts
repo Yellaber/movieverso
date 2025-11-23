@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 import { InfiniteScrollComponent } from '../infinite-scroll/infinite-scroll.component';
 import { TmdbService } from '@shared/services';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'load-category',
   imports: [ InfiniteScrollComponent ],
-  template: `
-    <infinite-scroll [moviesResponse]="MoviesResponse"/>
-  `,
+  template: `<infinite-scroll [moviesResponse]="MoviesResponse"/>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col gap-10 pt-12 lg:pt-15' }
 })
@@ -19,13 +17,12 @@ export class LoadCategoryComponent {
   private currentPage = computed(() => this.infiniteScroll()?.getPage());
   endPoint = input.required<string>();
   MoviesResponse = rxResource({
-    request: () => ({
+    params: () => ({
       endPoint: this.endPoint(),
       page: this.currentPage()
     }),
-    loader: ({ request }) => {
-      const endPoint = request.endPoint;
-      const page = request.page;
+    stream: ({ params }) => {
+      const { endPoint, page } = params;
       return (endPoint && page)? this.tmdbService.getMoviesFilteredByCategory(endPoint, page): of(undefined);
     }
   });

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RatingComponent } from '@shared/components/rating/rating.component';
-import { environment } from '@environments/environment';
 import { SlugifyService } from '@shared/services';
 import { Movie } from '@shared/interfaces';
 
@@ -9,6 +9,7 @@ import { Movie } from '@shared/interfaces';
   selector: 'carrusel-card-movies',
   imports: [
     RouterLink,
+    NgOptimizedImage,
     RatingComponent
   ],
   templateUrl: './carrusel-card-movies.component.html',
@@ -19,14 +20,20 @@ export class CarruselCardMoviesComponent {
   private slugifyService = inject(SlugifyService);
   movie = input.required<Movie>();
   bgCardFooter = input.required<string>();
-  bgClassCardFooter = computed<string>(() => `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`);
-  srcImage = computed<string>(() => {
-    const posterPath = this.movie().poster_path;
-    return posterPath? `${environment.imageUrl}${posterPath}`: '/images/no-poster.jpg';
+  posterImageSizes = [92, 154, 185, 342, 500, 780];
+  getBgClassCardFooter = computed<string>(() =>
+    `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`
+  );
+  isPosterAvailable = computed<boolean>(() => !!this.movie().poster_path);
+  getPosterImagePath = computed<string>(() =>
+    this.isPosterAvailable()? this.movie().poster_path: '/images/no-poster.jpg'
+  );
+  getPosterImageSrcset = computed<string>(() =>
+    this.isPosterAvailable()? this.posterImageSizes.map((size) => `${size}w`).join(', '): ''
+  );
+  getMovieLink = computed<string[]>(() => {
+    const { id, title } = this.movie();
+    const slug = this.slugifyService.getSlug(title);
+    return ['/movie', `${id}-${slug}`];
   });
-  movieLink = computed<string[]>(() => {
-    const movie = this.movie();
-    const slug = this.slugifyService.getSlug(movie.title);
-    return ['/movie', `${movie.id}-${slug}`];
-  });
-};
+}

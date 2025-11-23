@@ -39,12 +39,12 @@ export class MovieListComponent {
   movieId = input.required<number | undefined>();
   id = computed<number>(() => this.movieId()?? 0);
   carouselTitle = rxResource({
-    request: this.typeMovieList,
-    loader: () => this.getTypeMovieListTranslation(this.typeMovieList())
+    params: this.typeMovieList,
+    stream: ({ params }) => this.getTypeMovieListTranslation(params)
   });
   movies = rxResource({
-    request: this.id,
-    loader: () => this.getRelatedMovies(this.id()).pipe(
+    params: this.id,
+    stream: ({ params }) => this.getRelatedMovies(params).pipe(
       tap(movies => {
         if(movies && movies.length === 0) {
           this.loadNotificationTranslation(`detailMovie.movieList.${this.typeMovieList()}.notification`);

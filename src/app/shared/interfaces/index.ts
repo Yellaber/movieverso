@@ -1,5 +1,6 @@
 export * from './carousel-config.interface';
 export * from './category.interface';
+export * from './category-translations.interface';
 export * from './detail-movie-response.interface';
 export * from './direction.interface';
 export * from './endpoint-valid.interface';

@@ -25,7 +25,7 @@ export class SideDetailComponent {
   movieDetail = input.required<DetailMovieResponse>();
   movieId = computed<number>(() => this.movieDetail().id);
   movieKeywords = rxResource({
-    request: this.movieId,
-    loader: () => this.movieId()? this.detailService.getMovieKeywords(this.movieId()): of([])
+    params: this.movieId,
+    stream: ({ params }) => params? this.detailService.getMovieKeywords(params): of([])
   });
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { ShortInformationComponent } from './short-information/short-information.component';
-import { BackdropImageComponent } from './backdrop-image/backdrop-image.component';
 import { environment } from '@environments/environment';
 import { Movie } from '@shared/interfaces';
 
@@ -8,7 +8,7 @@ import { Movie } from '@shared/interfaces';
   selector: 'banner-hero',
   imports: [
     ShortInformationComponent,
-    BackdropImageComponent
+    NgOptimizedImage
   ],
   templateUrl: './banner-hero.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,5 +20,14 @@ export class BannerHeroComponent {
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  getBackdropImageUrl = computed<string>(() => `${environment.imageUrl}${this.movie().backdrop_path}`);
+  imageSizes = [300, 500, 780, 1280];
+  isBackdropAvailable = computed<boolean>(() => !!this.movie().backdrop_path);
+  getBackgroundImageUrl = computed<string>(() =>
+    this.isBackdropAvailable()?
+    `${environment.imageUrl}original${this.movie().backdrop_path}`: '/images/no-backdrop.jpg'
+  );
+  getBackdropImagePath = computed<string>(() => this.isBackdropAvailable()? this.movie().backdrop_path: '');
+  getBackdropImageSrcset = computed<string>(() =>
+    this.isBackdropAvailable()? this.imageSizes.map((size) => `${size}w`).join(', '): ''
+  );
 }
