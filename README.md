@@ -25,7 +25,7 @@
 
 ## 🛠️ Tecnologías Utilizadas
 
--   **Framework**: Angular v19+
+-   **Framework**: Angular v20+
 -   **Lenguaje**: TypeScript
 -   **Estado de la Aplicación**: Angular Signals
 -   **Estilos**: Tailwind CSS
@@ -38,7 +38,7 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
 
 ### Prerrequisitos
 
--   Node.js (versión 18.x o superior)
+-   Node.js (versión 22.x o superior)
 -   Angular CLI instalado globalmente: `npm install -g @angular/cli`
 -   Una API KEY para The Movie Database (TMDb).
 -   Una API KEY para IPGeolocation.
@@ -63,7 +63,7 @@ Sigue estos pasos para tener una copia del proyecto corriendo en tu máquina loc
     ```bash
     API_URL_TMDB='https://api.themoviedb.org/3'
     API_KEY_TMDB=API_KEY_TMDB
-    API_URL_IMAGE_TMDB='https://image.tmdb.org/t/p/original'
+    API_URL_IMAGE_TMDB='https://image.tmdb.org/t/p/'
     API_URL_IPGEOLOCATION='https://api.ipgeolocation.io/v2/ipgeo'
     API_KEY_IPGEOLOCATION=API_KEY_IPGEOLOCATION
     ```
