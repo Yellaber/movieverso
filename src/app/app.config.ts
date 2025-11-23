@@ -2,10 +2,16 @@ import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDete
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
+import { IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
 import { provideTranslateService } from "@ngx-translate/core";
-import { provideTranslateHttpLoader } from "@ngx-translate/http-loader";
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
+import { environment } from '@environments/environment';
 import { UserGeolocationService } from './core/services';
+
+export const tmdbImageLoader = (config: ImageLoaderConfig) => {
+  return config.src.startsWith('/images/')? config.src: `${environment.imageUrl}w${config.width}${config.src}`;
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +19,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay()),
     provideRouter(routes),
+    {
+      provide: IMAGE_LOADER,
+      useValue: tmdbImageLoader,
+    },
     provideAppInitializer(() => {
       const userGeolcationService = inject(UserGeolocationService);
       return userGeolcationService.loadUserLocation();

@@ -4,7 +4,6 @@ import { SlugifyService } from '@shared/services';
 import { mockRoutes } from '@app/testing/mock-route';
 import { Movie } from '@shared/interfaces';
 import { provideRouter } from '@angular/router';
-import { environment } from '@environments/environment';
 import { Component } from '@angular/core';
 
 const mockMovie: Movie = {
@@ -52,7 +51,7 @@ describe('CarruselCardMoviesComponent.', () => {
 
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute('src', `${environment.imageUrl}${mockMovie.poster_path}`);
+    expect(img).toHaveAttribute('src', mockMovie.poster_path);
 
     const ratingsComponent = container.querySelectorAll('rating');
     const footer = ratingsComponent[0].parentElement;

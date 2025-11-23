@@ -1,5 +1,11 @@
 @if(movieDetail()) {
-  <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImageUrl()" width="1280" height="720" [alt]="movieDetail().title" priority/>
+  @if(isBackdropAvailable()) {
+    <img class="absolute inset-0 w-full h-full object-cover object-center" [ngSrc]="getBackdropImagePath()"
+    [ngSrcset]="getBackdropImageSrcset()" sizes="100vw" [alt]="movieDetail().title" fill priority/>
+  } @else {
+    <img class="absolute inset-0 w-full h-full object-cover object-center" [src]="getBackdropImagePath()"
+    width="1250" height="650" alt="imagen de fondo no disponible"/>
+  }
   <card-detail [movieDetail]="movieDetail()"/>
   <short-detail [movieDetail]="movieDetail()"/>
   <div class="absolute inset-0 bg-stone-900/80 z-0"></div>
