@@ -4,19 +4,18 @@ import { SlugifyService } from '@shared/services';
 import { mockRoutes } from '@app/testing/mock-route';
 import { Movie } from '@shared/interfaces';
 import { provideRouter } from '@angular/router';
-import { environment } from '@environments/environment';
 import { Component } from '@angular/core';
 
 const mockMovie: Movie = {
   adult: false,
-  backdrop_path: 'backdrop.jpg',
+  backdrop_path: '/backdrop.jpg',
   genre_ids: [1, 2],
   id: 1,
   original_language: 'es',
   original_title: 'Pelicula',
   overview: 'Resumen',
   popularity: 10,
-  poster_path: 'poster.jpg',
+  poster_path: '/poster.jpg',
   release_date: new Date( '2024-01-01' ),
   title: 'Pelicula',
   video: false,
