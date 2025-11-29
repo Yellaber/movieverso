@@ -1,33 +1,31 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit, signal } from '@angular/core';
+import { BackgroundImage } from '@shared/components/background-image/background-image';
 import { ShortInformationComponent } from './short-information/short-information.component';
-import { environment } from '@environments/environment';
+import { BackdropImage } from './backdrop-image/backdrop-image';
+import { ImageUtils } from '@shared/utilities/image-utils';
 import { Movie } from '@shared/interfaces';
 
 @Component({
   selector: 'banner-hero',
   imports: [
+    BackgroundImage,
     ShortInformationComponent,
-    NgOptimizedImage
+    BackdropImage
   ],
   templateUrl: './banner-hero.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'relative flex items-center rounded-md overflow-hidden shadow-md md:gap-10 lg:gap-20 p-5 md:p-10 mt-10 lg:mt-20 mb-10'
-  }
+  host: { class: 'relative flex items-center rounded-md shadow-md p-5 md:p-10 mt-10 lg:mt-20 mb-10' }
 })
-export class BannerHeroComponent {
+export class BannerHeroComponent implements OnInit {
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  imageSizes = [300, 500, 780, 1280];
-  isBackdropAvailable = computed<boolean>(() => !!this.movie().backdrop_path);
-  getBackgroundImageUrl = computed<string>(() =>
-    this.isBackdropAvailable()?
-    `${environment.imageUrl}original${this.movie().backdrop_path}`: '/images/no-backdrop.jpg'
-  );
-  getBackdropImagePath = computed<string>(() => this.isBackdropAvailable()? this.movie().backdrop_path: '');
-  getBackdropImageSrcset = computed<string>(() =>
-    this.isBackdropAvailable()? this.imageSizes.map((size) => `${size}w`).join(', '): ''
-  );
+  imageUtils = signal(new ImageUtils());
+  getBackdropImagePath = computed<string>(() => this.imageUtils().getBackgroundImagePath());
+  getBackdropImageSrcset = computed<string>(() => this.imageUtils().getBackdropImageSrcset());
+  getBackdropTitle = computed<string>(() => this.imageUtils().getBackdropTitle());
+
+  ngOnInit() {
+    this.imageUtils().setMovie(this.movie());
+  };
 }

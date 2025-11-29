@@ -1,12 +1,7 @@
 @if(movie()) {
   <a [routerLink]="getMovieLink()">
-    @if(isPosterAvailable()) {
-      <img class="w-full h-60 rounded-t-md bg-stone-700 object-cover object-center" [ngSrc]="getPosterImagePath()"
-      [ngSrcset]="getPosterImageSrcset()" sizes="160px" width="160" height="240" [alt]="movie().title"/>
-    } @else {
-      <img class="w-full h-60 rounded-t-md bg-stone-700 object-cover object-center" [src]="getPosterImagePath()"
-      width="160" height="240" alt="imagen del poster no disponible"/>
-    }
+    <img class="w-full h-60 rounded-t-md bg-stone-700 object-cover object-center" [ngSrc]="getPosterImagePath()"
+    [ngSrcset]="getPosterImageSrcset()" sizes="160px" width="160" height="240" [alt]="getPosterTitle()"/>
   </a>
   <div [class]="getBgClassCardFooter()">
     <rating type="popularity" [value]="movie().popularity"/>
