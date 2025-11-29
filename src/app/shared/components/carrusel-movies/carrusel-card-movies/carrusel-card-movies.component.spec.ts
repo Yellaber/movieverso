@@ -1,35 +1,14 @@
 import { render, screen } from '@testing-library/angular';
 import { CarruselCardMoviesComponent } from './carrusel-card-movies.component';
 import { SlugifyService } from '@shared/services';
-import { mockRoutes } from '@app/testing/mock-route';
 import { Movie } from '@shared/interfaces';
 import { provideRouter } from '@angular/router';
-import { Component } from '@angular/core';
+import { mockMovies, mockRoutes, StubRatingComponent } from '@app/testing';
 
-const mockMovie: Movie = {
-  adult: false,
-  backdrop_path: '/backdrop.jpg',
-  genre_ids: [1, 2],
-  id: 1,
-  original_language: 'es',
-  original_title: 'Pelicula',
-  overview: 'Resumen',
-  popularity: 10,
-  poster_path: '/poster.jpg',
-  release_date: new Date( '2024-01-01' ),
-  title: 'Pelicula',
-  video: false,
-  vote_average: 8.5,
-  vote_count: 100
-};
-
+const mockMovie = mockMovies[0];
+const slug = mockMovie.title.replace(/\s+/g, '-').toLowerCase();
+const idSlug = `${mockMovie.id}-${slug}`;
 const bgCardFooter = 'bg-yellow-900/50';
-
-@Component({
-  selector: 'rating',
-  template: '<li>StubRatingComponent</li>'
-})
-class StubRatingComponent {};
 
 describe('CarruselCardMoviesComponent.', () => {
   const setup = async(inputs: { movie: Movie, bgCardFooter: string }) => {
@@ -37,7 +16,7 @@ describe('CarruselCardMoviesComponent.', () => {
       imports: [ StubRatingComponent ],
       providers: [
         provideRouter([ mockRoutes[0] ]),
-        { provide: SlugifyService, useValue: { getSlug: jest.fn().mockImplementation(() => mockMovie.title) } }
+        { provide: SlugifyService, useValue: { getSlug: jest.fn().mockImplementation(() => slug) } }
       ],
       inputs
     });
@@ -47,11 +26,12 @@ describe('CarruselCardMoviesComponent.', () => {
     const { container } = await setup({ movie: mockMovie, bgCardFooter });
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', `/movie/${mockMovie.id}-${mockMovie.title}`);
+    expect(link).toHaveAttribute('href', `/movie/${idSlug}`);
 
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', mockMovie.poster_path);
+    expect(img).toHaveAttribute('alt', mockMovie.title);
 
     const ratingsComponent = container.querySelectorAll('rating');
     const footer = ratingsComponent[0].parentElement;
@@ -66,11 +46,12 @@ describe('CarruselCardMoviesComponent.', () => {
     });
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', `/movie/${mockMovie.id}-${mockMovie.title}`);
+    expect(link).toHaveAttribute('href', `/movie/${idSlug}`);
 
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', '/images/no-poster.jpg');
+    expect(img).toHaveAttribute('alt', 'imagen de poster no disponible');
 
     const ratingsComponent = container.querySelectorAll('rating');
     const footer = ratingsComponent[0].parentElement;

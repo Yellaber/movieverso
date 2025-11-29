@@ -3,6 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RatingComponent } from '@shared/components/rating/rating.component';
 import { SlugifyService } from '@shared/services';
+import { ImageUtils } from '@shared/utilities/image-utils';
 import { Movie } from '@shared/interfaces';
 
 @Component({
@@ -18,19 +19,15 @@ import { Movie } from '@shared/interfaces';
 })
 export class CarruselCardMoviesComponent {
   private slugifyService = inject(SlugifyService);
+  private imageUtils = new ImageUtils();
   movie = input.required<Movie>();
   bgCardFooter = input.required<string>();
-  posterImageSizes = [92, 154, 185, 342, 500, 780];
   getBgClassCardFooter = computed<string>(() =>
     `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`
   );
-  isPosterAvailable = computed<boolean>(() => !!this.movie().poster_path);
-  getPosterImagePath = computed<string>(() =>
-    this.isPosterAvailable()? this.movie().poster_path: '/images/no-poster.jpg'
-  );
-  getPosterImageSrcset = computed<string>(() =>
-    this.isPosterAvailable()? this.posterImageSizes.map((size) => `${size}w`).join(', '): ''
-  );
+  getPosterImagePath = computed<string>(() => this.imageUtils.getPosterImagePath(this.movie()));
+  getPosterImageSrcset = computed<string>(() => this.imageUtils.getPosterImageSrcset(this.movie()));
+  getPosterTitle = computed<string>(() => this.imageUtils.getPosterTitle(this.movie()));
   getMovieLink = computed<string[]>(() => {
     const { id, title } = this.movie();
     const slug = this.slugifyService.getSlug(title);

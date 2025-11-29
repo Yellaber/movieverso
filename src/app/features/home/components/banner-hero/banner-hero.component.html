@@ -1,18 +1,7 @@
 @if(movie()) {
-  <div class="absolute inset-0 w-full h-full object-cover object-center bg-cover bg-center"
-  [style.background-image]="'url('+getBackgroundImageUrl()+')'"></div>
-  <div class="absolute inset-0 bg-stone-900/80"></div>
-  <div class="relative z-10 w-full flex items-center md:gap-10 lg:gap-20">
-    <short-information class="w-full md:w-1/2" [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"/>
-    <div class="w-full mt-4 md:mt-0 md:w-1/2 hidden md:flex md:justify-center">
-      @if(isBackdropAvailable()) {
-        <img class="max-w-[300px] md:max-w-full object-cover object-center rounded-sm"
-          [ngSrc]="getBackdropImagePath()" [ngSrcset]="getBackdropImageSrcset()" sizes="(min-width: 768px) 50vw, 80vw"
-          width="640" height="360" [alt]="'Backdrop de '+movie().title" priority/>
-      } @else {
-        <img class="max-w-[300px] md:max-w-full object-cover object-center rounded-sm"
-          [src]="getBackgroundImageUrl()" width="640" height="360" alt="imagen de fondo no disponible"/>
-      }
-    </div>
-  </div>
+  <background-image [title]="getBackdropTitle()" [backdropImagePath]="getBackdropImagePath()"
+  [backdropImageSrcset]="getBackdropImageSrcset()"/>
+  <short-information [heroType]="heroType()" [heroTitle]="heroTitle()" [movie]="movie()"/>
+  <backdrop-image [title]="getBackdropTitle()" [backdropImagePath]="getBackdropImagePath()"
+  [backdropImageSrcset]="getBackdropImageSrcset()"/>
 }
