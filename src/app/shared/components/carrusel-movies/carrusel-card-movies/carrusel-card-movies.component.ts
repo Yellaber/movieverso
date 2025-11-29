@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RatingComponent } from '@shared/components/rating/rating.component';
@@ -19,22 +19,18 @@ import { Movie } from '@shared/interfaces';
 })
 export class CarruselCardMoviesComponent {
   private slugifyService = inject(SlugifyService);
+  private imageUtils = new ImageUtils();
   movie = input.required<Movie>();
   bgCardFooter = input.required<string>();
-  imageUtils = signal(new ImageUtils());
   getBgClassCardFooter = computed<string>(() =>
     `flex justify-between items-center ${this.bgCardFooter()} rounded-b-md p-3`
   );
-  getPosterImagePath = computed<string>(() => this.imageUtils().getPosterImagePath());
-  getPosterImageSrcset = computed<string>(() => this.imageUtils().getPosterImageSrcset());
-  getPosterTitle = computed<string>(() => this.imageUtils().getPosterTitle());
+  getPosterImagePath = computed<string>(() => this.imageUtils.getPosterImagePath(this.movie()));
+  getPosterImageSrcset = computed<string>(() => this.imageUtils.getPosterImageSrcset(this.movie()));
+  getPosterTitle = computed<string>(() => this.imageUtils.getPosterTitle(this.movie()));
   getMovieLink = computed<string[]>(() => {
     const { id, title } = this.movie();
     const slug = this.slugifyService.getSlug(title);
     return ['/movie', `${id}-${slug}`];
   });
-
-  ngOnInit() {
-    this.imageUtils().setMovie(this.movie());
-  };
 }
