@@ -1,0 +1,70 @@
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { forkJoin } from 'rxjs';
+import { BannerHero } from '../banner-hero/banner-hero';
+import { BannerHeroSkeleton } from '../banner-hero-skeleton/banner-hero-skeleton';
+import { CarouselMovies } from '@components/carousel-movies/carousel-movies';
+import { CarouselMoviesSkeleton } from '@components/carousel-movies-skeleton/carousel-movies-skeleton';
+import { HomeService } from '@services';
+import { DataSectionMovie, Movie, CarouselConfig, EndPointValid } from '@interfaces';
+
+@Component({
+  selector: 'section-movie',
+  imports: [ BannerHero, BannerHeroSkeleton, CarouselMovies, CarouselMoviesSkeleton ],
+  template: `
+    @if(movies().length > 0) {
+      <banner-hero [heroType]="section().heroType" [heroTitle]="section().heroTitle" [movie]="movies()[0]"/>
+      <carousel-movies [carouselConfig]="carouselConfig()"/>
+    } @else {
+      <banner-hero-skeleton/>
+      <carousel-movies-skeleton/>
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class SectionMovie {
+  private translateService = inject(TranslateService);
+  private homeService = inject(HomeService);
+  section = input.required<DataSectionMovie>();
+  private sectionData = rxResource({
+    params: this.section,
+    stream: ({ params }) => {
+      let endpoint: EndPointValid;
+      let textKey: string;
+      switch(params.heroType) {
+        case 'now-playing':
+          endpoint = EndPointValid.nowPlaying;
+          textKey = 'home.nowPlayingSection.paragraph';
+          break;
+        case 'popular':
+          endpoint = EndPointValid.popular;
+          textKey = 'home.popularSection.paragraph';
+          break;
+        case 'top-rated':
+          endpoint = EndPointValid.topRated;
+          textKey = 'home.topRatedSection.paragraph';
+          break;
+        default:
+          endpoint = EndPointValid.trending;
+          textKey = 'home.trendingSection.paragraph';
+          break;
+      }
+      return forkJoin({
+        movies: this.homeService.getMovies(endpoint),
+        text: this.translateService.get(textKey)
+      });
+    }
+  });
+  movies = computed<Movie[]>(() => this.sectionData.hasValue()? this.sectionData.value().movies: []);
+  text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
+  route = computed(() => `/${this.section().heroType}`);
+  carouselConfig = computed<CarouselConfig>(() => ({
+    carouselTitle: this.section().carouselTitle,
+    text: this.text(),
+    movies: this.movies(),
+    route: this.route(),
+    bgButtons: 'from-stone-900',
+    bgCardFooter: 'bg-stone-800'
+  }));
+}

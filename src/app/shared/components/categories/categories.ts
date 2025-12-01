@@ -1,0 +1,21 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Navigation } from './navigation/navigation';
+
+@Component({
+  selector: 'categories',
+  imports: [
+    Navigation,
+    TranslatePipe
+  ],
+  template: `
+    <div class="flex flex-col lg:flex-row lg:gap-5 pt-5">
+      <span class="text-xs lg:text-sm text-stone-300 font-semibold">{{ 'categories.text' | translate }}</span>
+      <navigation [menuItems]="menuItems()"/>
+    </div>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class Categories {
+  menuItems = input.required<string[]>();
+}
