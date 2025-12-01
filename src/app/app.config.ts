@@ -5,9 +5,9 @@ import { provideRouter } from '@angular/router';
 import { IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
 import { provideTranslateService } from "@ngx-translate/core";
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
-import { routes } from './app.routes';
+import { routes } from './app-routes';
+import { UserGeolocationService } from '@services';
 import { environment } from '@environments/environment';
-import { UserGeolocationService } from './core/services';
 
 export const tmdbImageLoader = (config: ImageLoaderConfig) => {
   return config.src.startsWith('/images/')? config.src: `${environment.imageUrl}w${config.width}${config.src}`;
@@ -24,8 +24,8 @@ export const appConfig: ApplicationConfig = {
       useValue: tmdbImageLoader,
     },
     provideAppInitializer(() => {
-      const userGeolcationService = inject(UserGeolocationService);
-      return userGeolcationService.loadUserLocation();
+      const userGeolocationService = inject(UserGeolocationService);
+      return userGeolocationService.loadUserLocation();
     }),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
@@ -36,4 +36,4 @@ export const appConfig: ApplicationConfig = {
       lang: 'es'
     }),
   ]
-};
+}

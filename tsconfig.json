@@ -5,14 +5,14 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@app/": ["src/app/"],
-      "@components/*": ["src/app/components/*"],
-      "@environments/*": ["src/environments/*"],
-      "@interfaces/*": ["src/app/shared/interfaces/*"],
-      "@interfaces/": ["src/app/shared/interfaces/index.ts"],
-      "@pages/*": ["src/app/pages/*"],
-      "@services/*": ["src/app/services/*"],
-      "@services/": ["src/app/services/index.ts"],
-      "@shared/*": ["src/app/shared/*"]
+      "@features/*": ["src/app/features/*"],
+      "@layout/*": ["src/app/layout/*"],
+      "@components/*": ["src/app/shared/components/*"],
+      "@interfaces": ["src/app/shared/interfaces/"],
+      "@mocks": ["src/app/shared/mocks/"],
+      "@services": ["src/app/shared/services/"],
+      "@utils": ["src/app/shared/utils/"],
+      "@environments/*": ["src/environments/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,
