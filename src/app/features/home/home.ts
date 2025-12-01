@@ -30,22 +30,22 @@ export default class Home implements OnInit, AfterViewInit {
     if(this.scrollService.getScrollTop() > 0) {
       this.scrollService.saveScrollPosition('home');
     }
-  };
+  }
 
   ngOnInit() {
     this.loadTranslateMetaTags();
-  };
+  }
 
   ngAfterViewInit() {
     this.loadTranslateSections();
     this.scrollService.restoreScrollPosition('home');
-  };
+  }
 
   private loadTranslateMetaTags() {
     this.translateService.get('home.metaTags').subscribe((metaTags: { title: string, description: string }) => {
       this.seoFriendlyService.setMetaTags(metaTags.title, metaTags.description);
     });
-  };
+  }
 
   private loadTranslateSections() {
     const keys: string[] = [ 'home.nowPlayingSection', 'home.popularSection', 'home.topRatedSection', 'home.trendingSection' ];
@@ -57,5 +57,5 @@ export default class Home implements OnInit, AfterViewInit {
         }
       )
     );
-  };
+  }
 }

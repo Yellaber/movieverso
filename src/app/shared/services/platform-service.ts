@@ -8,5 +8,5 @@ export class PlatformService {
 
   isBrowser(): boolean {
     return !!this.document && typeof window !== 'undefined';
-  };
+  }
 }

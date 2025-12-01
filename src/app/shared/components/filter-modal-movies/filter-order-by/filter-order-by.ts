@@ -43,31 +43,31 @@ export class FilterOrderBy implements OnInit {
 
   ngOnInit() {
     this.initializeOptions();
-  };
+  }
 
   private initializeOptions() {
     OPTIONS_BY_SORT.forEach(option => this.loadTranslations(option.label, option.value));
     const sortBy = this.queryParams().sortBy;
     this.selectedOption.set(sortBy);
-  };
+  }
 
   private loadTranslations(key: string, value: TypeSort) {
     this.translateService.get(key).subscribe((label: string) =>
       this.options.update(options => [ ...options, { label, value } ])
     );
-  };
+  }
 
   onSelect(option: OptionDropdown) {
     this.selectedOption.set(option.value);
-  };
+  }
 
   isSelected(option: OptionDropdown): boolean {
     return this.selectedOption() === option.value;
-  };
+  }
 
   reset() {
     if(this.options().length > 0) {
       this.selectedOption.set(this.options()[0].value);
     }
-  };
+  }
 }

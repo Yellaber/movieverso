@@ -46,9 +46,9 @@ export class RelatedMovie {
     this.menuItems.set(menuItems);
     this.loadTranslationTitle();
     this.seoFriendlyService.setMetaTags(this.titlePage(), '');
-  };
+  }
 
   private loadTranslationTitle() {
     this.translateService.get(`${this.type()}.title`).subscribe(title => this.titlePage.set(title));
-  };
+  }
 }

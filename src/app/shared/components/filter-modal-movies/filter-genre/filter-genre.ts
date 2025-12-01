@@ -31,20 +31,20 @@ export class FilterGenre implements OnInit {
 
   ngOnInit() {
     this.loadGenreMovieList();
-  };
+  }
 
   private loadGenreMovieList() {
     this.tmdbService.getGenresMovie().subscribe(genres => {
       this.genres.set(genres)
       this.loadGenresIdsFromQueryParamsService();
     });
-  };
+  }
 
   private loadGenresIdsFromQueryParamsService() {
     const genresIdsSelected = this.queryParams().withGenres;
     const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
     this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
-  };
+  }
 
   onSelect(genreSelected: Genre) {
     this.genresSelected.update(genres => {
@@ -54,13 +54,13 @@ export class FilterGenre implements OnInit {
       }
       return [ ...genres, genreSelected ];
     });
-  };
+  }
 
   isSelected(genreSelected: Genre): boolean {
     return this.genresSelected().some(genre => genre.id === genreSelected.id);
-  };
+  }
 
   reset() {
     this.genresSelected.set([]);
-  };
+  }
 }

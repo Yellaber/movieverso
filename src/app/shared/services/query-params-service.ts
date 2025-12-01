@@ -32,11 +32,11 @@ export class QueryParamsService {
       queryParams.withGenres = this.getStringValue(params, 'genres');
       this.queryParams.set(queryParams);
     });
-  };
+  }
 
   private getStringValue(params: ParamMap, key: string): string {
     return params.has(key)? params.get(key)!: '';
-  };
+  }
 
   private getNumberValue(params: ParamMap, key: string): number {
     switch(key) {
@@ -47,16 +47,16 @@ export class QueryParamsService {
       default:
         return 0;
     }
-  };
+  }
 
   private getSortByValue(params: ParamMap): TypeSort {
     if(!params.has('sortBy') || params.get('sortBy') === '') {
       return 'popularity.desc';
     }
     return params.get('sortBy') as TypeSort;
-  };
+  }
 
   set(queryParams: QueryParams) {
     this.queryParams.set(queryParams);
-  };
+  }
 }

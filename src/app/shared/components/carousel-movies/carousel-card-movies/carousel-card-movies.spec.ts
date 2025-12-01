@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/angular';
 import { CarouselCardMovies } from './carousel-card-movies';
-import { SlugifyService } from '@services';
 import { Movie } from '@interfaces';
 import { provideRouter } from '@angular/router';
 import { mockMovies, mockRoutes, StubRating } from '@mocks';
@@ -14,10 +13,7 @@ describe('CarouselCardMovies.', () => {
   const setup = async(inputs: { movie: Movie, bgCardFooter: string }) => {
     return render(CarouselCardMovies, {
       imports: [ StubRating ],
-      providers: [
-        provideRouter([ mockRoutes[0] ]),
-        { provide: SlugifyService, useValue: { getSlug: jest.fn().mockImplementation(() => slug) } }
-      ],
+      providers: [ provideRouter([ mockRoutes[0] ]) ],
       inputs
     });
   };
@@ -37,7 +33,7 @@ describe('CarouselCardMovies.', () => {
     const footer = ratingsComponent[0].parentElement;
     expect(ratingsComponent.length).toBe(2);
     expect(footer).toHaveClass(bgCardFooter);
-  });
+  })
 
   it('Should render the component when the movie not contain a poster path.', async() => {
     const { container } = await setup({
@@ -57,5 +53,5 @@ describe('CarouselCardMovies.', () => {
     const footer = ratingsComponent[0].parentElement;
     expect(ratingsComponent.length).toBe(2);
     expect(footer).toHaveClass(bgCardFooter);
-  });
-});
+  })
+})

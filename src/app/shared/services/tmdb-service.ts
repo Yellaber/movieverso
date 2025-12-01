@@ -39,7 +39,7 @@ export class TmdbService {
       region: this.userCountry(),
       page: 0
     };
-  };
+  }
 
   private getPaginatedMovies(url: string, params: Params): Observable<PaginatedMovies[]> {
     if(params.page! <= 0) { return of([]); }
@@ -62,19 +62,19 @@ export class TmdbService {
       );
     }
     return of(this.paginatedMovies);
-  };
+  }
 
   getPaginatedMoviesByCategory(category: string, page: number = 1): Observable<PaginatedMovies[]> {
     const url = `${environment.tmdbApiUrl}/${category}`;
     const { api_key, language, region } = this.params;
     return this.getPaginatedMovies(url, { api_key, language, region, page });
-  };
+  }
 
   getPaginatedMoviesBasedIn(basedIn: string, movieId: number, page: number = 1): Observable<PaginatedMovies[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
     const { api_key, language } = this.params;
     return this.getPaginatedMovies(url, { api_key, language, page });
-  };
+  }
 
   getGenresMovie(): Observable<Genre[]> {
     const url = `${environment.tmdbApiUrl}/genre/movie/list`;
@@ -93,7 +93,7 @@ export class TmdbService {
       })),
       tap(genres => this.cacheQuery.set(url, genres))
     );
-  };
+  }
 
   getGenresMovieByIds(genreIds: number[]): Observable<Genre[]> {
     const key = `${environment.tmdbApiUrl}/genre/movie/list/ids=${genreIds.toString()}`;
@@ -104,7 +104,7 @@ export class TmdbService {
       map(genres => genres.filter(genre => genreIds.includes(genre.id))),
       tap(genres => this.cacheQuery.set(key, genres))
     );
-  };
+  }
 
   getDetailMovieById(id: number): Observable<DetailMovie> {
     const url = `${environment.tmdbApiUrl}/movie/${id}`;
@@ -115,5 +115,5 @@ export class TmdbService {
     return this.httpClient.get<DetailMovie>(url, {
       params: { api_key, language }
     }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
-  };
+  }
 }

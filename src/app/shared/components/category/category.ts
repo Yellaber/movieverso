@@ -36,5 +36,5 @@ export class Category implements AfterViewInit {
 
   ngAfterViewInit() {
     this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
-  };
+  }
 }

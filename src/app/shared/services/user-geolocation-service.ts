@@ -21,7 +21,7 @@ export class UserGeolocationService {
   constructor() {
     this.translateService.addLangs(['es', 'en']);
     this.translateService.setFallbackLang('en');
-  };
+  }
 
   loadUserLocation(): Observable<UserGeolocation | undefined> {
     if(!this.platformService.isBrowser()) {
@@ -36,7 +36,7 @@ export class UserGeolocationService {
       return of(userGeolocation);
     }
     return this.getLocation();
-  };
+  }
 
   private getLocation(): Observable<UserGeolocation> {
     const url = `${environment.ipGeolocationApiUrl}?apiKey=${environment.ipGeolocationApiKey}`;
@@ -53,9 +53,9 @@ export class UserGeolocationService {
           this.geolocation.set(geolocation);
         })
       )
-  };
+  }
 
   private getUserLanguage(language: string): string[] {
     return (language.includes('es'))? [language]: ['en-US'];
-  };
+  }
 }

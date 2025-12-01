@@ -1,7 +1,6 @@
 export * from './active-action-service';
 export * from './carousel-movies-service';
 export * from './detail-service';
-export * from '../utils/flag-cdn-utils';
 export * from './home-service';
 export * from './platform-service';
 export * from './query-params-service';
@@ -9,6 +8,5 @@ export * from './routes-service';
 export * from './scroll-service';
 export * from './search-service';
 export * from './seo-friendly-service';
-export * from './slugify-service';
 export * from './tmdb-service';
 export * from './user-geolocation-service';

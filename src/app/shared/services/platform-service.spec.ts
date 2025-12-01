@@ -17,8 +17,8 @@ describe('PlatformService.', () => {
 
     it('isBrowser() should return true.', () => {
       expect(platformService.isBrowser()).toBe(true);
-    });
-  });
+    })
+  })
 
   describe('If document is not in the browser.', () => {
     beforeEach(() => {
@@ -28,12 +28,12 @@ describe('PlatformService.', () => {
 
       platformService = TestBed.inject(PlatformService);
       delete (globalThis as any).window;
-    });
+    })
 
     it('isBrowser() should return false.', () => {
       expect(platformService.isBrowser()).toBe(false);
-    });
-  });
+    })
+  })
 
   describe('If document is null (server environment).', () => {
     beforeEach(() => {
@@ -42,10 +42,10 @@ describe('PlatformService.', () => {
       });
 
       platformService = TestBed.inject(PlatformService);
-    });
+    })
 
     it('isBrowser() should return false.', () => {
       expect(platformService.isBrowser()).toBe(false);
-    });
-  });
-});
+    })
+  })
+})

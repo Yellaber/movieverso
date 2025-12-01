@@ -31,7 +31,7 @@ export class DetailService {
         map(({ keywords }) => keywords),
         tap(results => this.cacheQuery.set(url, results))
       );
-  };
+  }
 
   getMovieTrailers(movieId: number): Observable<Trailer[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/videos`;
@@ -47,7 +47,7 @@ export class DetailService {
         map(({ results }) => results),
         tap(results => this.cacheQuery.set(url, results))
       );
-  };
+  }
 
   getRelationedMovies(relation: string, movieId: number, page: number = 1): Observable<PaginatedMovies> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/${relation}`;
@@ -61,7 +61,7 @@ export class DetailService {
         page
       }
     }).pipe(tap(movieSimilars => this.cacheQuery.set(url, movieSimilars)));
-  };
+  }
 
   getMovieCollectionById(id: number): Observable<MovieCollection> {
     const url = `${environment.tmdbApiUrl}/collection/${id}`;
@@ -74,5 +74,5 @@ export class DetailService {
         language: this.userLanguage(),
       }
     }).pipe(tap(movieCollection => this.cacheQuery.set(url, movieCollection)));
-  };
+  }
 }

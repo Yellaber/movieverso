@@ -28,7 +28,7 @@ export class SearchBar {
 
   private getSearchValue(): string {
     return this.searchingForm.get('search')?.value || '';
-  };
+  }
 
   navigateToSearch() {
     if(!this.searchingForm.invalid) {
@@ -39,9 +39,9 @@ export class SearchBar {
       this.activeActionService.set('search');
       this.router.navigate(['/search'], { queryParams: { query: this.queryParamsService.getQueryParams().query } });
     }
-  };
+  }
 
   onOpenFilter() {
     this.activeActionService.set('filter');
-  };
+  }
 }

@@ -16,5 +16,5 @@ export class SeoFriendlyService {
     if(image) {
       this.meta.updateTag({ name:'og:image', content: image });
     }
-  };
+  }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SeoFriendlyService } from '@app/shared/services/seo-friendly-service';
+import { SeoFriendlyService } from '@services';
 
 @Component({
   imports: [ RouterLink, ReactiveFormsModule ],
@@ -27,15 +27,15 @@ export default class SignInComponent implements OnInit {
         Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
       ]
     ]
-  });
+  })
 
   ngOnInit() {
     this.seoFriendlyService.setMetaTags('Iniciar sesión', 'Esta es la página para iniciar sesión');
-  };
+  }
 
   isValidField(field: string): boolean | undefined {
     const isValid = this.signInForm.get(field)?.invalid;
     const isTouched = this.signInForm.get(field)?.touched;
     return isValid && isTouched;
-  };
+  }
 }

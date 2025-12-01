@@ -65,7 +65,7 @@ export default class DetailMovie implements OnInit {
       this.idMovie.set(+idSlug.split('-')[0]);
       this.scrollService.scrollTop();
     });
-  };
+  }
 
   private loadMetaTags(movieTitle: string, movieYear: string, movieBackdropPath: string) {
     this.translateService.get(_('detailMovie.metaTags.description'), { title: movieTitle })
@@ -73,5 +73,5 @@ export default class DetailMovie implements OnInit {
         this.seoFriendlyService.setMetaTags(`${movieTitle} (${movieYear})`, description,
           `${environment.imageUrl}${movieBackdropPath}`)
     );
-  };
+  }
 }

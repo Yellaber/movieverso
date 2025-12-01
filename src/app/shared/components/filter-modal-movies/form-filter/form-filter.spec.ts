@@ -30,11 +30,11 @@ describe('FormFilter.', () => {
       fixture = TestBed.createComponent(FormFilter);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
+    })
 
     it('Should render and display the form filter.', () => {
       const ratingElement = fixture.nativeElement.querySelector('rating');
@@ -48,11 +48,11 @@ describe('FormFilter.', () => {
       expect(dateElements.length).toEqual(2);
       expect(dateElements[0].value).toEqual(initialQueryParams.primaryReleaseDateGte.toString());
       expect(dateElements[1].value).toEqual(initialQueryParams.primaryReleaseDateLte.toString());
-    });
+    })
 
     it('Should have a valid form when the form is initialized.', () => {
       expect(component.formFilter.valid).toBe(true);
-    });
+    })
 
     describe('When the voteMinimum field is changed.', () => {
       it('Should display a error message when the voteMinimum is less than 1.', () => {
@@ -63,7 +63,7 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.invalid).toBe(true);
         expect(errorElement).toBeTruthy();
-      });
+      })
 
       it('Should display a error message when the voteMinimum is greater than 25000.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
@@ -73,7 +73,7 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.invalid).toBe(true);
         expect(errorElement).toBeTruthy();
-      });
+      })
 
       it('Should display a error message when the voteMinimum is a negative number.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
@@ -83,7 +83,7 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.invalid).toBe(true);
         expect(errorElement).toBeTruthy();
-      });
+      })
 
       it('Should display a error message when the voteMinimum is empty.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
@@ -93,7 +93,7 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.invalid).toBe(true);
         expect(errorElement).toBeTruthy();
-      });
+      })
 
       it('Should not display a error message when the voteMinimum is valid.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
@@ -103,8 +103,8 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.valid).toBe(true);
         expect(errorElement).toBeFalsy();
-      });
-    });
+      })
+    })
 
     describe('When the primaryReleaseDate fields are changed.', () => {
       it('Should display a error message when the primaryReleaseDateGte is greater than the primaryReleaseDateLte.', () => {
@@ -116,7 +116,7 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.invalid).toBe(true);
         expect(errorElement).toBeTruthy();
-      });
+      })
 
       it('Should not display a error message when the primaryReleaseDateGte is less than the primaryReleaseDateLte.', () => {
         const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
@@ -127,8 +127,8 @@ describe('FormFilter.', () => {
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
         expect(component.formFilter.valid).toBe(true);
         expect(errorElement).toBeFalsy();
-      });
-    });
+      })
+    })
 
     describe('isInvalid()', () => {
       it('should return false and not touch the form if it is valid', () => {
@@ -136,7 +136,7 @@ describe('FormFilter.', () => {
         const isInvalid = component.isInvalid();
         expect(isInvalid).toBe(false);
         expect(component.formFilter.touched).toBe(false);
-      });
+      })
 
       it('should return true and mark the form as touched if it is invalid', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
@@ -147,9 +147,9 @@ describe('FormFilter.', () => {
         const isInvalid = component.isInvalid();
         expect(isInvalid).toBe(true);
         expect(component.formFilter.touched).toBe(true);
-      });
-    });
-  });
+      })
+    })
+  })
 
   describe('When the component is initialized with custom values.', () => {
     beforeEach(() => {
@@ -170,11 +170,11 @@ describe('FormFilter.', () => {
       fixture = TestBed.createComponent(FormFilter);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
+    })
 
     it('Should render and display the form filter with custom values.', () => {
       const ratingElement = fixture.nativeElement.querySelector('rating');
@@ -188,11 +188,11 @@ describe('FormFilter.', () => {
       expect(dateElements.length).toEqual(2);
       expect(dateElements[0].value).toEqual(mockQueryParams.primaryReleaseDateGte.toString());
       expect(dateElements[1].value).toEqual(mockQueryParams.primaryReleaseDateLte.toString());
-    });
+    })
 
     it('Should have a valid form when the form is initialized.', () => {
       expect(component.formFilter.valid).toBe(true);
-    });
+    })
 
     it('Should reset the form to its initial default values.', () => {
       const rangeElement = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
@@ -205,6 +205,6 @@ describe('FormFilter.', () => {
       fixture.detectChanges();
       expect(rangeElement.value).toEqual(initialQueryParams.voteAverageGte.toString());
       expect(numberElement.value).toEqual(initialQueryParams.voteCountGte.toString());
-    });
-  });
-});
+    })
+  })
+})

@@ -40,7 +40,7 @@ export class FormFilter {
       return true;
     }
     return false;
-  };
+  }
 
   reset() {
     this.formFilter.reset({
@@ -49,5 +49,5 @@ export class FormFilter {
       primaryReleaseDateGte: initialQueryParams.primaryReleaseDateGte,
       primaryReleaseDateLte: initialQueryParams.primaryReleaseDateLte
     });
-  };
+  }
 }

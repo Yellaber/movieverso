@@ -11,5 +11,5 @@ export class ActiveActionService {
 
   set(activeAction: ActiveAction) {
     this.activeAction.set(activeAction);
-  };
+  }
 }

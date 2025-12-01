@@ -27,7 +27,7 @@ export class Navigation implements OnInit {
 
   ngOnInit() {
     this.getRoutesCategories();
-  };
+  }
 
   private getRoutesCategories() {
     const routes = this.routesService.getRoutes();
@@ -36,12 +36,12 @@ export class Navigation implements OnInit {
         this.saveTranslationRouteCategory(path);
       }
     });
-  };
+  }
 
   private saveTranslationRouteCategory(path: string) {
     this.translateService.get(`routes.${this.transformPath(path)}`).subscribe((category: string) =>
       this.routesCategories.update(routes => [ ...routes, { title: category, path: `/${path}` } ]));
-  };
+  }
 
   private transformPath(path: string): string {
     if(path.includes('-')) {
@@ -54,5 +54,5 @@ export class Navigation implements OnInit {
       return words.toString().replaceAll(',', '');
     }
     return path;
-  };
+  }
 }

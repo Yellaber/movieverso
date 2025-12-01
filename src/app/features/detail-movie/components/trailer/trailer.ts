@@ -36,5 +36,5 @@ export class Trailer {
 
   getSafeYoutubeUrl(key: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${key}`);
-  };
+  }
 }

@@ -21,20 +21,20 @@ export class CarouselMoviesService {
   initializer(carouselContainerWith: number, totalMovies: number) {
     this.carouselContainerWidth.set(carouselContainerWith);
     this.totalMovies.set(totalMovies);
-  };
+  }
 
   next() {
     (this.scrollStep() + this.scrollVisibleMovies() < this.totalScrollStep())?
     this.scrollStep.update(value => value + this.scrollVisibleMovies()):
     this.scrollStep.set(this.totalScrollStep() - this.getPartNotVisible());
-  };
+  }
 
   previous() {
     (this.scrollStep() - this.scrollVisibleMovies() > 0)?
     this.scrollStep.update(value => value - this.scrollVisibleMovies()): this.scrollStep.set(0);
-  };
+  }
 
   getScrollStep() {
     return this.scrollStep();
-  };
+  }
 }

@@ -5,10 +5,7 @@ import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: 'logo',
-  imports: [
-    RouterLink,
-    TranslatePipe
-  ],
+  imports: [ RouterLink, TranslatePipe ],
   templateUrl: './logo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

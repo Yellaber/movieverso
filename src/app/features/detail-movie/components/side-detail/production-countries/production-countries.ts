@@ -16,5 +16,5 @@ export class ProductionCountries {
 
   getFlagCountry(iso31661Code: string): string {
     return FlagCdnUtils.getFlagCountry(iso31661Code, this.FLAG_SIZE);
-  };
+  }
 }

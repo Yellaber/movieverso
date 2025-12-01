@@ -11,4 +11,4 @@ import { environment } from '@environments/environment';
 })
 export class App {
   title = environment.appName;
-};
+}

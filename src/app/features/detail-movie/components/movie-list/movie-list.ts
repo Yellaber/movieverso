@@ -59,7 +59,7 @@ export class MovieList {
 
   private getTypeMovieListTranslation(typeMovieList: TypeMovieList): Observable<string> {
     return this.translateService.get(`detailMovie.movieList.${typeMovieList}.title`);
-  };
+  }
 
   private getRelatedMovies(movieId: number): Observable<Movie[]> {
     switch(this.typeMovieList()) {
@@ -70,11 +70,11 @@ export class MovieList {
         return (this.id() !== 0)? this.detailService.getRelationedMovies(this.typeMovieList(), movieId)
           .pipe(map(({ results }) => results)): of([]);
     };
-  };
+  }
 
   private loadNotificationTranslation(key: string) {
     this.translateService.get(key).subscribe((notification: { title: string, message: string }) =>
       this.notification.set(notification)
     );
-  };
+  }
 }

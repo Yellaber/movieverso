@@ -24,7 +24,7 @@ describe('BadgeListComponent.', () => {
     expect(badges.length).toBe(genres.length);
     expect(badges[0].textContent).toBe(genres[0].name);
     expect(badges[1].textContent).toBe(genres[1].name);
-  });
+  })
 
   it('Should display a list of keywords correctly.', async() => {
     await render(BadgeList, {
@@ -34,7 +34,7 @@ describe('BadgeListComponent.', () => {
     expect(badges.length).toBe(keywords.length);
     expect(badges[0].textContent).toBe(keywords[0].name);
     expect(badges[1].textContent).toBe(keywords[1].name);
-  });
+  })
 
   it('Should display a list of spoken languages correctly.', async() => {
     await render(BadgeList, {
@@ -44,5 +44,5 @@ describe('BadgeListComponent.', () => {
     expect(badges.length).toBe(spokenLanguages.length);
     expect(badges[0].textContent).toBe(spokenLanguages[0].name);
     expect(badges[1].textContent).toBe(spokenLanguages[1].name);
-  });
-});
+  })
+})

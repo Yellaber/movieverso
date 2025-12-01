@@ -13,7 +13,7 @@ describe('Rating.', () => {
     const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faFire);
     expect(screen.getByText('50.0')).toBeInTheDocument();
-  });
+  })
 
   it('Should display the correct icon and format for type "vote_average".', async() => {
     const { fixture } = await render(Rating, {
@@ -25,7 +25,7 @@ describe('Rating.', () => {
     const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faStar);
     expect(screen.getByText('4.6/10')).toBeInTheDocument();
-  });
+  })
 
   it('Should display the correct icon and format for type "vote_count".', async() => {
     const { fixture } = await render(Rating, {
@@ -37,7 +37,7 @@ describe('Rating.', () => {
     const ratingComponent = fixture.componentInstance;
     expect(ratingComponent.getIcon()?.faIcon).toBe(faThumbsUp);
     expect(screen.getByText('681')).toBeInTheDocument();
-  });
+  })
 
   it('should not render if the value is negative', async() => {
     const { container } = await render(Rating, {
@@ -47,5 +47,5 @@ describe('Rating.', () => {
       }
     });
     expect(container.querySelector('a')).toBeNull();
-  });
-});
+  })
+})

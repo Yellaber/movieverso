@@ -36,4 +36,4 @@ export const appConfig: ApplicationConfig = {
       lang: 'es'
     }),
   ]
-};
+}

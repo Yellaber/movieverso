@@ -18,11 +18,11 @@ describe('Seofriendly Service:', () => {
     seofriendlyService = TestBed.inject(SeoFriendlyService);
     titleService = TestBed.inject(Title);
     metaService = TestBed.inject(Meta);
-  });
+  })
 
   it('Should create service.', () => {
     expect(seofriendlyService).toBeTruthy();
-  });
+  })
 
   it('Should setup the title and meta tags without image.', () => {
     jest.spyOn(titleService, 'setTitle');
@@ -31,7 +31,7 @@ describe('Seofriendly Service:', () => {
     expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
-  });
+  })
 
   it('Should setup the title and meta tags with image.', () => {
     const imageUrl = 'https://unsitioweb.com/imagen.jpg';
@@ -42,5 +42,5 @@ describe('Seofriendly Service:', () => {
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
     expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:image', content: imageUrl });
-  });
-});
+  })
+})

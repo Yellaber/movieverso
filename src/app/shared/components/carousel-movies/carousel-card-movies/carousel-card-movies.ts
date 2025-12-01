@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Rating } from '@components/rating/rating';
-import { SlugifyService } from '@services';
-import { ImageUtils } from '@utils';
+import { ImageUtils, SlugifyUtils } from '@utils';
 import { Movie } from '@interfaces';
 
 @Component({
@@ -14,7 +13,6 @@ import { Movie } from '@interfaces';
   host: { class: 'flex flex-col min-w-[160px] max-w-[160px] rounded-md shadow-md' }
 })
 export class CarouselCardMovies {
-  private slugifyService = inject(SlugifyService);
   private imageUtils = new ImageUtils();
   movie = input.required<Movie>();
   bgCardFooter = input.required<string>();
@@ -26,7 +24,7 @@ export class CarouselCardMovies {
   getPosterTitle = computed<string>(() => this.imageUtils.getPosterTitle(this.movie()));
   getMovieLink = computed<string[]>(() => {
     const { id, title } = this.movie();
-    const slug = this.slugifyService.getSlug(title);
+    const slug = SlugifyUtils.getSlug(title);
     return ['/movie', `${id}-${slug}`];
   });
 }

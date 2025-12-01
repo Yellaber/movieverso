@@ -23,17 +23,17 @@ describe('DetailService', () => {
 
     detailService = TestBed.inject(DetailService);
     httpClientMock = TestBed.inject(HttpTestingController);
-  });
+  })
 
   afterEach(() => {
     jest.clearAllMocks();
     httpClientMock.verify();
-  });
+  })
 
   it('Should be created and set language/country from geolocation.', () => {
     expect(detailService).toBeTruthy();
     expect(detailService['userLanguage']()).toBe('es-CO');
-  });
+  })
 
   describe('getMovieKeywords().', () => {
     it('Should fetch movies from API if cache is empty.', () => {
@@ -43,7 +43,7 @@ describe('DetailService', () => {
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/keywords?api_key=${environment.tmdbApiKey}`);
       req.flush({ keywords: mockKeywords });
       expect(keywordsResponse).toEqual(mockKeywords);
-    });
+    })
 
     it('Should return movies from cache if available.', () => {
       const movieId = 1;
@@ -54,8 +54,8 @@ describe('DetailService', () => {
       detailService.getMovieKeywords(movieId).subscribe(response => { keywordsResponse = response; });
       httpClientMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/keywords?api_key=${environment.tmdbApiKey}`);
       expect(keywordsResponse).toEqual(mockKeywords);
-    });
-  });
+    })
+  })
 
   describe('getMovieTrailers().', () => {
     it('Should fetch movies from API if cache is empty.', () => {
@@ -65,7 +65,7 @@ describe('DetailService', () => {
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/videos?api_key=${environment.tmdbApiKey}&language=es-CO`);
       req.flush({ results: mockTrailers });
       expect(trailersResponse).toEqual(mockTrailers);
-    });
+    })
 
     it('Should return movies from cache if available.', () => {
       const movieId = 1;
@@ -76,8 +76,8 @@ describe('DetailService', () => {
       detailService.getMovieTrailers(movieId).subscribe(response => { trailersResponse = response; });
       httpClientMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/videos?api_key=${environment.tmdbApiKey}&language=es-CO`);
       expect(trailersResponse).toEqual(mockTrailers);
-    });
-  });
+    })
+  })
 
   describe('getRelationedMovies().', () => {
     it('Should fetch movies from API if cache is empty.', () => {
@@ -88,7 +88,7 @@ describe('DetailService', () => {
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${relation}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       req.flush(mockPaginatedMovies);
       expect(paginatedMovies).toEqual(mockPaginatedMovies);
-    });
+    })
 
     it('Should return movies from cache if available.', () => {
       const relation = 'similar';
@@ -100,8 +100,8 @@ describe('DetailService', () => {
       detailService.getRelationedMovies(relation, movieId).subscribe(response => { paginatedMovies = response; });
       httpClientMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/${relation}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       expect(paginatedMovies).toEqual(mockPaginatedMovies);
-    });
-  });
+    })
+  })
 
   describe('getMovieCollectionById().', () => {
     it('Should fetch movies from API if cache is empty.', () => {
@@ -111,7 +111,7 @@ describe('DetailService', () => {
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/collection/${collectionId}?api_key=${environment.tmdbApiKey}&language=es-CO`);
       req.flush(mockMovieCollection);
       expect(movieCollection).toEqual(mockMovieCollection);
-    });
+    })
 
     it('Should return movies from cache if available.', () => {
       const collectionId = 1;
@@ -122,8 +122,8 @@ describe('DetailService', () => {
       detailService.getMovieCollectionById(collectionId).subscribe( response => { movieCollection = response; });
       httpClientMock.expectNone(`${environment.tmdbApiUrl}/collection/${collectionId}?api_key=${environment.tmdbApiKey}&language=es-CO`);
       expect(movieCollection).toEqual(mockMovieCollection);
-    });
-  });
+    })
+  })
 
   describe('If geolocation is not available.', () => {
     beforeEach(() => {
@@ -138,10 +138,10 @@ describe('DetailService', () => {
       });
       detailService = TestBed.inject(DetailService);
       httpClientMock = TestBed.inject(HttpTestingController);
-    });
+    })
 
     it('userLanguage signal should be an empty string.', () => {
       expect(detailService['userLanguage']()).toBe('');
-    });
-  });
-});
+    })
+  })
+})

@@ -26,5 +26,5 @@ export class AppHeader {
 
   navigateToUpcoming() {
     this.router.navigateByUrl('/upcoming');
-  };
+  }
 }

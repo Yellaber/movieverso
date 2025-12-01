@@ -11,9 +11,9 @@ export class RoutesService {
 
   constructor() {
     this.setRoutes(routes);
-  };
+  }
 
   setRoutes(routes: Route[]) {
     this.routes.set(routes);
-  };
+  }
 }

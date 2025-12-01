@@ -27,11 +27,11 @@ describe('FilterGenre.', () => {
       fixture = TestBed.createComponent(FilterGenre);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
+    })
 
     it('Should render the component and select the genre present in the queryParams.', () => {
       const spanElement = fixture.nativeElement.querySelector('span');
@@ -43,7 +43,7 @@ describe('FilterGenre.', () => {
       expect(buttonElements[0].textContent.trim()).toBe(mockGenreMovies.genres[0].name);
       expect(buttonElements[0].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[0].classList.contains('font-bold')).toBeTruthy();
-    });
+    })
 
     it('Should select another genre.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -59,7 +59,7 @@ describe('FilterGenre.', () => {
       expect(buttonElements[1].textContent.trim()).toBe(mockGenreMovies.genres[1].name);
       expect(buttonElements[1].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[1].classList.contains('font-bold')).toBeTruthy();
-    });
+    })
 
     it('Should deselect the genre present in the queryParams.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -70,7 +70,7 @@ describe('FilterGenre.', () => {
       expect(buttonElements[0].textContent.trim()).toBe(mockGenreMovies.genres[0].name);
       expect(buttonElements[0].classList.contains('bg-stone-400')).toBeTruthy();
       expect(buttonElements[0].classList.contains('text-stone-700')).toBeTruthy();
-    });
+    })
 
     it('Should reset the genres selected.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -82,8 +82,8 @@ describe('FilterGenre.', () => {
       expect(component.isSelected(mockGenreMovies.genres[0])).toBeFalsy();
       expect(buttonElements[0].classList.contains('bg-stone-400')).toBeTruthy();
       expect(buttonElements[0].classList.contains('text-stone-700')).toBeTruthy();
-    });
-  });
+    })
+  })
 
   describe('When initializing with default query params.', () => {
     let fixture: ComponentFixture<FilterGenre>;
@@ -107,11 +107,11 @@ describe('FilterGenre.', () => {
       fixture = TestBed.createComponent(FilterGenre);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
+    })
 
     it('Should render the component and not select any genre.', () => {
       const spanElement = fixture.nativeElement.querySelector('span');
@@ -124,7 +124,7 @@ describe('FilterGenre.', () => {
         expect(buttonElement.classList.contains('bg-stone-400')).toBeTruthy();
         expect(buttonElement.classList.contains('text-stone-700')).toBeTruthy();
       });
-    });
+    })
 
     it('Should select a genre.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -136,6 +136,6 @@ describe('FilterGenre.', () => {
       expect(buttonElements[1].textContent.trim()).toBe(mockGenreMovies.genres[1].name);
       expect(buttonElements[1].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[1].classList.contains('font-bold')).toBeTruthy();
-    });
-  });
-});
+    })
+  })
+})

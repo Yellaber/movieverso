@@ -50,14 +50,14 @@ export default class Search implements OnInit {
         this.scrollService.scrollTop();
       }
     });
-  };
+  }
 
   ngOnInit() {
     this.seoFriendlyService.setMetaTags('Search', '');
-  };
+  }
 
   private getPaginatedMovies(queryParams: QueryParams, page: number): Observable<PaginatedMovies[]> {
     return (queryParams.query)? this.tmdbService.getMovieByTitle(queryParams.query, page):
       this.tmdbService.getMoviesFiltered(queryParams, page);
-  };
+  }
 }

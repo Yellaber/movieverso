@@ -6,7 +6,7 @@ import { TypeTag } from '@interfaces';
 interface Icon {
   type: TypeTag,
   faIcon: IconDefinition
-}
+};
 
 const icons: Icon[] = [
   { type: 'now-playing', faIcon: faFilm }, { type: 'popular', faIcon: faFire },

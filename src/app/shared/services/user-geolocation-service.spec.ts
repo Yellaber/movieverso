@@ -30,12 +30,12 @@ describe('UserGeolocationService', () => {
 
     geolocationService = TestBed.inject(UserGeolocationService);
     httpClientMock = TestBed.inject(HttpTestingController);
-  });
+  })
 
   afterEach(() => {
     jest.clearAllMocks();
     mockLocalStorage.clear();
-  });
+  })
 
   it('Should add languages and set fallback language.', () => {
     const addLangsSpy = jest.spyOn(geolocationService['translateService'], 'addLangs');
@@ -45,14 +45,14 @@ describe('UserGeolocationService', () => {
     expect(addLangsSpy).toHaveBeenCalledWith(['es', 'en']);
     expect(setFallbackLangSpy).toHaveBeenCalledWith('en');
     expect(loadUserLocationSpy).toHaveBeenCalled();
-  });
+  })
 
   describe('loadUserLocation().', () => {
     it('Should return undefined if not platform browser.', () => {
       mockPlatformService.isBrowser.mockReturnValue(false);
       geolocationService['loadUserLocation']();
       expect(geolocationService['getUserGeolocation']()).toBeUndefined();
-    });
+    })
 
     it('Should use localStorage if it has a value.', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
@@ -63,7 +63,7 @@ describe('UserGeolocationService', () => {
       expect(getItemSpy).toHaveBeenCalledWith('userLocalLocation');
       expect(useSpy).toHaveBeenCalledWith('es');
       expect(geolocationService['getUserGeolocation']()).toEqual(mockGeolocation);
-    });
+    })
 
     it('Should fetch geolocation from API if localStorage is not present.', () => {
       mockPlatformService.isBrowser.mockReturnValue(true);
@@ -77,16 +77,16 @@ describe('UserGeolocationService', () => {
       expect(useSpy).toHaveBeenCalledWith('es');
       expect(geolocationService['getUserGeolocation']()).toEqual(userGeolocation);
       httpClientMock.verify();
-    });
-  });
+    })
+  })
 
   describe('getUserLanguage().', () => {
     it('Should return ["es-MX"] if includes "es".', () => {
       expect(geolocationService['getUserLanguage']('es-MX')).toEqual(['es-MX']);
-    });
+    })
 
     it('Should return ["en-US"] if not includes "es".', () => {
       expect(geolocationService['getUserLanguage']('fr-FR')).toEqual(['en-US']);
-    });
-  });
-});
+    })
+  })
+})

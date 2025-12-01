@@ -23,7 +23,7 @@ describe('Categories.', () => {
 
     fixture = TestBed.createComponent(Categories);
     component = fixture.componentInstance;
-  });
+  })
 
   it('Should render the categories correctly.', () => {
     fixture.componentRef.setInput('menuItems', [ 'category-1', 'category-2', 'category-3' ]);
@@ -33,7 +33,7 @@ describe('Categories.', () => {
     expect(component.menuItems().length).toBe(3);
     expect(spanElement).toBeTruthy();
     expect(navigationElement).toBeTruthy();
-  });
+  })
 
   it('Should render the categories if menuItems is empty.', () => {
     fixture.componentRef.setInput('menuItems', []);
@@ -43,5 +43,5 @@ describe('Categories.', () => {
     expect(component.menuItems().length).toBe(0);
     expect(spanElement).toBeTruthy();
     expect(navigationElement).toBeTruthy();
-  });
-});
+  })
+})

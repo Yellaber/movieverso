@@ -39,5 +39,5 @@ export class HomeService {
       map(({ results }) => results),
       tap(movies => this.cacheQuery.set(key, movies))
     );
-  };
+  }
 }

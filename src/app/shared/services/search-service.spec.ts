@@ -25,21 +25,21 @@ describe('SearchService.', () => {
     });
     searchService = TestBed.inject(SearchService);
     httpClientMock = TestBed.inject(HttpTestingController);
-  });
+  })
 
   afterEach(() => {
     jest.clearAllMocks();
     httpClientMock.verify();
-  });
+  })
 
   it('Should be created.', () => {
     expect(searchService).toBeTruthy();
-  });
+  })
 
   it('Geolocation should be available.', () => {
     expect((searchService as any).userLanguage()).toBe('es-CO');
     expect((searchService as any).userCountry()).toBe('CO');
-  });
+  })
 
   describe('getMovieByTitle().', () => {
     it('Should fetch movies by title and reset on page 1.', () => {
@@ -49,7 +49,7 @@ describe('SearchService.', () => {
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/search/movie?api_key=${environment.tmdbApiKey}&query=${query}&language=es-CO&region=CO&page=1`);
       req.flush(mockPaginatedMovies);
       expect(paginatedMovies).toEqual([mockPaginatedMovies]);
-    });
+    })
 
     it('Should append movies when page > 1.', () => {
       const query = 'title';
@@ -61,15 +61,15 @@ describe('SearchService.', () => {
       const req2 = httpClientMock.expectOne(`${environment.tmdbApiUrl}/search/movie?api_key=${environment.tmdbApiKey}&query=${query}&language=es-CO&region=CO&page=2`);
       req2.flush(mockPaginatedMovies);
       expect(paginatedMovies?.length).toBe(2);
-    });
+    })
 
     it('Should return empty array when page <= 0.', () => {
       const query = 'title';
       let paginatedMovies: PaginatedMovies[] | undefined;
       searchService.getMovieByTitle(query, 0).subscribe(response => { paginatedMovies = response; });
       expect(paginatedMovies).toEqual([]);
-    });
-  });
+    })
+  })
 
   describe('getMoviesFiltered().', () => {
     it('Should fetch movies filtered and reset on page 1.', () => {
@@ -82,7 +82,7 @@ describe('SearchService.', () => {
       expect(params.get('vote_count.gte')).toBe('100');
       req.flush(mockPaginatedMovies);
       expect(paginatedMovies).toEqual([mockPaginatedMovies]);
-    });
+    })
 
     it('Should append movies when page > 1.', () => {
       searchService.getMoviesFiltered(initialQueryParams, 1).subscribe();
@@ -99,14 +99,14 @@ describe('SearchService.', () => {
       expect(req2.request.params.get('vote_count.gte')).toBe('100');
       req2.flush(mockPaginatedMovies);
       expect(paginatedMovies?.length).toBe(2);
-    });
+    })
 
     it('Should return empty array when page <= 0.', () => {
       let paginatedMovies: PaginatedMovies[] | undefined;
       searchService.getMoviesFiltered(initialQueryParams, 0).subscribe(response => { paginatedMovies = response; });
       expect(paginatedMovies).toEqual([]);
-    });
-  });
+    })
+  })
 
   describe('If geolocation is not available.', () => {
     beforeEach(() => {
@@ -123,11 +123,11 @@ describe('SearchService.', () => {
       });
       searchService = TestBed.inject(SearchService);
       httpClientMock = TestBed.inject(HttpTestingController);
-    });
+    })
 
     it('userLanguage and userCountry signals should be empty string.', () => {
       expect((searchService as any).userLanguage()).toBe('');
       expect((searchService as any).userCountry()).toBe('');
-    });
-  });
-});
+    })
+  })
+})

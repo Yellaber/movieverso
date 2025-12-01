@@ -33,17 +33,17 @@ export class FilterModalMovies implements OnInit {
 
   ngOnInit() {
     this.onShow();
-  };
+  }
 
   private setClassListOverlay(oldClass: string, newClass: string) {
     const classListOverlay = this.classListOverlay().replace(oldClass, newClass);
     this.classListOverlay.set(classListOverlay);
-  };
+  }
 
   private setClassListModal(oldClass: string, newClass: string) {
     const classListModal = this.classListModal().replace(oldClass, newClass);
     this.classListModal.set(classListModal);
-  };
+  }
 
   onShow() {
     this.setClassListOverlay('hidden', 'flex');
@@ -51,7 +51,7 @@ export class FilterModalMovies implements OnInit {
       this.scrollService.blockWindow(true);
       this.setClassListModal('translate-y-full opacity-0', 'translate-y-0 opacity-100');
     }, 10);
-  };
+  }
 
   onClose() {
     this.setClassListModal('translate-y-0 opacity-100', 'translate-y-full opacity-0');
@@ -60,13 +60,13 @@ export class FilterModalMovies implements OnInit {
       this.setClassListOverlay('flex', 'hidden');
       this.activeActionService.set('none');
     }, 300);
-  };
+  }
 
   onResetFilter() {
     this.filterGenre()?.reset();
     this.formFilter()?.reset();
     this.filterOrderBy()?.reset();
-  };
+  }
 
   onShowResults() {
     const formComponent = this.formFilter();
@@ -90,5 +90,5 @@ export class FilterModalMovies implements OnInit {
       primaryReleaseDateLte: this.queryParamsService.getQueryParams().primaryReleaseDateLte,
       sortBy: this.queryParamsService.getQueryParams().sortBy
     }});
-  };
+  }
 }

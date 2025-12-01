@@ -23,31 +23,31 @@ describe('Navigation.', () => {
     const routesCategories = fixture.componentInstance.routesCategories();
     expect(routesCategories.length).toBe(4);
     expect(screen.getAllByRole('link').length).toBe(4);
-  });
+  })
 
   it('Should render 3 routes correctly.', async() => {
     const { fixture } = await setup({ menuItems: [ 'upcoming', 'now-playing', 'popular' ] });
     const routesCategories = fixture.componentInstance.routesCategories();
     expect(routesCategories.length).toBe(3);
     expect(screen.getAllByRole('link').length).toBe(3);
-  });
+  })
 
   it('Should render valid routes but not invalid route.', async() => {
     const { fixture } = await setup({ menuItems: [ 'upcoming', 'now-playing', 'invalid-route-1', 'invalid-route-2' ] });
     const routesCategories = fixture.componentInstance.routesCategories();
     expect(routesCategories.length).toBe(2);
     expect(screen.getAllByRole('link').length).toBe(2);
-  });
+  })
 
   it('Should not render routes if menuItems contains invalid routes.', async() => {
     const { fixture } = await setup({ menuItems: [ 'invalid-route-1', 'invalid-route-2' ] });
     const routesCategories = fixture.componentInstance.routesCategories();
     expect(routesCategories.length).toBe(0);
-  });
+  })
 
   it('Should not render routes if menuItems is empty.', async() => {
     const { fixture } = await setup({ menuItems: [] });
     const routesCategories = fixture.componentInstance.routesCategories();
     expect(routesCategories.length).toBe(0);
-  });
-});
+  })
+})

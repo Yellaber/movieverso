@@ -25,10 +25,10 @@ export class ContentCategory implements OnInit {
 
   ngOnInit() {
     this.loadTranslations();
-  };
+  }
 
   private loadTranslations() {
     this.translateService.get(this.title()).subscribe((title: string) => this.titlePage.set(title));
     this.translateService.get(this.paragraph()).subscribe((paragraph: string) => this.textPage.set(paragraph));
-  };
+  }
 }

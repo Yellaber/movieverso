@@ -26,11 +26,11 @@ describe('FilterOderBy.', () => {
       fixture = TestBed.createComponent(FilterOrderBy);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
+    })
 
     it('Should render the component correctly and select the best rated option.', () => {
       const spanElement = fixture.nativeElement.querySelector('span');
@@ -42,7 +42,7 @@ describe('FilterOderBy.', () => {
       expect(buttonElements[2].textContent.trim()).toBe(component.options()[2].label);
       expect(buttonElements[2].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[2].classList.contains('font-bold')).toBeTruthy();
-    });
+    })
 
     it('Should select another option if it is clicked.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -54,7 +54,7 @@ describe('FilterOderBy.', () => {
       expect(buttonElements[3].textContent.trim()).toBe(component.options()[3].label);
       expect(buttonElements[3].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[3].classList.contains('font-bold')).toBeTruthy();
-    });
+    })
 
     it('Should reset the selected option to the first option.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -71,8 +71,8 @@ describe('FilterOderBy.', () => {
       expect(buttonElements[4].classList.contains('text-stone-700')).toBeTruthy();
       expect(buttonElements[0].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[0].classList.contains('font-bold')).toBeTruthy();
-    });
-  });
+    })
+  })
 
   describe('When initializing with default query params.', () => {
     let component: FilterOrderBy;
@@ -95,7 +95,7 @@ describe('FilterOderBy.', () => {
       fixture = TestBed.createComponent(FilterOrderBy);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    });
+    })
 
     it('Should render the component correctly and select the most popular option by default.', () => {
       const buttonElements = fixture.nativeElement.querySelectorAll('button');
@@ -104,6 +104,6 @@ describe('FilterOderBy.', () => {
       expect(buttonElements[0].textContent.trim()).toBe(component.options()[0].label);
       expect(buttonElements[0].classList.contains('bg-yellow-600')).toBeTruthy();
       expect(buttonElements[0].classList.contains('font-bold')).toBeTruthy();
-    });
-  });
-});
+    })
+  })
+})

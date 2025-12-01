@@ -5,7 +5,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { BadgeList } from '@components/badge-list/badge-list';
 import { Rating } from '@components/rating/rating';
 import { Tag } from '@components/tag/tag';
-import { SlugifyService, TmdbService } from '@services';
+import { TmdbService } from '@services';
+import { SlugifyUtils } from '@utils';
 import { Genre, Movie } from '@interfaces';
 
 @Component({
@@ -20,7 +21,6 @@ export class ShortInformation {
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
   private tmdbService = inject(TmdbService);
-  private slugifyService = inject(SlugifyService);
   private movieGenreIds = computed<number[]>(() => this.movie().genre_ids);
   private genresMovie = rxResource({
     params: this.movieGenreIds,
@@ -29,6 +29,6 @@ export class ShortInformation {
   genres = computed<Genre[]>(() => this.genresMovie.value()?? []);
 
   slugify(title: string): string {
-    return this.slugifyService.getSlug(title);
-  };
+    return SlugifyUtils.getSlug(title);
+  }
 }

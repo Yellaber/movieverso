@@ -22,11 +22,11 @@ export class CarouselMovies implements AfterViewInit {
   @HostListener('window:resize')
   onResize() {
     this.initializer();
-  };
+  }
 
   ngAfterViewInit() {
     this.initializer();
-  };
+  }
 
   private initializer() {
     const container = this.carouselContainer();
@@ -34,17 +34,17 @@ export class CarouselMovies implements AfterViewInit {
       const { movies } = this.carouselConfig();
       this.carouselMoviesService.initializer(container.nativeElement.offsetWidth, movies.length);
     }
-  };
+  }
 
   getScrollStep(): number {
     return this.carouselMoviesService.getScrollStep();
-  };
+  }
 
   isPrevious(): boolean {
     return this.carouselMoviesService.isPrevious();
-  };
+  }
 
   isNext(): boolean {
     return this.carouselMoviesService.isNext();
-  };
+  }
 }

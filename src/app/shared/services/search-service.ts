@@ -22,7 +22,7 @@ export class SearchService {
       this.userLanguage.set(country_metadata.languages[0]);
       this.userCountry.set(location.country_code2);
     }
-  };
+  }
 
   getMovieByTitle(query: string, page: number): Observable<PaginatedMovies[]> {
     if(page > 0) {
@@ -46,7 +46,7 @@ export class SearchService {
         );
     }
     return of([]);
-  };
+  }
 
   getMoviesFiltered(queryParams: QueryParams, page: number): Observable<PaginatedMovies[]> {
     if(page > 0) {
@@ -64,7 +64,7 @@ export class SearchService {
         );
     }
     return of([]);
-  };
+  }
 
   private getHttpParamsCommons(queryParams: QueryParams, page: number): HttpParams {
     const params = new HttpParams()
@@ -81,5 +81,5 @@ export class SearchService {
     .set('vote_average.gte', queryParams.voteAverageGte ?? 0)
     .set('vote_count.gte', queryParams.voteCountGte ?? 0);
     return params;
-  };
+  }
 }

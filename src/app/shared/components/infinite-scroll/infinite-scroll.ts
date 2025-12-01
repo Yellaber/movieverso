@@ -51,13 +51,13 @@ export class InfiniteScroll implements OnInit {
     if(this.scrollService.isAtBottom() && !this.paginatedMovies().isLoading()) {
       this.hasNextPage() && this.paginationUtils.next();
     }
-  };
+  }
 
   ngOnInit() {
     this.scrollService.scrollTop();
-  };
+  }
 
   reset() {
     this.paginationUtils.reset();
-  };
+  }
 }

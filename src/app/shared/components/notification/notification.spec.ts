@@ -12,5 +12,5 @@ describe('Notification', () => {
     const spanElement = container.querySelector('span');
     expect(spanElement).toHaveTextContent('Esto es un título Esto es un mensaje');
     expect(screen.getByText('Esto es un título').tagName).toBe('STRONG');
-  });
+  })
 })
