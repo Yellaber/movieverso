@@ -15,24 +15,24 @@ describe('CarouselMoviesService.', () => {
     expect(carouselService).toBeTruthy();
     carouselService.initializer(1000, 250, 10);
     expect(carouselService.getScrollStep()).toBe(0);
-    expect(carouselService.isPrevious()).toBe(false);
-    expect(carouselService.isNext()).toBe(true);
+    expect(carouselService.hasPrevious()).toBe(false);
+    expect(carouselService.hasNext()).toBe(true);
   });
 
   it('Should increment the scrollStep when next() is called.', () => {
     carouselService.initializer(1000, 250, 10);
     carouselService.next();
     expect(carouselService.getScrollStep()).toBe(798);
-    expect(carouselService.isPrevious()).toBe(true);
-    expect(carouselService.isNext()).toBe(true);
+    expect(carouselService.hasPrevious()).toBe(true);
+    expect(carouselService.hasNext()).toBe(true);
   });
 
   it('Should decrement the scrollStep when previous() is called.', () => {
     carouselService.initializer(1000, 250, 10);
     carouselService.next();
     expect(carouselService.getScrollStep()).toBe(798);
-    expect(carouselService.isPrevious()).toBe(true);
-    expect(carouselService.isNext()).toBe(true);
+    expect(carouselService.hasPrevious()).toBe(true);
+    expect(carouselService.hasNext()).toBe(true);
     carouselService.previous();
     expect(carouselService.getScrollStep()).toBe(0);
   });
@@ -43,7 +43,7 @@ describe('CarouselMoviesService.', () => {
     carouselService.next();
     carouselService.next();
     expect(carouselService.getScrollStep()).toBe(1644);
-    expect(carouselService.isPrevious()).toBe(true);
-    expect(carouselService.isNext()).toBe(false);
+    expect(carouselService.hasPrevious()).toBe(true);
+    expect(carouselService.hasNext()).toBe(false);
   });
 });

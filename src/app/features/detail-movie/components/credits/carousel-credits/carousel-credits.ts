@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, viewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { Carousel } from '@components/carousel/carousel';
-import { ImageUtils } from '@utils';
+import { ImageService } from '@services';
 import { Cast, MovieCredit } from '@interfaces';
 
 @Component({
@@ -9,7 +9,7 @@ import { Cast, MovieCredit } from '@interfaces';
   imports: [ Carousel, NgOptimizedImage ],
   template: `
     <carousel [totalCards]="getTotalCast()" [widthCardContainer]="getWidthCardContainer()" bgControl="from-stone-800">
-      @for(cast of credit().cast; track $index) {
+      @for(cast of credit().cast; track cast.id) {
         <div class="flex shrink-0 md:w-56 lg:w-64 items-center rounded-md bg-stone-700 gap-4 pr-3" #card>
           <div class='w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 overflow-hidden'>
             <img class="w-full h-full object-cover object-center rounded-l-md" [ngSrc]="getProfileImagePath(cast)" [ngSrcset]="getProfileImageSrcset(cast)" sizes="64px" width="64" height="96" [alt]="getProfileName(cast)">
@@ -25,7 +25,7 @@ import { Cast, MovieCredit } from '@interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarouselCredits {
-  private imageUtils = new ImageUtils();
+  private imageService = inject(ImageService);
   credit = input.required<MovieCredit>();
   cardContainer = viewChild<ElementRef<HTMLDivElement>>('card');
   getTotalCast = computed<number>(() => this.credit().cast.length);
@@ -35,14 +35,14 @@ export class CarouselCredits {
   });
 
   getProfileImagePath(cast: Cast): string {
-    return this.imageUtils.getProfileImagePath(cast)
+    return this.imageService.getProfileImagePath(cast)
   };
 
   getProfileImageSrcset(cast: Cast): string {
-    return this.imageUtils.getProfileImageSrcset(cast);
+    return this.imageService.getProfileImageSrcset(cast);
   };
 
   getProfileName(cast: Cast): string {
-    return this.imageUtils.getProfileName(cast);
+    return this.imageService.getProfileName(cast);
   };
 }

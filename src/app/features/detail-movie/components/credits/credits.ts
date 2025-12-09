@@ -8,7 +8,7 @@ import { DetailService } from '@services';
   selector: 'credits',
   imports: [ CarouselCredits, CarouselCreditSkeleton ],
   template: `
-    @if(!credit.isLoading()) {
+    @if(!credit.isLoading() && credit.hasValue()) {
       <carousel-credits [credit]="credit.value()!"/>
     } @else {
       <carousel-credit-skeleton/>

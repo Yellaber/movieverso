@@ -32,5 +32,5 @@ export class Control {
 
   onClick() {
     (this.getDirection()?.label === 'next')? this.carouselService.next(): this.carouselService.previous();
-  };
+  }
 }

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+const SKELETON_CARD_COUNT = 10;
+
 @Component({
   selector: 'carousel-credit-skeleton',
   imports: [],
@@ -18,8 +20,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       </div>
     </section>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarouselCreditSkeleton {
-  cardsSkeleton = Array(10);
+  cardsSkeleton = Array(SKELETON_CARD_COUNT);
 }

@@ -2,10 +2,10 @@
   <div class="flex transition-transform duration-500 ease-in-out gap-4" [style.transform]="`translateX(-${ getScrollStep() }px)`">
     <ng-content/>
   </div>
-  @if(isPrevious()) {
+  @if(hasPrevious()) {
     <control direction="previous" [background]="bgControl()"/>
   }
-  @if(isNext()) {
+  @if(hasNext()) {
     <control direction="next" [background]="bgControl()"/>
   }
 </section>

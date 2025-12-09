@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { BackgroundImage } from '@components/background-image/background-image';
 import { CardDetail } from './card-detail/card-detail';
 import { ShortDetail } from './short-detail/short-detail';
-import { ImageUtils } from '@utils';
+import { ImageService } from '@services';
 import { DetailMovie } from '@interfaces';
 
 @Component({
@@ -13,12 +13,12 @@ import { DetailMovie } from '@interfaces';
   host: { class: 'relative flex items-center rounded-md overflow-hidden shadow-md p-5 md:p-10' }
 })
 export class BannerDetail {
-  private imageUtils = new ImageUtils();
+  private imageService = inject(ImageService);
   movieDetail = input.required<DetailMovie>();
-  getBackdropImagePath = computed<string>(() => this.imageUtils.getBackgroundImagePath(this.movieDetail()));
-  getPosterImagePath = computed<string>(() => this.imageUtils.getPosterImagePath(this.movieDetail()));
-  getBackdropImageSrcset = computed<string>(() => this.imageUtils.getBackdropImageSrcset(this.movieDetail()));
-  getPosterImageSrcset = computed<string>(() => this.imageUtils.getPosterImageSrcset(this.movieDetail()));
-  getBackdropTitle = computed<string>(() => this.imageUtils.getBackdropTitle(this.movieDetail()));
-  getPosterTitle = computed<string>(() => this.imageUtils.getPosterTitle(this.movieDetail()));
+  getBackdropImagePath = computed<string>(() => this.imageService.getBackgroundImagePath(this.movieDetail()));
+  getPosterImagePath = computed<string>(() => this.imageService.getPosterImagePath(this.movieDetail()));
+  getBackdropImageSrcset = computed<string>(() => this.imageService.getBackdropImageSrcset(this.movieDetail()));
+  getPosterImageSrcset = computed<string>(() => this.imageService.getPosterImageSrcset(this.movieDetail()));
+  getBackdropTitle = computed<string>(() => this.imageService.getBackdropTitle(this.movieDetail()));
+  getPosterTitle = computed<string>(() => this.imageService.getPosterTitle(this.movieDetail()));
 }

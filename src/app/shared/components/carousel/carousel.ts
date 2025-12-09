@@ -27,25 +27,17 @@ export class Carousel {
         this.carouselService.initializer(offsetWidthCarouselCreditContainer, this.widthCardContainer(), this.totalCards());
       }
     });
-  };
+  }
 
   getScrollStep(): number {
     return this.carouselService.getScrollStep();
-  };
+  }
 
-  isPrevious(): boolean {
-    return this.carouselService.isPrevious();
-  };
+  hasPrevious(): boolean {
+    return this.carouselService.hasPrevious();
+  }
 
-  isNext(): boolean {
-    return this.carouselService.isNext();
-  };
-
-  previous() {
-    this.carouselService.previous();
-  };
-
-  next() {
-    this.carouselService.next();
-  };
+  hasNext(): boolean {
+    return this.carouselService.hasNext();
+  }
 }

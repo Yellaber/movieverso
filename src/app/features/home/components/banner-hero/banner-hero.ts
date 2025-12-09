@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { BackgroundImage } from '@components/background-image/background-image';
 import { ShortInformation } from './short-information/short-information';
 import { BackdropImage } from './backdrop-image/backdrop-image';
-import { ImageUtils } from '@utils';
+import { ImageService } from '@services';
 import { Movie } from '@interfaces';
 
 @Component({
@@ -13,11 +13,11 @@ import { Movie } from '@interfaces';
   host: { class: 'relative flex items-center rounded-md shadow-md p-5 md:p-10 mt-10 lg:mt-20 mb-10' }
 })
 export class BannerHero {
-  private imageUtils = new ImageUtils();
+  private imageService = inject(ImageService);
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  getBackdropImagePath = computed<string>(() => this.imageUtils.getBackgroundImagePath(this.movie()));
-  getBackdropImageSrcset = computed<string>(() => this.imageUtils.getBackdropImageSrcset(this.movie()));
-  getBackdropTitle = computed<string>(() => this.imageUtils.getBackdropTitle(this.movie()));
+  getBackdropImagePath = computed<string>(() => this.imageService.getBackgroundImagePath(this.movie()));
+  getBackdropImageSrcset = computed<string>(() => this.imageService.getBackdropImageSrcset(this.movie()));
+  getBackdropTitle = computed<string>(() => this.imageService.getBackdropTitle(this.movie()));
 }

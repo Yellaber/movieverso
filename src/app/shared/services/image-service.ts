@@ -1,10 +1,14 @@
+import { Injectable } from '@angular/core';
 import { Cast, DetailMovie, Movie } from '../interfaces';
 
 const profileImageSizes = [45, 185, 632];
 const backdropImageSizes = [300, 780, 1280];
 const posterImageSizes = [92, 154, 185, 342, 500, 780];
 
-export class ImageUtils {
+@Injectable({
+  providedIn: 'root'
+})
+export class ImageService {
   private isProfileImagePathAvailable(cast: Cast | null): boolean {
     if(!cast) return false;
     return !!cast.profile_path;
