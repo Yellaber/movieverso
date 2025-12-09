@@ -1,4 +1,5 @@
 export * from './active-action-service';
+export * from './carousel-service';
 export * from './carousel-movies-service';
 export * from './detail-service';
 export * from './home-service';

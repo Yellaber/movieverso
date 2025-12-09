@@ -4,6 +4,7 @@
       <categories [menuItems]="menuItems()"/>
     </div>
     <banner-detail [movieDetail]="movieSelected.value()"/>
+    <credits [idMovie]="movieSelected.value().id"/>
     <section class="flex gap-5 my-5 lg:mb-10">
       <side-detail [movieDetail]="movieSelected.value()"/>
       <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-5 lg:px-10 py-6 lg:py-11">

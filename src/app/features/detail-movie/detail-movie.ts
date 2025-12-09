@@ -6,6 +6,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Categories } from '@components/categories/categories';
 import { BannerDetail } from './components/banner-detail/banner-detail';
+import { Credits } from './components/credits/credits';
 import { SideDetail } from './components/side-detail/side-detail';
 import { BannerDetailSkeleton } from './components/banner-detail-skeleton/banner-detail-skeleton';
 import { SideDetailSkeleton } from './components/side-detail-skeleton/side-detail-skeleton';
@@ -31,7 +32,8 @@ const menuItems = [ 'upcoming', 'now-playing', 'popular', 'top-rated', 'trending
     Notification,
     CarouselMoviesSkeleton,
     Trailer,
-    TranslatePipe
+    TranslatePipe,
+    Credits
   ],
   templateUrl: './detail-movie.html',
   changeDetection: ChangeDetectionStrategy.OnPush

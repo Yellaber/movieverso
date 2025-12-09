@@ -1,0 +1,11 @@
+<section class="relative overflow-hidden" #carousel>
+  <div class="flex transition-transform duration-500 ease-in-out gap-4" [style.transform]="`translateX(-${ getScrollStep() }px)`">
+    <ng-content/>
+  </div>
+  @if(isPrevious()) {
+    <control direction="previous" [background]="bgControl()"/>
+  }
+  @if(isNext()) {
+    <control direction="next" [background]="bgControl()"/>
+  }
+</section>
