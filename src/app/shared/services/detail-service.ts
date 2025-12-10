@@ -3,9 +3,9 @@ import { inject, Injectable, computed } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService } from '@services';
-import { DetailMovie, Keyword, MovieCollection, MovieKeyword, PaginatedMovies, MovieTrailer, Trailer } from '@interfaces';
+import { DetailMovie, Keyword, MovieCollection, MovieKeyword, PaginatedMovies, MovieCredit, MovieTrailer, Trailer } from '@interfaces';
 
-type TypeQuery = DetailMovie | PaginatedMovies | MovieCollection | Trailer[] | Keyword[];
+type TypeQuery = DetailMovie | Keyword[] | MovieCredit | MovieCollection | PaginatedMovies | Trailer[];
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,19 @@ export class DetailService {
         map(({ results }) => results),
         tap(results => this.cacheQuery.set(url, results))
       );
+  }
+
+  getMovieCredits(movieId: number): Observable<MovieCredit> {
+    const url = `${environment.tmdbApiUrl}/movie/${movieId}/credits`;
+    if(this.cacheQuery.has(url)) {
+      return of(<MovieCredit>this.cacheQuery.get(url));
+    }
+    return this.httpClient.get<MovieCredit>(url, {
+      params: {
+        api_key: environment.tmdbApiKey,
+        language: this.userLanguage(),
+      }
+    }).pipe(tap(movieCredits => this.cacheQuery.set(url, movieCredits)));
   }
 
   getRelationedMovies(relation: string, movieId: number, page: number = 1): Observable<PaginatedMovies> {
