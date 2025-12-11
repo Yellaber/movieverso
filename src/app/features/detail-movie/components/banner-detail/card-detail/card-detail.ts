@@ -7,13 +7,12 @@ import { faBookmark, faHeart, faThumbsUp } from '@fortawesome/free-solid-svg-ico
   selector: 'card-detail',
   imports: [ FontAwesomeModule, NgOptimizedImage ],
   template: `
-    <div class="w-[160px] shadow-sm">
-      <img class="w-full h-full object-cover object-center rounded-md" [ngSrc]="posterImagePath()"
-      [ngSrcset]="posterImageSrcset()" sizes="160px" width="160" height="240" [alt]="title()"/>
+    <div class="w-[154px] shadow-sm">
+      <img class="w-full h-full object-cover object-center rounded-md" [ngSrc]="posterImagePath()" [ngSrcset]="posterImageSrcset()" sizes="154px" width="154" height="231" [alt]="title()"/>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'hidden md:flex flex-col rounded-md z-10' }
+  host: { class: 'hidden md:flex flex-col z-10' }
 })
 export class CardDetail {
   faBookmark = faBookmark;

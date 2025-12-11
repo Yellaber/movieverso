@@ -59,12 +59,26 @@ export class SectionMovie {
   movies = computed<Movie[]>(() => this.sectionData.hasValue()? this.sectionData.value().movies: []);
   text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
   route = computed(() => `/${this.section().heroType}`);
+  getCardSeeMore = computed<Movie>(() => ({
+    adult: false,
+    backdrop_path: '',
+    genre_ids: [],
+    id: -1,
+    original_language: '',
+    original_title: '',
+    overview: '',
+    popularity: 0,
+    poster_path: this.route(),
+    release_date: new Date(),
+    title: '',
+    video: false,
+    vote_average: 0,
+    vote_count: 0,
+  }));
   carouselConfig = computed<CarouselConfig>(() => ({
     carouselTitle: this.section().carouselTitle,
     text: this.text(),
-    movies: this.movies(),
-    route: this.route(),
-    bgButtons: 'from-stone-900',
-    bgCardFooter: 'bg-stone-800'
+    movies: [ ...this.movies(), this.getCardSeeMore() ],
+    bgButtons: 'from-stone-900'
   }));
 }

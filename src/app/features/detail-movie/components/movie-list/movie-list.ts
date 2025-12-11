@@ -19,10 +19,10 @@ interface DataNotification {
   selector: 'movie-list',
   imports: [ CarouselMovies, CarouselTitle, Notification ],
   template: `
-    @if(movies.hasValue() && movies.value().length > 0) {
+    @if(relatedMovies.hasValue() && relatedMovies.value().length > 0) {
       <carousel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
-      <carousel-title [carouselTitle]="carouselConfig().carouselTitle!" route=""/>
+      <carousel-title [carouselTitle]="carouselConfig().carouselTitle!"/>
       <notification [notificationTitle]="notification()?.title!" [message]="notification()?.message!"/>
     }
   `,
@@ -34,32 +34,39 @@ export class MovieList {
   typeMovieList = input.required<TypeMovieList>();
   movieId = input.required<number | undefined>();
   id = computed<number>(() => this.movieId()?? 0);
-  carouselTitle = rxResource({
+  carouselTitleTranslation = rxResource({
     params: this.typeMovieList,
-    stream: ({ params }) => this.getTypeMovieListTranslation(params)
+    stream: ({ params }) => this.translateService.get(`detailMovie.movieList.${params}.title`)
   });
-  movies = rxResource({
+  relatedMovies = rxResource({
     params: this.id,
-    stream: ({ params }) => this.getRelatedMovies(params).pipe(
-      tap(movies => {
-        if(movies && movies.length === 0) {
-          this.loadNotificationTranslation(`detailMovie.movieList.${this.typeMovieList()}.notification`);
-        }
-      })
-    )
+    stream: ({ params }) => this.getRelatedMovies(params)
+      .pipe(tap(movies => this.loadNotificationTranslation(`detailMovie.movieList.${this.typeMovieList()}.notification`, movies)))
   });
+  movies = computed<Movie[]>(() => this.relatedMovies.hasValue()? this.relatedMovies.value(): []);
+  route = computed<string>(() => (this.id() !== 0)? `${this.typeMovieList()}`: '');
+  getCardSeeMore = computed<Movie>(() => ({
+    adult: false,
+    backdrop_path: '',
+    genre_ids: [],
+    id: -1,
+    original_language: '',
+    original_title: '',
+    overview: '',
+    popularity: 0,
+    poster_path: this.route(),
+    release_date: new Date(),
+    title: '',
+    video: false,
+    vote_average: 0,
+    vote_count: 0,
+  }));
   carouselConfig = computed<CarouselConfig>(() => ({
-    carouselTitle: this.carouselTitle.hasValue()? this.carouselTitle.value(): '',
-    movies: this.movies.value()?? [],
-    route: (this.id() !== 0)? `${this.typeMovieList()}`: '',
+    carouselTitle: this.carouselTitleTranslation.hasValue()? this.carouselTitleTranslation.value(): '',
+    movies: this.typeMovieList() === 'collection'? this.movies(): [ ...this.movies(), this.getCardSeeMore() ],
     bgButtons: 'from-stone-800',
-    bgCardFooter: 'bg-stone-700'
   }));
   notification = signal<DataNotification | undefined>(undefined);
-
-  private getTypeMovieListTranslation(typeMovieList: TypeMovieList): Observable<string> {
-    return this.translateService.get(`detailMovie.movieList.${typeMovieList}.title`);
-  }
 
   private getRelatedMovies(movieId: number): Observable<Movie[]> {
     switch(this.typeMovieList()) {
@@ -72,9 +79,9 @@ export class MovieList {
     };
   }
 
-  private loadNotificationTranslation(key: string) {
-    this.translateService.get(key).subscribe((notification: { title: string, message: string }) =>
-      this.notification.set(notification)
-    );
+  private loadNotificationTranslation(key: string, movies: Movie[]) {
+    if(movies && movies.length === 0) {
+      this.translateService.get(key).subscribe((notification: { title: string, message: string }) => this.notification.set(notification));
+    }
   }
 }
