@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, input, viewChild } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { Control } from './control/control';
 import { CarouselService } from '@services';
-import { Control } from "./control/control";
 
 @Component({
   selector: 'carousel',
   imports: [ Control, FontAwesomeModule ],
+  providers: [ CarouselService ],
   templateUrl: './carousel.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

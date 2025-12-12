@@ -1,5 +1,15 @@
 import { Component, input } from '@angular/core';
-import { Movie } from '@shared/interfaces';
+import { Movie } from '@interfaces';
+
+@Component({
+  selector: 'carousel',
+  template: `<li>StubCarousel</li>`
+})
+export class StubCarousel {
+  totalCard = input.required<number>();
+  widthCardContainer = input.required<number>();
+  bgControl = input.required<string>();
+};
 
 @Component({
   selector: 'carousel-title',
@@ -11,19 +21,26 @@ export class StubCarouselTitle {
 };
 
 @Component({
-  selector: 'carousel-card-movies',
-  template: `<li>StubCarouselCardMovies</li>`
+  selector: 'poster-movie',
+  template: `<li>StubPosterMovie</li>`
 })
-export class StubCarouselCardMovies {
+export class StubPosterMovie {
   movie = input.required<Movie>();
-  bgCardFooter = input.required<string>();
 };
 
 @Component({
-  selector: 'carousel-control',
-  template: `<li>StubCarouselControl</li>`
+  selector: 'footer-poster',
+  template: `<li>StubFooterPoster</li>`
 })
-export class StubCarouselControl {
+export class StubFooterPoster {
+  movie = input.required<Movie>();
+};
+
+@Component({
+  selector: 'control',
+  template: `<li>StubControl</li>`
+})
+export class StubControl {
   direction = input.required<string>();
   bgButton = input.required<string>();
 };
