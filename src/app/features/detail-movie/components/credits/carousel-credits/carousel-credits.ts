@@ -10,9 +10,9 @@ import { Cast, MovieCredit } from '@interfaces';
   template: `
     <carousel [totalCards]="getTotalCast()" [widthCardContainer]="getWidthCardContainer()" bgControl="from-stone-800">
       @for(cast of credit().cast; track cast.id) {
-        <div class="flex shrink-0 md:w-56 lg:w-64 items-center rounded-md bg-stone-700 gap-4 pr-3" #card>
+        <div class="flex shrink-0 w-48 md:w-56 lg:w-64 items-center rounded-md bg-stone-700 gap-4 pr-3" #card>
           <div class='w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 overflow-hidden'>
-            <img class="w-full h-full object-cover object-center rounded-l-md" [ngSrc]="getProfileImagePath(cast)" [ngSrcset]="getProfileImageSrcset(cast)" sizes="64px" width="64" height="96" [alt]="getProfileName(cast)">
+            <img class="w-full h-full object-cover object-center rounded-l-md" [ngSrc]="getProfileImagePath(cast)" [ngSrcset]="getProfileImageSrcset(cast)" sizes="(min-width: 1024px) 96px, (min-width: 768px) 80px, 64px" width="64" height="96" [alt]="getProfileName(cast)">
           </div>
           <div class="flex flex-col justify-center w-full text-nowrap overflow-hidden">
             <span class="text-xs lg:text-sm text-yellow-600 font-semibold truncate">{{ cast.original_name }}</span>

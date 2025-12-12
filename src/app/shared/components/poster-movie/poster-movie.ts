@@ -12,7 +12,7 @@ import { Movie } from '@interfaces';
   template: `
     @if(movie().id > 0) {
       <a [routerLink]="getMovieLink()">
-        <img class="w-full h-full rounded-md bg-stone-700 object-cover object-center" [ngSrc]="getPosterImagePath()" [ngSrcset]="getPosterImageSrcset()" sizes="154px" width="154" height="231" [alt]="getPosterTitle()"/>
+        <img class="w-full h-full rounded-md bg-stone-700 object-cover object-center" [ngSrc]="getPosterImagePath()" [ngSrcset]="getPosterImageSrcset()" sizes="(min-width: 768px), 154px, 92px" width="154" height="231" [alt]="getPosterTitle()"/>
       </a>
     } @else {
       <div class="w-[92px] md:w-[154px] h-[138px] md:h-[231px] bg-yellow-800/80 text-yellow-600 font-semibold rounded-md shadow-md">

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, Observable, of, take, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { CarouselMovies } from '@components/carousel-movies/carousel-movies';
 import { CarouselTitle } from '@components/carousel-movies/carousel-title/carousel-title';
@@ -81,7 +81,7 @@ export class MovieList {
 
   private loadNotificationTranslation(key: string, movies: Movie[]) {
     if(movies && movies.length === 0) {
-      this.translateService.get(key).subscribe((notification: { title: string, message: string }) => this.notification.set(notification));
+      this.translateService.get(key).pipe(take(1)).subscribe((notification: { title: string, message: string }) => this.notification.set(notification));
     }
   }
 }
