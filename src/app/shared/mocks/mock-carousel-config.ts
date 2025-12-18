@@ -5,6 +5,5 @@ export const MockCarouselConfig: CarouselConfig = {
   carouselTitle: 'Carousel Title',
   text: 'Carousel Text',
   movies: mockMovies,
-  route: '/route',
   bgButtons: 'bg-stone-800'
 };

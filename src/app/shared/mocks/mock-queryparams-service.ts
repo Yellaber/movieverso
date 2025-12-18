@@ -1,5 +1,5 @@
-import { QueryParams } from '@shared/interfaces';
-import { initialQueryParams } from '@app/shared/services/query-params-service';
+import { QueryParams } from '@interfaces';
+import { initialQueryParams } from '@services';
 
 export const mockQueryParams: QueryParams = {
   primaryReleaseDateGte: '2025-01-01',

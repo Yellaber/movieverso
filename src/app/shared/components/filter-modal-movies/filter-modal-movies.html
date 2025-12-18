@@ -1,25 +1,9 @@
-<div [class]="classListOverlay()">
-  <div [class]="classListModal()">
+<div [class]="classOverlay()">
+  <div [class]="classModal()">
     <button class="absolute top-2 right-4 bg-yellow-600 text-stone-900 rounded-full cursor-pointer text-xl lg:text-2xl" (click)="onClose()">
       <fa-icon [icon]="faCircleXmark"></fa-icon>
     </button>
-    <h2 class="text-xl font-bold bg-yellow-600 text-stone-900 rounded-t-md shadow-md py-2 pl-6">
-      {{ 'filter.title' | translate }}
-    </h2>
-    <div class="flex flex-col h-100 overflow-y-auto gap-8 p-6">
-      <filter-genre/>
-      <form-filter/>
-      <filter-order/>
-    </div>
-    <div class="flex bg-yellow-600 text-stone-900 font-bold rounded-b-md divide-x-2 divide-stone-900">
-      <button class="w-1/2 text-xs md:text-sm rounded-bl-md cursor-pointer py-3"
-      (click)="onResetFilter()">
-        {{ 'filter.button.reset' | translate }}
-      </button>
-      <button class="w-1/2 text-xs md:text-sm rounded-br-md cursor-pointer disabled:bg-stone-500 disabled:cursor-not-allowed py-3" [disabled]="formFilter()?.formFilter?.invalid"
-      (click)="onShowResults()">
-        {{ 'filter.button.show' | translate }}
-      </button>
-    </div>
+    <h2 class="text-xl font-bold bg-yellow-600 text-stone-900 rounded-t-md shadow-md py-2 pl-6">{{ 'filter.title' | translate }}</h2>
+    <form-filter/>
   </div>
 </div>

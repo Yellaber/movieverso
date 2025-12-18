@@ -61,3 +61,25 @@ export class StubRating {
   type = input.required<'popularity' | 'vote_average' | 'vote_count'>();
   value = input.required<number>();
 };
+
+@Component({
+  selector: 'filter-genre',
+  template: '<li>StubFilterGenre</li>'
+})
+export class StubFilterGenre {
+  genresIdSelected = input.required<string>();
+};
+
+@Component({
+  selector: 'filter-sort-by',
+  template: '<li>StubFilterSortBy</li>'
+})
+export class StubFilterSortBy {
+  sortBy = input.required<string>();
+};
+
+@Component({
+  selector: 'form-filter',
+  template: '<li>StubFormFilter</li>'
+})
+export class StubFormFilter { };

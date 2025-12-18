@@ -1,11 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { FormFilter } from './form-filter';
-import { MockDefaultQueryParamsService, mockQueryParams, MockQueryParamsService, MockTranslatePipe, MockTranslateService, StubRating } from '@mocks';
-import { Rating } from '../../rating/rating';
-import { initialQueryParams, QueryParamsService } from '@services';
 import { fireEvent } from '@testing-library/angular';
+import { FormFilter } from './form-filter';
+import { MockDefaultQueryParamsService, mockQueryParams, MockQueryParamsService, MockTranslatePipe, MockTranslateService, StubFilterGenre, StubFilterSortBy, StubRating } from '@mocks';
+import { Rating } from '../../rating/rating';
+import { FilterGenre } from '../filter-genre/filter-genre';
+import { FilterSortBy } from '../filter-sort-by/filter-sort-by';
+import { initialQueryParams, QueryParamsService } from '@services';
+
+class MockRouter {
+  navigate = jest.fn();
+}
 
 describe('FormFilter.', () => {
   let component: FormFilter;
@@ -19,11 +26,12 @@ describe('FormFilter.', () => {
           FormBuilder,
           { provide: TranslateService, useClass: MockTranslateService },
           { provide: QueryParamsService, useClass: MockDefaultQueryParamsService },
+          { provide: Router, useClass: MockRouter }
         ]
       })
       .overrideComponent(FormFilter, {
-        remove: { imports: [ TranslatePipe, Rating ] },
-        add: { imports: [ MockTranslatePipe, StubRating ] }
+        remove: { imports: [ TranslatePipe, Rating, FilterGenre, FilterSortBy ] },
+        add: { imports: [ MockTranslatePipe, StubRating, StubFilterGenre, StubFilterSortBy ] }
       })
       .compileComponents();
 
@@ -37,22 +45,34 @@ describe('FormFilter.', () => {
     })
 
     it('Should render and display the form filter.', () => {
+      const filterGenreElement = fixture.nativeElement.querySelector('filter-genre');
       const ratingElement = fixture.nativeElement.querySelector('rating');
       const rangeElement = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
       const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
       const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
-      expect(component).toBeTruthy();
+      const filterSortByElement = fixture.nativeElement.querySelector('filter-sort-by');
+      expect(filterGenreElement).toBeTruthy();
       expect(ratingElement).toBeTruthy();
       expect(rangeElement.value).toEqual(initialQueryParams.voteAverageGte.toString());
       expect(numberElement.value).toEqual(initialQueryParams.voteCountGte.toString());
       expect(dateElements.length).toEqual(2);
       expect(dateElements[0].value).toEqual(initialQueryParams.primaryReleaseDateGte.toString());
       expect(dateElements[1].value).toEqual(initialQueryParams.primaryReleaseDateLte.toString());
+      expect(filterSortByElement).toBeTruthy();
+      expect(component.isInvalid()).toBe(false);
     })
 
-    it('Should have a valid form when the form is initialized.', () => {
-      expect(component.formFilter.valid).toBe(true);
-    })
+    it('Should set query params and navigate to search page when the form is submitted.', () => {
+      const spySetQueryParamService = jest.spyOn(component['queryParamService'], 'set');
+      const spyNavigate = jest.spyOn(component['router'], 'navigate');
+      const buttonElements = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
+      fireEvent.click(buttonElements[1]);
+      fixture.detectChanges();
+      expect(component.isInvalid()).toBe(false);
+      expect(spySetQueryParamService).toHaveBeenCalled();
+      expect(component.queryParams()).toBe(initialQueryParams);
+      expect(spyNavigate).toHaveBeenCalled();
+    });
 
     describe('When the voteMinimum field is changed.', () => {
       it('Should display a error message when the voteMinimum is less than 1.', () => {
@@ -61,7 +81,7 @@ describe('FormFilter.', () => {
         fireEvent.blur(numberElement);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.invalid).toBe(true);
+        expect(component.isInvalid()).toBe(true);
         expect(errorElement).toBeTruthy();
       })
 
@@ -71,7 +91,7 @@ describe('FormFilter.', () => {
         fireEvent.blur(numberElement);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.invalid).toBe(true);
+        expect(component.isInvalid()).toBe(true);
         expect(errorElement).toBeTruthy();
       })
 
@@ -81,7 +101,7 @@ describe('FormFilter.', () => {
         fireEvent.blur(numberElement);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.invalid).toBe(true);
+        expect(component.isInvalid()).toBe(true);
         expect(errorElement).toBeTruthy();
       })
 
@@ -91,7 +111,7 @@ describe('FormFilter.', () => {
         fireEvent.blur(numberElement);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.invalid).toBe(true);
+        expect(component.isInvalid()).toBe(true);
         expect(errorElement).toBeTruthy();
       })
 
@@ -101,7 +121,7 @@ describe('FormFilter.', () => {
         fireEvent.blur(numberElement);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.valid).toBe(true);
+        expect(component.isInvalid()).toBe(false);
         expect(errorElement).toBeFalsy();
       })
     })
@@ -111,10 +131,9 @@ describe('FormFilter.', () => {
         const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
         fireEvent.input(dateElements[0], { target: { value: '2023-01-01' } });
         fireEvent.input(dateElements[1], { target: { value: '2022-01-01' } });
-        fireEvent.blur(dateElements[1]);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.invalid).toBe(true);
+        expect(component.isInvalid()).toBe(true);
         expect(errorElement).toBeTruthy();
       })
 
@@ -122,31 +141,27 @@ describe('FormFilter.', () => {
         const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
         fireEvent.input(dateElements[0], { target: { value: '2022-01-01' } });
         fireEvent.input(dateElements[1], { target: { value: '2023-01-01' } });
-        fireEvent.blur(dateElements[1]);
         fixture.detectChanges();
         const errorElement = fixture.nativeElement.querySelector('small') as HTMLElement;
-        expect(component.formFilter.valid).toBe(true);
+        expect(component.isInvalid()).toBe(false);
         expect(errorElement).toBeFalsy();
       })
     })
 
     describe('isInvalid()', () => {
-      it('should return false and not touch the form if it is valid', () => {
-        expect(component.formFilter.valid).toBe(true);
-        const isInvalid = component.isInvalid();
-        expect(isInvalid).toBe(false);
-        expect(component.formFilter.touched).toBe(false);
+      it('Should return false if the form is valid.', () => {
+        expect(component.form.invalid).toBe(false);
+        expect(component.form.touched).toBe(false);
+        expect(component.isInvalid()).toBe(false);
       })
 
-      it('should return true and mark the form as touched if it is invalid', () => {
+      it('Should return true if the form is invalid and marked as touched.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
         fireEvent.input(numberElement, { target: { value: '' } });
         fixture.detectChanges();
-        expect(component.formFilter.invalid).toBe(true);
-
-        const isInvalid = component.isInvalid();
-        expect(isInvalid).toBe(true);
-        expect(component.formFilter.touched).toBe(true);
+        expect(component.form.invalid).toBe(true);
+        expect(component.form.touched).toBe(true);
+        expect(component.isInvalid()).toBe(true);
       })
     })
   })
@@ -159,11 +174,12 @@ describe('FormFilter.', () => {
           FormBuilder,
           { provide: TranslateService, useClass: MockTranslateService },
           { provide: QueryParamsService, useClass: MockQueryParamsService },
+          { provide: Router, useClass: MockRouter }
         ]
       })
       .overrideComponent(FormFilter, {
-        remove: { imports: [ TranslatePipe, Rating ] },
-        add: { imports: [ MockTranslatePipe, StubRating ] }
+        remove: { imports: [ TranslatePipe, Rating, FilterGenre, FilterSortBy ] },
+        add: { imports: [ MockTranslatePipe, StubRating, StubFilterGenre, StubFilterSortBy ] }
       })
       .compileComponents();
 
@@ -176,35 +192,55 @@ describe('FormFilter.', () => {
       jest.clearAllMocks();
     })
 
-    it('Should render and display the form filter with custom values.', () => {
+    it('Should render and display the form filter.', () => {
+      const filterGenreElement = fixture.nativeElement.querySelector('filter-genre');
       const ratingElement = fixture.nativeElement.querySelector('rating');
       const rangeElement = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
       const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
       const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
-      expect(component).toBeTruthy();
+      const filterSortByElement = fixture.nativeElement.querySelector('filter-sort-by');
+      expect(filterGenreElement).toBeTruthy();
       expect(ratingElement).toBeTruthy();
       expect(rangeElement.value).toEqual(mockQueryParams.voteAverageGte.toString());
       expect(numberElement.value).toEqual(mockQueryParams.voteCountGte.toString());
       expect(dateElements.length).toEqual(2);
       expect(dateElements[0].value).toEqual(mockQueryParams.primaryReleaseDateGte.toString());
       expect(dateElements[1].value).toEqual(mockQueryParams.primaryReleaseDateLte.toString());
-    })
-
-    it('Should have a valid form when the form is initialized.', () => {
-      expect(component.formFilter.valid).toBe(true);
+      expect(filterSortByElement).toBeTruthy();
+      expect(component.isInvalid()).toBe(false);
     })
 
     it('Should reset the form to its initial default values.', () => {
+      const filterGenreElement = fixture.nativeElement.querySelector('filter-genre');
+      const ratingElement = fixture.nativeElement.querySelector('rating');
       const rangeElement = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
       const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;
-      fireEvent.input(rangeElement, { target: { value: initialQueryParams.voteAverageGte.toString() } });
-      fireEvent.input(numberElement, { target: { value: initialQueryParams.voteCountGte.toString() } });
+      const dateElements = fixture.nativeElement.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
+      const filterSortByElement = fixture.nativeElement.querySelector('filter-sort-by');
+      const buttonElements = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
+      fireEvent.click(buttonElements[0]);
       fixture.detectChanges();
-
-      component.reset();
-      fixture.detectChanges();
+      expect(filterGenreElement).toBeTruthy();
+      expect(ratingElement).toBeTruthy();
       expect(rangeElement.value).toEqual(initialQueryParams.voteAverageGte.toString());
       expect(numberElement.value).toEqual(initialQueryParams.voteCountGte.toString());
+      expect(dateElements.length).toEqual(2);
+      expect(dateElements[0].value).toEqual(initialQueryParams.primaryReleaseDateGte.toString());
+      expect(dateElements[1].value).toEqual(initialQueryParams.primaryReleaseDateLte.toString());
+      expect(filterSortByElement).toBeTruthy();
+      expect(component.isInvalid()).toBe(false);
     })
+
+    it('Should set query params and navigate to search page when the form is submitted.', () => {
+      const spySetQueryParamService = jest.spyOn(component['queryParamService'], 'set');
+      const spyNavigate = jest.spyOn(component['router'], 'navigate');
+      const buttonElements = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
+      fireEvent.click(buttonElements[1]);
+      fixture.detectChanges();
+      expect(component.isInvalid()).toBe(false);
+      expect(spySetQueryParamService).toHaveBeenCalled();
+      expect(component.queryParams()).toBe(mockQueryParams);
+      expect(spyNavigate).toHaveBeenCalled();
+    });
   })
 })
