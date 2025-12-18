@@ -4,6 +4,7 @@ export * from './mock-localstorage';
 export * from './mock-platform-service';
 export * from './mock-queryparams-service';
 export * from './mock-route';
+export * from './mock-scroll-service';
 export * from './mock-tmdb-service';
 export * from './mock-translate';
 export * from './stubs-components';

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, model, OnInit, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { QueryParamsService, TmdbService } from '@services';
+import { TmdbService } from '@services';
 import { Genre } from '@interfaces';
 
 @Component({
@@ -9,13 +9,12 @@ import { Genre } from '@interfaces';
   template: `
     <span class="text-sm font-bold">{{ 'filter.genresLabel' | translate }}</span>
     <div class="flex flex-wrap gap-3">
-      @for(genre of genres(); track genre.id) {
-        <button
-          class="rounded-full text-xs lg:text-sm hover:font-bold hover:cursor-pointer duration-300 transition-all px-3 py-2" [class]="isSelected(genre)? 'bg-yellow-600 font-bold': 'bg-stone-400 text-stone-700'"
-          (click)="onSelect(genre)">
-          {{ genre.name }}
-        </button>
-      }
+    @for(genre of genres(); track genre.id) {
+      <button class="rounded-full text-xs lg:text-sm hover:font-bold hover:cursor-pointer duration-300 transition-all px-3 py-2"
+        [class]="isSelected(genre)? 'bg-yellow-600 font-bold': 'bg-stone-400 text-stone-700'" (click)="onSelect(genre)">
+        {{ genre.name }}
+      </button>
+    }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,27 +22,17 @@ import { Genre } from '@interfaces';
 })
 export class FilterGenre implements OnInit {
   private tmdbService = inject(TmdbService);
-  private queryParamsService = inject(QueryParamsService);
-  private genresSelected = signal<Genre[]>([]);
-  private queryParams = this.queryParamsService.getQueryParams;
+  genresIdSelected = model.required<string>();
+  private genresIds = computed<number[]>(() => this.genresIdSelected().split(',').map(id => parseInt(id)));
   genres = signal<Genre[]>([]);
-  genresIdSelected = computed(() => this.genresSelected().map(genre => genre.id).toString());
+  private genresSelected = linkedSignal<Genre[]>(() => this.genres().filter(genre => this.genresIds().includes(genre.id)));
 
   ngOnInit() {
-    this.loadGenreMovieList();
+    this.loadGenresMovie();
   }
 
-  private loadGenreMovieList() {
-    this.tmdbService.getGenresMovie().subscribe(genres => {
-      this.genres.set(genres)
-      this.loadGenresIdsFromQueryParamsService();
-    });
-  }
-
-  private loadGenresIdsFromQueryParamsService() {
-    const genresIdsSelected = this.queryParams().withGenres;
-    const genresIds = genresIdsSelected.split(',').map(id => parseInt(id));
-    this.genresSelected.set(this.genres().filter(genre => genresIds.includes(genre.id)));
+  private loadGenresMovie() {
+    this.tmdbService.getGenresMovie().subscribe(genres =>  this.genres.set(genres));
   }
 
   onSelect(genreSelected: Genre) {
@@ -54,13 +43,10 @@ export class FilterGenre implements OnInit {
       }
       return [ ...genres, genreSelected ];
     });
+    this.genresIdSelected.set(this.genresSelected().map(genre => genre.id).toString());
   }
 
   isSelected(genreSelected: Genre): boolean {
     return this.genresSelected().some(genre => genre.id === genreSelected.id);
-  }
-
-  reset() {
-    this.genresSelected.set([]);
   }
 }

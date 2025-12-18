@@ -8,5 +8,5 @@ export interface QueryParams {
   sortBy: TypeSort,
   voteAverageGte: number,
   voteCountGte: number,
-  withGenres: string,
+  withGenres: string
 };
