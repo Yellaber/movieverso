@@ -75,7 +75,7 @@ export class MovieList {
   notification = signal<DataNotification | undefined>(undefined);
 
   private getRelatedMovies(typeMovieList: TypeMovieList, movieId: number): Observable<Movie[]> {
-    switch(this.typeMovieList()) {
+    switch(typeMovieList) {
       case 'collection':
         return (movieId > 0)? this.detailService.getMovieCollectionById(movieId).pipe(map(({ parts }) => parts)): of([]);
       default:
