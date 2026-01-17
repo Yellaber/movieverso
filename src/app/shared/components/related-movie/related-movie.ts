@@ -40,15 +40,15 @@ export class RelatedMovie {
   });
 
   ngOnInit() {
+    this.initializer();
+  }
+
+  private initializer() {
     this.route.paramMap.subscribe(params => {
       this.idSlug.set(params.get('id-slug') || '');
     });
     this.menuItems.set(menuItems);
-    this.loadTranslationTitle();
-    this.seoFriendlyService.setMetaTags(this.titlePage(), '');
-  }
-
-  private loadTranslationTitle() {
     this.translateService.get(`${this.type()}.title`).subscribe(title => this.titlePage.set(title));
+    this.seoFriendlyService.setMetaTags(this.titlePage(), '');
   }
 }

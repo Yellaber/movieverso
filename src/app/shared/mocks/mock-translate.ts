@@ -6,7 +6,7 @@ export class MockTranslatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
   };
-};
+}
 
 @Injectable()
 export class MockTranslateService {
@@ -19,4 +19,4 @@ export class MockTranslateService {
   onLangChange = of({ lang: 'en' });
   onTranslationChange = of();
   onDefaultLangChange = of();
-};
+}

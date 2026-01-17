@@ -84,7 +84,7 @@ describe('DetailService', () => {
       const relation = 'similar';
       const movieId = 1;
       let paginatedMovies: PaginatedMovies | undefined;
-      detailService.getRelationedMovies(relation, movieId).subscribe(response => { paginatedMovies = response; });
+      detailService.getRelatedMovies(relation, movieId).subscribe(response => { paginatedMovies = response; });
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${relation}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       req.flush(mockPaginatedMovies);
       expect(paginatedMovies).toEqual(mockPaginatedMovies);
@@ -93,11 +93,11 @@ describe('DetailService', () => {
     it('Should return movies from cache if available.', () => {
       const relation = 'similar';
       const movieId = 1;
-      detailService.getRelationedMovies(relation, movieId).subscribe();
+      detailService.getRelatedMovies(relation, movieId).subscribe();
       const req = httpClientMock.expectOne(`${environment.tmdbApiUrl}/movie/${movieId}/${relation}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       req.flush(mockPaginatedMovies);
       let paginatedMovies: PaginatedMovies | undefined;
-      detailService.getRelationedMovies(relation, movieId).subscribe(response => { paginatedMovies = response; });
+      detailService.getRelatedMovies(relation, movieId).subscribe(response => { paginatedMovies = response; });
       httpClientMock.expectNone(`${environment.tmdbApiUrl}/movie/${movieId}/${relation}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
       expect(paginatedMovies).toEqual(mockPaginatedMovies);
     })

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { of } from 'rxjs';
 import { InfiniteScroll } from '../infinite-scroll/infinite-scroll';
 import { TmdbService } from '@services';
 
@@ -14,7 +13,7 @@ import { TmdbService } from '@services';
 export class LoadCategory {
   private tmdbService = inject(TmdbService);
   private infiniteScroll = viewChild(InfiniteScroll);
-  private currentPage = computed(() => this.infiniteScroll()?.getPage());
+  private currentPage = computed(() => this.infiniteScroll()?.getPage()?? 1);
   endPoint = input.required<string>();
   paginatedMovies = rxResource({
     params: () => ({
@@ -23,8 +22,7 @@ export class LoadCategory {
     }),
     stream: ({ params }) => {
       const { endPoint, currentPage } = params;
-      return (endPoint && currentPage)?
-      this.tmdbService.getPaginatedMoviesByCategory(endPoint, currentPage): of(undefined);
+      return this.tmdbService.getPaginatedMoviesByCategory(endPoint, currentPage);
     }
   });
 }

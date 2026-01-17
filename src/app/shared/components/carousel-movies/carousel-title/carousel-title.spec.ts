@@ -1,28 +1,33 @@
-import { screen } from '@testing-library/angular';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { render, screen } from '@testing-library/angular';
 import { CarouselTitle } from './carousel-title';
 
 describe('CarouselTitle.', () => {
-  let fixture: ComponentFixture<CarouselTitle>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ CarouselTitle ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(CarouselTitle);
+  it('Should render the component when the carouselTitle input is provided', async() => {
+    await render(CarouselTitle, {
+      inputs: {
+        carouselTitle: 'Title'
+      }
+    });
+    const headingElement = screen.getByRole('heading', { name: 'Title' });
+    expect(headingElement).toBeInTheDocument();
   })
 
-  it('Should render the title correctly.', () => {
-    fixture.componentRef.setInput('carouselTitle', 'Title');
-    fixture.detectChanges();
-    const heading = screen.getByRole('heading', { name: 'Title' });
-    expect(heading).toBeInTheDocument();
+  it('Should not render the component when the carouselTitle input is an empty string', async() => {
+    await render(CarouselTitle, {
+      inputs: {
+        carouselTitle: ''
+      }
+    });
+    const heading = screen.queryByRole('heading');
+    expect(heading).not.toBeInTheDocument();
   })
 
-  it('Should not render the title if it is empty.', () => {
-    fixture.componentRef.setInput('carouselTitle', '');
-    fixture.detectChanges();
+  it('Should not render the component when the carouselTitle input is undefined', async() => {
+    await render(CarouselTitle, {
+      inputs: {
+        carouselTitle: undefined
+      }
+    });
     const heading = screen.queryByRole('heading');
     expect(heading).not.toBeInTheDocument();
   })

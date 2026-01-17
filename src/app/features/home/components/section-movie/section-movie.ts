@@ -57,9 +57,9 @@ export class SectionMovie {
     }
   });
   movies = computed<Movie[]>(() => this.sectionData.hasValue()? this.sectionData.value().movies: []);
-  text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
-  route = computed(() => `/${this.section().heroType}`);
-  getCardSeeMore = computed<Movie>(() => ({
+  private text = computed<string>(() => this.sectionData.hasValue()? this.sectionData.value().text: '');
+  private route = computed<string>(() => `/${this.section().heroType}`);
+  private getCardSeeMore = computed<Movie>(() => ({
     adult: false,
     backdrop_path: '',
     genre_ids: [],

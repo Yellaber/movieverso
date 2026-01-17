@@ -25,10 +25,11 @@ export class SearchService {
   }
 
   getMovieByTitle(query: string, page: number): Observable<PaginatedMovies[]> {
-    if(page > 0) {
-      if(page === 1) {
-        this.moviesFiltered = [];
-      }
+    if(page <= 0) { return of([]); }
+    if(page === 1) {
+      this.moviesFiltered = [];
+    }
+    if(page > this.moviesFiltered.length) {
       const url = `${environment.tmdbApiUrl}/search/movie`;
       return this.httpClient.get<PaginatedMovies>(url, {
         params: {
@@ -39,20 +40,21 @@ export class SearchService {
           page
         }
       }).pipe(
-          map(movieResponse => {
-            this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
-            return this.moviesFiltered;
-          })
-        );
+        map(movieResponse => {
+          this.moviesFiltered = [ ...this.moviesFiltered, movieResponse ];
+          return this.moviesFiltered;
+        })
+      );
     }
-    return of([]);
+    return of(this.moviesFiltered);
   }
 
   getMoviesFiltered(queryParams: QueryParams, page: number): Observable<PaginatedMovies[]> {
-    if(page > 0) {
-      if(page === 1) {
-        this.moviesFiltered = [];
-      }
+    if(page <= 0) { return of([]); }
+    if(page === 1) {
+      this.moviesFiltered = [];
+    }
+    if(page > this.moviesFiltered.length) {
       const url = `${environment.tmdbApiUrl}/discover/movie`;
       const params = this.getHttpParamsCommons(queryParams, page);
       return this.httpClient.get<PaginatedMovies>(url, { params })
@@ -63,7 +65,7 @@ export class SearchService {
           })
         );
     }
-    return of([]);
+    return of(this.moviesFiltered);
   }
 
   private getHttpParamsCommons(queryParams: QueryParams, page: number): HttpParams {

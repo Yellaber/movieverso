@@ -48,6 +48,11 @@ export interface ProductionCountry {
   name: string;
 }
 
+export interface FlagCountry {
+  flag: string,
+  name: string,
+}
+
 export interface SpokenLanguage {
   english_name: string;
   iso_639_1: string;

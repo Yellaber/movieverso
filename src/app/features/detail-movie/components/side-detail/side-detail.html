@@ -1,17 +1,9 @@
-@if(movieDetail().production_countries.length > 0) {
+@if(movieDetail()) {
   <production-countries [productionCountries]="movieDetail().production_countries"/>
-  <hr class="text-stone-700">
-}
-@if(movieDetail().spoken_languages.length > 0) {
   <badge-section [titleSection]="'detailMovie.sideDetail.languages' | translate" [badges]="movieDetail().spoken_languages"/>
-  <hr class="text-stone-700">
-}
-<info-item [label]="'detailMovie.sideDetail.status' | translate" [value]="movieDetail().status"/>
-@if(movieDetail().production_companies.length > 0) {
-  <hr class="text-stone-700">
+  <info-item [label]="'detailMovie.sideDetail.status' | translate" [value]="movieDetail().status"/>
   <badge-section [titleSection]="'detailMovie.sideDetail.productionCompanies' | translate" [badges]="movieDetail().production_companies"/>
-}
-@if(movieKeywords.hasValue() && movieKeywords.value().length > 0) {
-  <hr class="text-stone-700">
-  <badge-section [titleSection]="'detailMovie.sideDetail.keywords' | translate" [badges]="movieKeywords.value()"/>
+  @if(movieKeywords.hasValue()) {
+    <badge-section [titleSection]="'detailMovie.sideDetail.keywords' | translate" [badges]="movieKeywords.value()"/>
+  }
 }

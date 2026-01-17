@@ -2,8 +2,7 @@
   <div class="flex flex-col text-xs lg:text-sm gap-5 mt-10 lg:mt-15">
     <div class="flex flex-wrap items-center font-bold text-yellow-600 gap-3">
       <h3>{{ `${type()}.description` | translate }}</h3>
-      <a class="rounded-full bg-yellow-900/50 px-3 py-2"
-      [routerLink]="['/movie', `${idSlug()}`]">{{ movie.value().title }}</a>
+      <a class="rounded-full bg-yellow-900/50 px-3 py-2" [routerLink]="['/movie', `${idSlug()}`]">{{ movie.value().title }}</a>
     </div>
     <p class="text-stone-300 leading-relaxed">
       <span class="font-bold">{{ `${type()}.paragraph.highLightText` | translate }}</span>
@@ -19,7 +18,6 @@
   <load-related [movieId]="movie.value().id" [type]="type()"/>
 } @else {
   <div class="flex mt-10 lg:mt-15">
-    <notification [notificationTitle]="`${type()}.notification.title` | translate"
-    [message]="`${type()}.notification.message` | translate"/>
+    <notification [notificationTitle]="`${type()}.notification.title` | translate" [message]="`${type()}.notification.message` | translate"/>
   </div>
 }

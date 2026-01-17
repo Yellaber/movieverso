@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { of } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProductionCountries } from './production-countries/production-countries';
 import { BadgeSection } from './badge-section/badge-section';
@@ -18,9 +17,11 @@ import { DetailMovie } from '@interfaces';
 export class SideDetail {
   private detailService = inject(DetailService);
   movieDetail = input.required<DetailMovie>();
-  movieId = computed<number>(() => this.movieDetail().id);
   movieKeywords = rxResource({
-    params: this.movieId,
-    stream: ({ params }) => params? this.detailService.getMovieKeywords(params): of([])
+    params: this.movieDetail,
+    stream: ({ params }) => {
+      const { id } = params;
+      return this.detailService.getMovieKeywords(id)
+    }
   });
 }

@@ -1,9 +1,9 @@
+import { render, screen } from '@testing-library/angular';
 import { Tag } from './tag';
 import { faFire, faStar, faCalendarCheck, faArrowTrendUp, faFilm } from '@fortawesome/free-solid-svg-icons';
-import { render, screen } from '@testing-library/angular';
 
-describe('Tag.', () => {
-  it('Should display the correct icon and text for type "now-playing."', async() => {
+describe('Tag', () => {
+  it('Should display the correct icon and text for type "now-playing"', async() => {
     const { fixture } = await render(Tag, {
       inputs: {
         text: 'En cartelera',
@@ -14,7 +14,7 @@ describe('Tag.', () => {
     expect(fixture.componentInstance.getIcon()?.faIcon).toBe(faFilm);
   })
 
-  it('Should display the correct icon and text for type "top-rated".', async() => {
+  it('Should display the correct icon and text for type "top-rated"', async() => {
     const { fixture } = await render(Tag, {
       inputs: {
         text: 'Mejor valoradas',
@@ -25,7 +25,7 @@ describe('Tag.', () => {
     expect(fixture.componentInstance.getIcon()?.faIcon).toBe(faStar);
   })
 
-  it('Should display the correct icon and text for type "trending".', async() => {
+  it('Should display the correct icon and text for type "trending"', async() => {
     const { fixture } = await render(Tag, {
       inputs: {
         text: 'En tendencia',
@@ -36,7 +36,7 @@ describe('Tag.', () => {
     expect(fixture.componentInstance.getIcon()?.faIcon).toBe(faArrowTrendUp);
   })
 
-  it('Should display the correct icon and text for type "popular".', async() => {
+  it('Should display the correct icon and text for type "popular"', async() => {
     const { fixture } = await render(Tag, {
       inputs: {
         text: 'Más populares',
@@ -47,7 +47,7 @@ describe('Tag.', () => {
     expect(fixture.componentInstance.getIcon()?.faIcon).toBe(faFire);
   })
 
-  it('Should display the correct icon and text for type "calendar".', async() => {
+  it('Should display the correct icon and text for type "calendar"', async() => {
     const { fixture } = await render(Tag, {
       inputs: {
         text: '2025-08-01',
@@ -58,7 +58,7 @@ describe('Tag.', () => {
     expect(fixture.componentInstance.getIcon()?.faIcon).toBe(faCalendarCheck);
   })
 
-  it('Should not render when type input is not provided.', async() => {
+  it('Should not render when type input is not provided', async() => {
     const { container } = await render(Tag, {
       inputs: {
         text: 'En cartelera',
@@ -67,7 +67,7 @@ describe('Tag.', () => {
     expect(container.querySelector('div')).toBeNull();
   })
 
-  it('Should not render when type input is invalid.', async() => {
+  it('Should not render when type input is invalid', async() => {
     const { container } = await render(Tag, {
       inputs: {
         text: 'Tipo inválido',
