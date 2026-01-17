@@ -15,30 +15,21 @@ export class Carousel {
   private carouselService = inject(CarouselService);
   faAngleLeft = faAngleLeft;
   faAngleRight = faAngleRight;
-  carouselCredit = viewChild<ElementRef<HTMLDivElement>>('carousel');
+  carouselContainer = viewChild<ElementRef<HTMLDivElement>>('carousel');
   totalCards = input.required<number>();
   widthCardContainer = input.required<number>();
   bgControl = input.required<string>();
-  private getWidthCarouselCreditContainer = computed(() => this.carouselCredit()?.nativeElement.offsetWidth);
+  getWidthCarouselContainer = computed(() => this.carouselContainer()?.nativeElement.offsetWidth);
+  getScrollStep = computed(() => this.carouselService.getScrollStep());
+  hasPrevious = computed(() => this.carouselService.hasPrevious());
+  hasNext = computed(() => this.carouselService.hasNext());
 
   constructor() {
     effect(() => {
-      const offsetWidthCarouselCreditContainer = this.getWidthCarouselCreditContainer();
-      if(offsetWidthCarouselCreditContainer && this.widthCardContainer()) {
-        this.carouselService.initializer(offsetWidthCarouselCreditContainer, this.widthCardContainer(), this.totalCards());
+      const offsetWidthCarouselContainer = this.getWidthCarouselContainer();
+      if(offsetWidthCarouselContainer && this.widthCardContainer()) {
+        this.carouselService.initializer(offsetWidthCarouselContainer, this.widthCardContainer(), this.totalCards());
       }
     });
-  }
-
-  getScrollStep(): number {
-    return this.carouselService.getScrollStep();
-  }
-
-  hasPrevious(): boolean {
-    return this.carouselService.hasPrevious();
-  }
-
-  hasNext(): boolean {
-    return this.carouselService.hasNext();
   }
 }

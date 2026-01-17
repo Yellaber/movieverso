@@ -7,4 +7,4 @@ import { RelatedMovie } from '@components/related-movie/related-movie';
   template: `<related-movie type="similar"/>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class SimilarsComponent { }
+export default class Similars { }

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, input, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, OnInit, signal } from '@angular/core';
 import { ContentCategory } from './content-category/content-category';
 import { Categories } from '../categories/categories';
 import { LoadCategory } from '../load-category/load-category';
@@ -13,28 +13,26 @@ const menuItems: item[] = [ 'upcoming', 'now-playing', 'popular', 'top-rated', '
   selector: 'category',
   imports: [ ContentCategory, Categories, LoadCategory ],
   template: `
-    <content-category [title]="categoryTranslations().title" [paragraph]="categoryTranslations().paragraph"/>
+    <content-category [(title)]="titlePage" [(paragraph)]="paragraphPage"/>
     <categories [menuItems]="menuItems()"/>
-    <load-category [endPoint]="categoryTranslations().endPoint"/>
+    <load-category [endPoint]="endPoint()"/>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Category implements AfterViewInit {
+export class Category implements OnInit, AfterViewInit {
   private seoFriendlyService = inject(SeoFriendlyService);
-  private contentCategory = viewChild(ContentCategory);
   name = input.required<item>();
-  titlePage = computed<string>(() => {
-    const contentCategory = this.contentCategory();
-    return contentCategory?.titlePage()?? '';
-  });
-  textPage = computed<string>(() => {
-    const contentCategory = this.contentCategory();
-    return contentCategory?.textPage()?? '';
-  });
+  categoryTranslations = signal<CategoryTranslations | undefined>(undefined);
+  titlePage = linkedSignal<string>(() => this.categoryTranslations()?.title?? '');
+  paragraphPage = linkedSignal<string>(() => this.categoryTranslations()?.paragraph?? '');
+  endPoint = computed<string>(() => this.categoryTranslations()?.endPoint?? '');
   menuItems = computed<item[]>(() => menuItems.filter(item => item !== this.name()));
-  categoryTranslations = computed<CategoryTranslations>(() => CategoryUtils.getCategoryTranslations(this.name()));
+
+  ngOnInit() {
+    this.categoryTranslations.set(CategoryUtils.getCategoryTranslations(this.name()));
+  }
 
   ngAfterViewInit() {
-    this.seoFriendlyService.setMetaTags(this.titlePage(), this.textPage());
+    this.seoFriendlyService.setMetaTags(this.titlePage(), this.paragraphPage());
   }
 }

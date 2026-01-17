@@ -3,10 +3,11 @@
   <h2 class="text-xl md:text-3xl lg:text-5xl text-yellow-600 font-semibold">{{ movie().title }}</h2>
   <p class="text-xs lg:text-sm text-stone-300 leading-relaxed">{{ movie().overview }}</p>
   <div class="flex items-center">
-    <badge-list [badgeList]="genres()"/>
+    <badge-list [badgeList]="getGenres()"/>
   </div>
   <div class="flex justify-between">
-    <a class="bg-yellow-600 rounded-full text-xs lg:text-sm text-stone-900 font-semibold px-4 py-2" [routerLink]="['/movie', `${movie().id}-${slugify(movie().title)}`]">{{ 'home.bannerHeroButton' | translate }}</a>
+    <a class="bg-yellow-600 rounded-full text-xs lg:text-sm text-stone-900 font-semibold px-4 py-2"
+    [routerLink]="['/movie', `${ movie().id }-${ getSlugify() }`]">{{ 'home.bannerHeroButton' | translate }}</a>
     <div class="flex items-center gap-4">
       <rating type="popularity" [value]="movie().popularity"/>
       <rating type="vote_average" [value]="movie().vote_average"/>

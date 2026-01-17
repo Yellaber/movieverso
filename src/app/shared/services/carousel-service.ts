@@ -15,7 +15,7 @@ export class CarouselService {
   private totalScrollStep = computed<number>(() => this.totalCards() * this.cardContainerWidth() - this.scrollVisibleCards());
   private getPartNotVisible = computed<number>(() => (this.visibleCards() - Math.floor(this.visibleCards())) * this.cardContainerWidth());
   private getMax = computed<number>(() => this.totalScrollStep() - this.getPartNotVisible());
-  getScrollStep = computed(() => this.scrollStep());
+  getScrollStep = computed<number>(() => this.scrollStep());
   hasPrevious = computed<boolean>(() => this.scrollStep() > 0);
   hasNext = computed<boolean>(() => this.scrollStep() < this.getMax() - GAP);
 

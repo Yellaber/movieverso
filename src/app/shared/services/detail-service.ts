@@ -27,10 +27,11 @@ export class DetailService {
     }
     return this.httpClient.get<MovieKeyword>(url, {
       params: { api_key: environment.tmdbApiKey }
-    }).pipe(
-        map(({ keywords }) => keywords),
-        tap(results => this.cacheQuery.set(url, results))
-      );
+    })
+    .pipe(
+      map(({ keywords }) => keywords),
+      tap(results => this.cacheQuery.set(url, results))
+    );
   }
 
   getMovieTrailers(movieId: number): Observable<Trailer[]> {
@@ -43,10 +44,11 @@ export class DetailService {
         api_key: environment.tmdbApiKey,
         language: this.userLanguage(),
       }
-    }).pipe(
-        map(({ results }) => results),
-        tap(results => this.cacheQuery.set(url, results))
-      );
+    })
+    .pipe(
+      map(({ results }) => results),
+      tap(results => this.cacheQuery.set(url, results))
+    );
   }
 
   getMovieCredits(movieId: number): Observable<MovieCredit> {
@@ -62,7 +64,7 @@ export class DetailService {
     }).pipe(tap(movieCredits => this.cacheQuery.set(url, movieCredits)));
   }
 
-  getRelationedMovies(relation: string, movieId: number, page: number = 1): Observable<PaginatedMovies> {
+  getRelatedMovies(relation: string, movieId: number, page: number = 1): Observable<PaginatedMovies> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/${relation}`;
     if(this.cacheQuery.has(url)) {
       return of(<PaginatedMovies>this.cacheQuery.get(url));
@@ -73,7 +75,7 @@ export class DetailService {
         language: this.userLanguage(),
         page
       }
-    }).pipe(tap(movieSimilars => this.cacheQuery.set(url, movieSimilars)));
+    }).pipe(tap(relatedMovie => this.cacheQuery.set(url, relatedMovie)));
   }
 
   getMovieCollectionById(id: number): Observable<MovieCollection> {

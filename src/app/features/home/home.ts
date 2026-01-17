@@ -1,7 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SectionMovie } from './components/section-movie/section-movie';
-import { ScrollService, SeoFriendlyService } from '@services';
+import { SeoFriendlyService } from '@services';
 import { DataSectionMovie, TypeTag } from '@interfaces';
 
 @Component({
@@ -22,15 +22,8 @@ import { DataSectionMovie, TypeTag } from '@interfaces';
 })
 export default class Home implements OnInit, AfterViewInit {
   private seoFriendlyService = inject(SeoFriendlyService);
-  private scrollService = inject(ScrollService);
   private translateService = inject(TranslateService);
   sections = signal<DataSectionMovie[]>([]);
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if(this.scrollService.getScrollTop() > 0) {
-      this.scrollService.saveScrollPosition('home');
-    }
-  }
 
   ngOnInit() {
     this.loadTranslateMetaTags();
@@ -38,7 +31,6 @@ export default class Home implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.loadTranslateSections();
-    this.scrollService.restoreScrollPosition('home');
   }
 
   private loadTranslateMetaTags() {
@@ -50,12 +42,10 @@ export default class Home implements OnInit, AfterViewInit {
   private loadTranslateSections() {
     const keys: string[] = [ 'home.nowPlayingSection', 'home.popularSection', 'home.topRatedSection', 'home.trendingSection' ];
     keys.forEach(key =>
-      this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string,
-        carouselTitle: string }) => {
-          const { heroType, heroTitle, carouselTitle } = section;
-          this.sections.update(sections => [ ...sections, { heroType, heroTitle, carouselTitle } ]);
-        }
-      )
+      this.translateService.get(key).subscribe((section: { heroType: TypeTag, heroTitle: string, carouselTitle: string }) => {
+        const { heroType, heroTitle, carouselTitle } = section;
+        this.sections.update(sections => [ ...sections, { heroType, heroTitle, carouselTitle } ]);
+      })
     );
   }
 }

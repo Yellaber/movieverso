@@ -5,9 +5,11 @@ import { NgOptimizedImage } from '@angular/common';
   selector: 'background-image',
   imports: [ NgOptimizedImage ],
   template: `
-    <img class="absolute w-full h-full rounded-md object-cover object-center" [ngSrc]="backdropImagePath()"
-    [ngSrcset]="backdropImageSrcset()" sizes="100vw" [alt]="title()" fill priority/>
-    <div class="absolute inset-0 rounded-md bg-stone-900/80"></div>
+    @if(title() && backdropImagePath() && backdropImageSrcset()) {
+      <img class="absolute w-full h-full rounded-md object-cover object-center" [ngSrc]="backdropImagePath()" [ngSrcset]="backdropImageSrcset()"
+      sizes="100vw" [alt]="title()" fill priority/>
+      <div class="absolute inset-0 rounded-md bg-stone-900/80"></div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

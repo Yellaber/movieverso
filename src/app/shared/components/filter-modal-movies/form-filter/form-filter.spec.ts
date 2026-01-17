@@ -4,15 +4,11 @@ import { FormBuilder } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { fireEvent } from '@testing-library/angular';
 import { FormFilter } from './form-filter';
-import { MockDefaultQueryParamsService, mockQueryParams, MockQueryParamsService, MockTranslatePipe, MockTranslateService, StubFilterGenre, StubFilterSortBy, StubRating } from '@mocks';
+import { MockDefaultQueryParamsService, mockQueryParams, MockQueryParamsService, MockRouter, MockTranslatePipe, MockTranslateService, StubFilterGenre, StubFilterSortBy, StubRating } from '@mocks';
 import { Rating } from '../../rating/rating';
 import { FilterGenre } from '../filter-genre/filter-genre';
 import { FilterSortBy } from '../filter-sort-by/filter-sort-by';
 import { initialQueryParams, QueryParamsService } from '@services';
-
-class MockRouter {
-  navigate = jest.fn();
-}
 
 describe('FormFilter.', () => {
   let component: FormFilter;

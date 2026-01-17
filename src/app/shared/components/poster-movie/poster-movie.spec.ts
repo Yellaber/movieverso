@@ -21,21 +21,20 @@ const cardSeeMore: Movie = {
   video: false,
   vote_average: 0,
   vote_count: 0,
-};
+}
 
 const mockMovie = mockMovies[0];
-const slug = mockMovie.title.replace(/\s+/g, '-').toLowerCase();
-const idSlug = `${mockMovie.id}-${slug}`;
 
-describe('PosterMovie.', () => {
+describe('PosterMovie', () => {
+  let component: PosterMovie;
   let fixture: ComponentFixture<PosterMovie>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ PosterMovie ],
       providers: [
-        provideRouter([ mockRoutes[0] ]),
-        { provide: TranslateService, useClass: MockTranslateService }
+        provideRouter(mockRoutes),
+        { provide: TranslateService, useClass: MockTranslateService },
       ]
     })
     .overrideComponent(PosterMovie, {
@@ -45,42 +44,45 @@ describe('PosterMovie.', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(PosterMovie);
+    component = fixture.componentInstance;
   })
 
   afterEach(() => {
     jest.clearAllMocks();
   })
 
-  describe('If the id movie is greater than 0.', () => {
-    it('Should render the poster when movie contains a path.', () => {
+  describe('When id movie is greater than 0', () => {
+    it('Should render the poster when movie contains a path', () => {
       fixture.componentRef.setInput('movie', mockMovie);
       fixture.detectChanges();
       const link = screen.getByRole('link');
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', `/movie/${idSlug}`);
-
       const img = screen.getByRole('img');
+      const expectedMovieLink = `${component.getMovieLink()[0]}/${component.getMovieLink()[1]}`;
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', expectedMovieLink);
       expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute('src', mockMovie.poster_path);
+      expect(img).toHaveAttribute('srcset', '/images/no-poster.jpg 92w, /images/no-poster.jpg 154w, /images/no-poster.jpg 185w, /images/no-poster.jpg 342w, /images/no-poster.jpg 500w, /images/no-poster.jpg 780w');
       expect(img).toHaveAttribute('alt', mockMovie.title);
     })
 
-    it('Should render default image when movie contains poster path empty.', () => {
+    it('Should render default image when movie contains poster path empty', () => {
       fixture.componentRef.setInput('movie', { ...mockMovie, poster_path: '' });
       fixture.detectChanges();
       const link = screen.getByRole('link');
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', `/movie/${idSlug}`);
-
       const img = screen.getByRole('img');
+      const expectedMovieLink = `${component.getMovieLink()[0]}/${component.getMovieLink()[1]}`;
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', expectedMovieLink);
       expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute('src', '/images/w780-no-poster.jpg');
+      expect(img).toHaveAttribute('srcset', '/images/w780-no-poster.jpg 780w');
       expect(img).toHaveAttribute('alt', 'imagen de poster no disponible');
     })
   })
 
-  describe('If the id movie is not greater than 0.', () => {
-    it('Should render the card see more.', () => {
+  describe('When id movie is not greater than 0', () => {
+    it('Should render the card see more', () => {
       fixture.componentRef.setInput('movie', cardSeeMore);
       fixture.detectChanges();
       const link = screen.getByRole('link');

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FlagCdnUtils } from '@utils';
-import { ProductionCountry } from '@interfaces';
+import { FlagCountry, ProductionCountry } from '@interfaces';
 
 @Component({
   selector: 'production-countries',
@@ -13,8 +13,14 @@ import { ProductionCountry } from '@interfaces';
 export class ProductionCountries {
   private readonly FLAG_SIZE = '80';
   productionCountries = input.required<ProductionCountry[]>();
+  getFlagCountries = computed<FlagCountry[]>(() =>
+    this.productionCountries()? this.productionCountries().map(country => this.getFlagCountry(country)): []
+  );
 
-  getFlagCountry(iso31661Code: string): string {
-    return FlagCdnUtils.getFlagCountry(iso31661Code, this.FLAG_SIZE);
+  private getFlagCountry(productionCountry: ProductionCountry): FlagCountry {
+    return ({
+      flag: FlagCdnUtils.getFlagCountry(productionCountry.iso_3166_1, this.FLAG_SIZE),
+      name: productionCountry.name
+    })
   }
 }

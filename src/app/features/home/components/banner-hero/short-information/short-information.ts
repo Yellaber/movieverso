@@ -17,18 +17,15 @@ import { Genre, Movie } from '@interfaces';
   host: { class: 'flex flex-col w-full md:w-1/2 lg:w-2/3 z-10 gap-5' }
 })
 export class ShortInformation {
+  private tmdbService = inject(TmdbService);
   heroType = input.required<string>();
   heroTitle = input.required<string>();
   movie = input.required<Movie>();
-  private tmdbService = inject(TmdbService);
   private movieGenreIds = computed<number[]>(() => this.movie().genre_ids);
   private genresMovie = rxResource({
     params: this.movieGenreIds,
     stream: ({ params }) => this.tmdbService.getGenresMovieByIds(params)
   });
-  genres = computed<Genre[]>(() => this.genresMovie.value()?? []);
-
-  slugify(title: string): string {
-    return SlugifyUtils.getSlug(title);
-  }
+  getGenres = computed<Genre[]>(() => this.genresMovie.value()?? []);
+  getSlugify = computed(() => SlugifyUtils.getSlug(this.movie().title));
 }

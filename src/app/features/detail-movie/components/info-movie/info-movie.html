@@ -1,0 +1,20 @@
+@if(movieSelected()) {
+  <div class="flex mt-5 lg:mt-15 mb-7">
+    <categories [menuItems]="menuItems()"/>
+  </div>
+  <banner-detail [movieDetail]="movieSelected()!"/>
+  <credits [idMovie]="movieSelected()!.id"/>
+  <section class="flex gap-5 my-5 lg:mb-10">
+    <side-detail [movieDetail]="movieSelected()!"/>
+    <div class="flex flex-col w-full lg:w-3/4 rounded-md shadow-md bg-stone-800 gap-15 px-5 lg:px-10 py-6 lg:py-11">
+      <trailer [movieId]="movieSelected()!.id"/>
+      <movie-list [movieId]="movieSelected()!.id" typeMovieList="recommendations"/>
+      <movie-list [movieId]="movieSelected()!.id" typeMovieList="similar"/>
+      <movie-list [movieId]="idCollection()" typeMovieList="collection"/>
+    </div>
+  </section>
+} @else {
+  <div class="flex mt-10 lg:mt-15">
+    <notification [notificationTitle]="'detailMovie.notification.title' | translate" [message]="'detailMovie.notification.message' | translate"/>
+  </div>
+}

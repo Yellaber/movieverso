@@ -19,7 +19,7 @@ interface DataNotification {
   selector: 'movie-list',
   imports: [ CarouselMovies, CarouselTitle, Notification ],
   template: `
-    @if(relatedMovies.hasValue() && relatedMovies.value().length > 0) {
+    @if(movies().length > 0) {
       <carousel-movies [carouselConfig]="carouselConfig()"/>
     } @else {
       <carousel-title [carouselTitle]="carouselConfig().carouselTitle!"/>
@@ -33,19 +33,25 @@ export class MovieList {
   private translateService = inject(TranslateService);
   typeMovieList = input.required<TypeMovieList>();
   movieId = input.required<number | undefined>();
-  id = computed<number>(() => this.movieId()?? 0);
-  carouselTitleTranslation = rxResource({
+  private id = computed<number>(() => this.movieId()?? 0);
+  private carouselTitleTranslation = rxResource({
     params: this.typeMovieList,
-    stream: ({ params }) => this.translateService.get(`detailMovie.movieList.${params}.title`)
+    stream: ({ params }) => this.translateService.get(`detailMovie.movieList.${ params }.title`)
   });
-  relatedMovies = rxResource({
-    params: this.id,
-    stream: ({ params }) => this.getRelatedMovies(params)
-      .pipe(tap(movies => this.loadNotificationTranslation(`detailMovie.movieList.${this.typeMovieList()}.notification`, movies)))
+  private relatedMovies = rxResource({
+    params: () => ({
+      typeMovieList: this.typeMovieList(),
+      id: this.id()
+    }),
+    stream: ({ params }) => {
+      const { typeMovieList, id } = params;
+      const key = `detailMovie.movieList.${ typeMovieList }.notification`;
+      return this.getRelatedMovies(typeMovieList, id).pipe(tap(movies => this.loadNotificationTranslation(key, movies)))
+    }
   });
   movies = computed<Movie[]>(() => this.relatedMovies.hasValue()? this.relatedMovies.value(): []);
-  route = computed<string>(() => (this.id() !== 0)? `${this.typeMovieList()}`: '');
-  getCardSeeMore = computed<Movie>(() => ({
+  private route = computed<string>(() => (this.id() > 0)? `${ this.typeMovieList() }`: '');
+  private getCardSeeMore = computed<Movie>(() => ({
     adult: false,
     backdrop_path: '',
     genre_ids: [],
@@ -68,14 +74,12 @@ export class MovieList {
   }));
   notification = signal<DataNotification | undefined>(undefined);
 
-  private getRelatedMovies(movieId: number): Observable<Movie[]> {
-    switch(this.typeMovieList()) {
+  private getRelatedMovies(typeMovieList: TypeMovieList, movieId: number): Observable<Movie[]> {
+    switch(typeMovieList) {
       case 'collection':
-        return (this.id() !== 0)? this.detailService.getMovieCollectionById(movieId)
-          .pipe(map(({ parts }) => parts)): of([]);
+        return (movieId > 0)? this.detailService.getMovieCollectionById(movieId).pipe(map(({ parts }) => parts)): of([]);
       default:
-        return (this.id() !== 0)? this.detailService.getRelationedMovies(this.typeMovieList(), movieId)
-          .pipe(map(({ results }) => results)): of([]);
+        return (movieId > 0)? this.detailService.getRelatedMovies(typeMovieList, movieId).pipe(map(({ results }) => results)): of([]);
     };
   }
 

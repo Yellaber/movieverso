@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Genre, Keyword, SpokenLanguage } from '@interfaces';
+import { Genre, Keyword, ProductionCompany, SpokenLanguage } from '@interfaces';
 
-type typeBadges = Genre[] | Keyword[] | SpokenLanguage[]
+type typeBadges = Genre[] | Keyword[] | SpokenLanguage[] | ProductionCompany[];
 
 @Component({
   selector: 'badge-list',

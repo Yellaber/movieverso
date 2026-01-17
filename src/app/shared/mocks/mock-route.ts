@@ -3,13 +3,14 @@ import { Route } from '@angular/router';
 
 @Component({
   selector: 'stub-component',
-  template: `<li>Stub Component</li>`
+  template: `<li>StubComponentTesting</li>`
 })
 export class StubComponentTesting {};
 
 export const mockRoutes: Route[] = [
   { path: 'upcoming', component: StubComponentTesting }, { path: 'now-playing', component: StubComponentTesting },
-  { path: 'popular', component: StubComponentTesting }, { path: 'top-rated', component: StubComponentTesting }
+  { path: 'popular', component: StubComponentTesting }, { path: 'top-rated', component: StubComponentTesting },
+  { path: 'trending', component: StubComponentTesting }, { path: 'movie/:id-slug', component: StubComponentTesting }
 ];
 
 export const mockUpdateRoutes: Route[] = [{ path: 'contact', title: 'Contact' }];
@@ -17,7 +18,24 @@ export const mockUpdateRoutes: Route[] = [{ path: 'contact', title: 'Contact' }]
 export class MockRoutesService {
   getRoutes = jest.fn().mockReturnValue(mockRoutes);
   setRoutes = jest.fn();
-};
+}
+
+export class MockRouter {
+  navigate = jest.fn();
+}
+
+export class MockActivedRoute {
+  paramMap = {
+    subscribe: (fn: (value: any) => void) => fn({
+      get: (param: string) => {
+        if(param === 'id-slug') {
+          return '123-mock-movie-detail';
+        }
+        return null;
+      }
+    })
+  };
+}
 
 export class MockActivedRouteServiceWithParams {
   paramMap = {
@@ -64,7 +82,7 @@ export class MockActivedRouteServiceWithParams {
       }
     })
   };
-};
+}
 
 export class MockActivedRouteServiceWithoutParams {
   paramMap = {
@@ -111,5 +129,4 @@ export class MockActivedRouteServiceWithoutParams {
       }
     })
   };
-};
-
+}

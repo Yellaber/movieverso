@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex justify-between items-center text-yellow-600 font-semibold mb-5' }
+  host: { class: 'flex items-center text-yellow-600 font-semibold mb-5' }
 })
 export class CarouselTitle {
   carouselTitle = input.required<string>();

@@ -7,4 +7,4 @@ import { Category } from '@components/category/category';
   template: `<category name="top-rated"/>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class TopRatedComponent { }
+export default class TopRated { }
