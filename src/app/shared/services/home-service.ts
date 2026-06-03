@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, of, tap } from 'rxjs';
 import { computed, inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { UserGeolocationService } from '@services';
+import { UserGeolocationService, CacheService } from '@services';
 import { Movie, PaginatedMovies } from '@interfaces';
+
+const TTL_PAGINATED = 300_000; // 5 min
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ import { Movie, PaginatedMovies } from '@interfaces';
 export class HomeService {
   private httpClient = inject(HttpClient);
   private userGeolocationService = inject(UserGeolocationService);
-  private cacheQuery = new Map<string, Movie[]>();
+  private cacheService = inject(CacheService);
   private userGeolocation = this.userGeolocationService.getUserGeolocation;
   private userLanguage = computed<string>(() => {
     const userGeolocation = this.userGeolocation();
@@ -25,9 +27,8 @@ export class HomeService {
   getMovies(endPoint: string): Observable<Movie[]> {
     const url = `${environment.tmdbApiUrl}/${endPoint}`;
     const key = `${url}/page=1`;
-    if(this.cacheQuery.has(key)) {
-      return of(<Movie[]>this.cacheQuery.get(key));
-    }
+    const cached = this.cacheService.get<Movie[]>(key);
+    if(cached !== null) return of(cached);
     return this.httpClient.get<PaginatedMovies>(url, {
       params: {
         api_key: environment.tmdbApiKey,
@@ -37,7 +38,7 @@ export class HomeService {
       }
     }).pipe(
       map(({ results }) => results),
-      tap(movies => this.cacheQuery.set(key, movies))
+      tap(movies => this.cacheService.set(key, movies, TTL_PAGINATED))
     );
   }
 }

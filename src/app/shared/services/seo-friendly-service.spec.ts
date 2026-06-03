@@ -29,8 +29,18 @@ describe('Seofriendly Service:', () => {
     jest.spyOn(metaService, 'updateTag');
     seofriendlyService.setMetaTags(titlePage, contentPage);
     expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
-    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
-    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ name: 'description', content: contentPage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ property: 'og:title', content: titlePage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ property: 'og:description', content: contentPage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ name: 'twitter:card', content: 'summary_large_image' });
+  })
+
+  it('Should NOT call updateTag for og:image when no image is provided.', () => {
+    jest.spyOn(metaService, 'updateTag');
+    seofriendlyService.setMetaTags(titlePage, contentPage);
+    const calls = (metaService.updateTag as jest.Mock).mock.calls;
+    const ogImageCall = calls.find((call: any[]) => call[0]?.property === 'og:image');
+    expect(ogImageCall).toBeUndefined();
   })
 
   it('Should setup the title and meta tags with image.', () => {
@@ -39,8 +49,9 @@ describe('Seofriendly Service:', () => {
     jest.spyOn(metaService, 'updateTag');
     seofriendlyService.setMetaTags(titlePage, contentPage, imageUrl);
     expect(titleService.setTitle).toHaveBeenCalledWith(`${environment.appName} - ${titlePage}`);
-    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'description', content: contentPage });
-    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:title', content: titlePage });
-    expect(metaService.updateTag).toHaveBeenCalledWith({ name:'og:image', content: imageUrl });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ name: 'description', content: contentPage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ property: 'og:title', content: titlePage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ property: 'og:description', content: contentPage });
+    expect(metaService.updateTag).toHaveBeenCalledWith({ property: 'og:image', content: imageUrl });
   })
 })

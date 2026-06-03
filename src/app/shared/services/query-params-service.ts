@@ -21,16 +21,16 @@ export class QueryParamsService {
   getQueryParams = computed(() => this.queryParams());
 
   constructor() {
-    const queryParams = { ...this.queryParams() };
     this.route.paramMap.subscribe(params => {
-      queryParams.primaryReleaseDateGte = this.getStringValue(params, 'primaryReleaseDateGte');
-      queryParams.primaryReleaseDateLte = this.getStringValue(params, 'primaryReleaseDateLte');
-      queryParams.query = this.getStringValue(params, 'query');
-      queryParams.sortBy = this.getSortByValue(params);
-      queryParams.voteAverageGte = this.getNumberValue(params, 'voteAverageGte');
-      queryParams.voteCountGte = this.getNumberValue(params, 'voteCountGte');
-      queryParams.withGenres = this.getStringValue(params, 'genres');
-      this.queryParams.set(queryParams);
+      this.queryParams.set({
+        primaryReleaseDateGte: this.getStringValue(params, 'primaryReleaseDateGte'),
+        primaryReleaseDateLte: this.getStringValue(params, 'primaryReleaseDateLte'),
+        query:                 this.getStringValue(params, 'query'),
+        sortBy:                this.getSortByValue(params),
+        voteAverageGte:        this.getNumberValue(params, 'voteAverageGte'),
+        voteCountGte:          this.getNumberValue(params, 'voteCountGte'),
+        withGenres:            this.getStringValue(params, 'genres'),
+      });
     });
   }
 

@@ -3,7 +3,12 @@ import { computed, inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService } from './user-geolocation-service';
+import { CacheService } from './cache-service';
 import { Movie, PaginatedMovies, Genre, GenreMovies, DetailMovie } from '@interfaces';
+
+const TTL_GENRES    = 86_400_000; // 24 h
+const TTL_DETAIL    = 1_800_000;  // 30 min
+const TTL_PAGINATED = 300_000;    // 5 min
 
 type TypeQuery = DetailMovie | PaginatedMovies[] | Movie[] | Genre[];
 interface Params {
@@ -19,8 +24,8 @@ interface Params {
 export class TmdbService {
   private userGeolocationService = inject(UserGeolocationService);
   private httpClient = inject(HttpClient);
+  private cacheService = inject(CacheService);
   private params: Params;
-  private cacheQuery = new Map<string, TypeQuery>();
   private paginatedMovies: PaginatedMovies[] = [];
   private userGeolocation = this.userGeolocationService.getUserGeolocation;
   private userLanguage = computed<string>(() => {
@@ -44,8 +49,9 @@ export class TmdbService {
   private getPaginatedMovies(url: string, params: Params): Observable<PaginatedMovies[]> {
     if(params.page! <= 0) { return of([]); }
     if(params.page === 1) {
-      if(this.cacheQuery.has(url)) {
-        this.paginatedMovies = <PaginatedMovies[]>this.cacheQuery.get(url);
+      const cached = this.cacheService.get<PaginatedMovies[]>(url);
+      if(cached !== null) {
+        this.paginatedMovies = cached;
         return of(this.paginatedMovies);
       }
       this.paginatedMovies = [];
@@ -58,7 +64,7 @@ export class TmdbService {
           this.paginatedMovies = [ ...this.paginatedMovies, movieResponse ];
           return this.paginatedMovies;
         }),
-        tap(moviesResponse => this.cacheQuery.set(url, moviesResponse))
+        tap(moviesResponse => this.cacheService.set(url, moviesResponse, TTL_PAGINATED))
       );
     }
     return of(this.paginatedMovies);
@@ -78,9 +84,8 @@ export class TmdbService {
 
   getGenresMovie(): Observable<Genre[]> {
     const url = `${environment.tmdbApiUrl}/genre/movie/list`;
-    if(this.cacheQuery.has(url)) {
-      return of(<Genre[]>this.cacheQuery.get(url));
-    }
+    const cached = this.cacheService.get<Genre[]>(url);
+    if(cached !== null) return of(cached);
     const { api_key, language } = this.params;
     return this.httpClient.get<GenreMovies>(url, {
       params: { api_key, language }
@@ -91,29 +96,27 @@ export class TmdbService {
         if(genre1.name < genre2.name) { return -1; }
         return 0;
       })),
-      tap(genres => this.cacheQuery.set(url, genres))
+      tap(genres => this.cacheService.set(url, genres, TTL_GENRES))
     );
   }
 
   getGenresMovieByIds(genreIds: number[]): Observable<Genre[]> {
     const key = `${environment.tmdbApiUrl}/genre/movie/list/ids=${genreIds.toString()}`;
-    if(this.cacheQuery.has(key)) {
-      return of(<Genre[]>this.cacheQuery.get(key));
-    }
+    const cached = this.cacheService.get<Genre[]>(key);
+    if(cached !== null) return of(cached);
     return this.getGenresMovie().pipe(
       map(genres => genres.filter(genre => genreIds.includes(genre.id))),
-      tap(genres => this.cacheQuery.set(key, genres))
+      tap(genres => this.cacheService.set(key, genres, TTL_GENRES))
     );
   }
 
   getDetailMovieById(id: number): Observable<DetailMovie> {
     const url = `${environment.tmdbApiUrl}/movie/${id}`;
-    if(this.cacheQuery.has(url)) {
-      return of(<DetailMovie>this.cacheQuery.get(url));
-    }
+    const cached = this.cacheService.get<DetailMovie>(url);
+    if(cached !== null) return of(cached);
     const { api_key, language } = this.params;
     return this.httpClient.get<DetailMovie>(url, {
       params: { api_key, language }
-    }).pipe(tap(detailMovie => this.cacheQuery.set(url, detailMovie)));
+    }).pipe(tap(detailMovie => this.cacheService.set(url, detailMovie, TTL_DETAIL)));
   }
 }

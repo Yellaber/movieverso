@@ -21,7 +21,7 @@ describe('ImageService.', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks;
+    jest.clearAllMocks();
   });
 
   describe('When movie is not set.', () => {
