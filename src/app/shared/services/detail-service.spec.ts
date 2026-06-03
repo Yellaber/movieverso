@@ -32,7 +32,7 @@ describe('DetailService', () => {
 
   it('Should be created and set language/country from geolocation.', () => {
     expect(detailService).toBeTruthy();
-    expect(detailService['userLanguage']()).toBe('es-CO');
+    expect(TestBed.inject(UserGeolocationService).userLanguage()).toBe('es-CO');
   })
 
   describe('getMovieKeywords().', () => {
@@ -141,7 +141,7 @@ describe('DetailService', () => {
     })
 
     it('userLanguage signal should be an empty string.', () => {
-      expect(detailService['userLanguage']()).toBe('');
+      expect(TestBed.inject(UserGeolocationService).userLanguage()).toBe('');
     })
   })
 })

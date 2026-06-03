@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService } from './user-geolocation-service';
@@ -26,48 +26,28 @@ export class TmdbService {
   private httpClient = inject(HttpClient);
   private cacheService = inject(CacheService);
   private params: Params;
-  private paginatedMovies: PaginatedMovies[] = [];
-  private userGeolocation = this.userGeolocationService.getUserGeolocation;
-  private userLanguage = computed<string>(() => {
-    const userGeolocation = this.userGeolocation();
-    return userGeolocation? userGeolocation.country_metadata.languages[0]: '';
-  });
-  private userCountry = computed<string>(() => {
-    const userGeolocation = this.userGeolocation();
-    return userGeolocation? userGeolocation.location.country_code2: '';
-  });
 
   constructor() {
     this.params = {
       api_key: environment.tmdbApiKey,
-      language: this.userLanguage(),
-      region: this.userCountry(),
+      language: this.userGeolocationService.userLanguage(),
+      region: this.userGeolocationService.userCountry(),
       page: 0
     };
   }
 
   private getPaginatedMovies(url: string, params: Params): Observable<PaginatedMovies[]> {
     if(params.page! <= 0) { return of([]); }
-    if(params.page === 1) {
-      const cached = this.cacheService.get<PaginatedMovies[]>(url);
-      if(cached !== null) {
-        this.paginatedMovies = cached;
-        return of(this.paginatedMovies);
-      }
-      this.paginatedMovies = [];
-    }
-    if(params.page! > this.paginatedMovies.length) {
-      return this.httpClient.get<PaginatedMovies>(url, {
-        params: { ...params }
-      }).pipe(
-        map(movieResponse => {
-          this.paginatedMovies = [ ...this.paginatedMovies, movieResponse ];
-          return this.paginatedMovies;
-        }),
-        tap(moviesResponse => this.cacheService.set(url, moviesResponse, TTL_PAGINATED))
-      );
-    }
-    return of(this.paginatedMovies);
+    const cached = this.cacheService.get<PaginatedMovies[]>(url) ?? [];
+    if(params.page === 1 && cached.length > 0) { return of(cached); }
+    if(params.page! <= cached.length) { return of(cached); }
+    return this.httpClient.get<PaginatedMovies>(url, { params: { ...params } }).pipe(
+      map(response => {
+        const updated = [...cached, response];
+        this.cacheService.set(url, updated, TTL_PAGINATED);
+        return updated;
+      })
+    );
   }
 
   getPaginatedMoviesByCategory(category: string, page: number = 1): Observable<PaginatedMovies[]> {

@@ -5,7 +5,7 @@ import { TmdbService } from './tmdb-service';
 import { UserGeolocationService } from './user-geolocation-service';
 import { environment } from '@environments/environment';
 import { Genre, PaginatedMovies, DetailMovie } from '@interfaces';
-import { mockDetailMovie, mockGenreMovies, mockPaginatedMovies, MockUserGeolocationService } from '@mocks';
+import { mockDetailMovie, mockGenreMovies, mockPaginatedMovies, MockUserGeolocationService, MockUserGeolocationServiceUndefined } from '@mocks';
 
 describe('TmdbService', () => {
   let service: TmdbService;
@@ -31,8 +31,9 @@ describe('TmdbService', () => {
 
   it('Should be created and set language/country from geolocation.', () => {
     expect(service).toBeTruthy();
-    expect((service as any).userLanguage()).toBe('es-CO');
-    expect((service as any).userCountry()).toBe('CO');
+    const geoService = TestBed.inject(UserGeolocationService);
+    expect(geoService.userLanguage()).toBe('es-CO');
+    expect(geoService.userCountry()).toBe('CO');
   })
 
   describe('getPaginatedMoviesByCategory().', () => {
@@ -205,17 +206,32 @@ describe('TmdbService', () => {
     })
   })
 
+  describe('State isolation between getPaginatedMoviesByCategory() and getPaginatedMoviesBasedIn().', () => {
+    it('Should return independent data for different URLs.', () => {
+      let popularMovies: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesByCategory('popular', 1).subscribe(r => { popularMovies = r; });
+      const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/popular?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req1.flush(mockPaginatedMovies);
+
+      let recommendations: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesBasedIn('recommendations', 123, 1).subscribe(r => { recommendations = r; });
+      const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/123/recommendations?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
+      req2.flush(mockPaginatedMovies);
+
+      expect(popularMovies).toHaveLength(1);
+      expect(recommendations).toHaveLength(1);
+    })
+  })
+
   describe('If geolocation is not available.', () => {
     beforeEach(() => {
-      const userGeolocationServiceMock = { getUserGeolocation: jest.fn().mockReturnValue(undefined) };
-
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
           provideHttpClient(),
           provideHttpClientTesting(),
           TmdbService,
-          { provide: UserGeolocationService, useValue: userGeolocationServiceMock }
+          { provide: UserGeolocationService, useClass: MockUserGeolocationServiceUndefined }
         ]
       });
       service = TestBed.inject(TmdbService);
@@ -223,8 +239,9 @@ describe('TmdbService', () => {
     })
 
     it('userLanguage and userCountry signals should be an empty string.', () => {
-      expect(service['userLanguage']()).toBe('');
-      expect(service['userCountry']()).toBe('');
+      const geoService = TestBed.inject(UserGeolocationService);
+      expect(geoService.userLanguage()).toBe('');
+      expect(geoService.userCountry()).toBe('');
     })
   })
 })

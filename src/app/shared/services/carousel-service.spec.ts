@@ -46,4 +46,24 @@ describe('CarouselMoviesService.', () => {
     expect(carouselService.hasPrevious()).toBe(true);
     expect(carouselService.hasNext()).toBe(false);
   });
+
+  it('Should not go below 0 on previous() when already at start.', () => {
+    carouselService.initializer(1000, 250, 10);
+    carouselService.previous();
+    expect(carouselService.getScrollStep()).toBe(0);
+  });
+
+  it('Should not exceed max on next() when at end.', () => {
+    carouselService.initializer(1000, 250, 10);
+    for (let i = 0; i < 10; i++) carouselService.next();
+    const stepAtEnd = carouselService.getScrollStep();
+    carouselService.next();
+    expect(carouselService.getScrollStep()).toBe(stepAtEnd);
+  });
+
+  it('getScrollStep() should return the current scrollStep value.', () => {
+    carouselService.initializer(1000, 250, 10);
+    carouselService.next();
+    expect(carouselService.getScrollStep()).toBe(carouselService['scrollStep']());
+  });
 });

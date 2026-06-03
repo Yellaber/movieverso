@@ -2,9 +2,7 @@ import { computed, Injectable, signal } from '@angular/core';
 
 const GAP = 16;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CarouselService {
   private totalCards = signal<number>(0);
   private carouselContainerWidth = signal<number>(0);

@@ -17,6 +17,8 @@ export class UserGeolocationService {
   private translateService = inject(TranslateService);
   private geolocation = signal<UserGeolocation | undefined>(undefined);
   getUserGeolocation = computed(() => this.geolocation()?? undefined);
+  readonly userLanguage = computed<string>(() => this.geolocation()?.country_metadata.languages[0] ?? '');
+  readonly userCountry = computed<string>(() => this.geolocation()?.location.country_code2 ?? '');
 
   constructor() {
     this.translateService.addLangs(['es', 'en']);

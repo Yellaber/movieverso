@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, computed } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService, CacheService } from '@services';
@@ -14,11 +14,6 @@ export class DetailService {
   private userGeolocationService = inject(UserGeolocationService);
   private httpClient = inject(HttpClient);
   private cacheService = inject(CacheService);
-  private userGeolocation = this.userGeolocationService.getUserGeolocation;
-  private userLanguage = computed<string>(() => {
-    const userGeolocation = this.userGeolocation();
-    return userGeolocation? userGeolocation.country_metadata.languages[0]: '';
-  });
 
   getMovieKeywords(movieId: number): Observable<Keyword[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/keywords`;
@@ -40,7 +35,7 @@ export class DetailService {
     return this.httpClient.get<MovieTrailer>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
+        language: this.userGeolocationService.userLanguage(),
       }
     })
     .pipe(
@@ -56,7 +51,7 @@ export class DetailService {
     return this.httpClient.get<MovieCredit>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
+        language: this.userGeolocationService.userLanguage(),
       }
     }).pipe(tap(movieCredits => this.cacheService.set(url, movieCredits, TTL_DETAIL)));
   }
@@ -68,7 +63,7 @@ export class DetailService {
     return this.httpClient.get<PaginatedMovies>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
+        language: this.userGeolocationService.userLanguage(),
         page
       }
     }).pipe(tap(relatedMovie => this.cacheService.set(url, relatedMovie, TTL_DETAIL)));
@@ -81,7 +76,7 @@ export class DetailService {
     return this.httpClient.get<MovieCollection>(url, {
       params: {
         api_key: environment.tmdbApiKey,
-        language: this.userLanguage(),
+        language: this.userGeolocationService.userLanguage(),
       }
     }).pipe(tap(movieCollection => this.cacheService.set(url, movieCollection, TTL_DETAIL)));
   }
