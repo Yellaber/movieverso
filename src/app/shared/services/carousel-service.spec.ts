@@ -66,4 +66,23 @@ describe('CarouselMoviesService.', () => {
     carouselService.next();
     expect(carouselService.getScrollStep()).toBe(carouselService['scrollStep']());
   });
+
+  describe('setScrollStep().', () => {
+    beforeEach(() => carouselService.initializer(1000, 250, 10));
+
+    it('Should set scrollStep to the given value when within range.', () => {
+      carouselService.setScrollStep(800);
+      expect(carouselService.getScrollStep()).toBe(800);
+    });
+
+    it('Should clamp scrollStep to max when value exceeds max.', () => {
+      carouselService.setScrollStep(9999);
+      expect(carouselService.getScrollStep()).toBe(1644);
+    });
+
+    it('Should clamp scrollStep to 0 when value is negative.', () => {
+      carouselService.setScrollStep(-100);
+      expect(carouselService.getScrollStep()).toBe(0);
+    });
+  });
 });

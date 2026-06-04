@@ -4,5 +4,6 @@ export interface CarouselConfig {
   carouselTitle?: string,
   text?: string;
   movies: Movie[],
-  bgButtons?: string
+  bgButtons?: string,
+  cacheKey?: string
 };

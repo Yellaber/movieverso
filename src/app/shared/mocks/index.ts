@@ -1,3 +1,4 @@
+export * from './mock-carousel-cache-service';
 export * from './mock-carousel-config';
 export * from './mock-carousel-service';
 export * from './mock-detail-service';

@@ -41,6 +41,7 @@ export class StubCarousel {
   totalCard = input.required<number>();
   widthCardContainer = input.required<number>();
   bgControl = input.required<string>();
+  cacheKey = input<string | undefined>(undefined);
 }
 
 @Component({

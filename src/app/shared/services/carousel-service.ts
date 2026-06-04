@@ -23,6 +23,11 @@ export class CarouselService {
     this.totalCards.set(totalCards);
   }
 
+  setScrollStep(step: number) {
+    const max = Math.max(0, this.getMax() - GAP);
+    this.scrollStep.set(Math.min(max, Math.max(0, step)));
+  }
+
   next() {
     const step = this.scrollVisibleCards();
     const max = this.getMax();
