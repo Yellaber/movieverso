@@ -1,4 +1,6 @@
 import { inject, Injectable, DOCUMENT } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { PlatformService } from './platform-service';
 
 @Injectable({
@@ -7,7 +9,9 @@ import { PlatformService } from './platform-service';
 export class ScrollService {
   private platformService = inject(PlatformService);
   private document = inject(DOCUMENT);
+  private router = inject(Router);
   private cacheScroll = new Map<string, number>();
+  private currentUrl = '';
 
   isAtBottom(offset: number = 300): boolean {
     if(this.platformService.isBrowser()) {
@@ -43,6 +47,24 @@ export class ScrollService {
         this.setScrollTo(scrollPosition, behavior);
       }
     }
+  }
+
+  initScrollTracking() {
+    this.router.events.pipe(filter(e => e instanceof NavigationStart)).subscribe((e) => {
+      const event = e as NavigationStart;
+      if(this.platformService.isBrowser()) {
+        this.saveScrollPosition(this.currentUrl);
+      }
+      this.currentUrl = event.url;
+    });
+
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e) => {
+      const event = e as NavigationEnd;
+      setTimeout(() => {
+        const saved = this.cacheScroll.get(event.urlAfterRedirects);
+        saved ? this.restoreScrollPosition(event.urlAfterRedirects) : this.scrollTop();
+      }, 0);
+    });
   }
 
   blockWindow(isBlocked: boolean) {
