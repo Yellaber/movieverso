@@ -4,6 +4,6 @@
       <fa-icon [icon]="faCircleXmark"></fa-icon>
     </button>
     <h2 class="text-xl font-bold bg-yellow-600 text-stone-900 rounded-t-md shadow-md py-2 pl-6">{{ 'filter.title' | translate }}</h2>
-    <form-filter/>
+    <form-filter (showResults)="onClose()"/>
   </div>
 </div>
