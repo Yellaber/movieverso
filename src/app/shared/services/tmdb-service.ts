@@ -38,13 +38,17 @@ export class TmdbService {
 
   private getPaginatedMovies(url: string, params: Params): Observable<PaginatedMovies[]> {
     if(params.page! <= 0) { return of([]); }
-    const cached = this.cacheService.get<PaginatedMovies[]>(url) ?? [];
+    // Clave de caché diferenciada: el listado paginado acumula PaginatedMovies[], mientras que
+    // DetailService.getRelatedMovies cachea un único objeto PaginatedMovies bajo la URL base.
+    // Compartir la misma clave corrompería ambas lecturas (ver fix-related-movies-cache-collision).
+    const cacheKey = `${url}::paginated`;
+    const cached = this.cacheService.get<PaginatedMovies[]>(cacheKey) ?? [];
     if(params.page === 1 && cached.length > 0) { return of(cached); }
     if(params.page! <= cached.length) { return of(cached); }
     return this.httpClient.get<PaginatedMovies>(url, { params: { ...params } }).pipe(
       map(response => {
         const updated = [...cached, response];
-        this.cacheService.set(url, updated, TTL_PAGINATED);
+        this.cacheService.set(cacheKey, updated, TTL_PAGINATED);
         return updated;
       })
     );

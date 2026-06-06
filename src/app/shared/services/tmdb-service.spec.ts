@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TmdbService } from './tmdb-service';
+import { DetailService } from './detail-service';
+import { CacheService } from './cache-service';
 import { UserGeolocationService } from './user-geolocation-service';
 import { environment } from '@environments/environment';
 import { Genre, PaginatedMovies, DetailMovie } from '@interfaces';
@@ -220,6 +222,76 @@ describe('TmdbService', () => {
 
       expect(popularMovies).toHaveLength(1);
       expect(recommendations).toHaveLength(1);
+    })
+  })
+
+  describe('Cache isolation between detail carousel and paginated list (regression: fix-related-movies-cache-collision).', () => {
+    let detailService: DetailService;
+    let cacheService: CacheService;
+    const basedIn = 'recommendations';
+    const movieId = 123;
+    const baseUrl = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
+    const detailReqUrl = `${baseUrl}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`;
+    const paginatedReqUrl = (page: number) => `${baseUrl}?api_key=${environment.tmdbApiKey}&language=es-CO&page=${page}`;
+
+    beforeEach(() => {
+      detailService = TestBed.inject(DetailService);
+      cacheService = TestBed.inject(CacheService);
+    })
+
+    it('Should not corrupt the paginated list when the detail carousel cached an object first (Bug #1).', () => {
+      // El carrusel del detalle cachea un único objeto PaginatedMovies bajo la URL base.
+      detailService.getRelatedMovies(basedIn, movieId).subscribe();
+      httpMock.expectOne(detailReqUrl).flush(mockPaginatedMovies);
+
+      // El listado paginado usa su propia clave: no reutiliza el objeto y no lanza "cached is not iterable".
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      expect(() =>
+        service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe(response => { paginatedMovies = response; })
+      ).not.toThrow();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+      expect(paginatedMovies).toEqual([mockPaginatedMovies]);
+    })
+
+    it('Should not corrupt the detail carousel when the paginated list cached an array first (Bug #2).', () => {
+      // El listado paginado cachea un array PaginatedMovies[] bajo su clave con sufijo.
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      // El carrusel del detalle obtiene un objeto PaginatedMovies válido con results definido,
+      // desde su propia entrada de caché (no el array del listado).
+      const detailResponse = mockPaginatedMovies[0];
+      let related: PaginatedMovies | undefined;
+      detailService.getRelatedMovies(basedIn, movieId).subscribe(response => { related = response; });
+      httpMock.expectOne(detailReqUrl).flush(detailResponse);
+      expect(related).toEqual(detailResponse);
+      expect(related?.results).toBeDefined();
+    })
+
+    it('Should store the paginated list under a key distinct from the detail base URL.', () => {
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      expect(cacheService.has(`${baseUrl}::paginated`)).toBe(true);
+      expect(cacheService.has(baseUrl)).toBe(false);
+
+      // Idempotencia: una segunda llamada con los mismos parámetros se sirve desde caché.
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe(response => { paginatedMovies = response; });
+      httpMock.expectNone(paginatedReqUrl(1));
+      expect(paginatedMovies).toHaveLength(1);
+    })
+
+    it('Should accumulate successive pages without iteration errors.', () => {
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      expect(() =>
+        service.getPaginatedMoviesBasedIn(basedIn, movieId, 2).subscribe(response => { paginatedMovies = response; })
+      ).not.toThrow();
+      httpMock.expectOne(paginatedReqUrl(2)).flush(mockPaginatedMovies);
+      expect(paginatedMovies).toHaveLength(2);
     })
   })
 
