@@ -50,16 +50,15 @@ export class ScrollService {
   }
 
   initScrollTracking() {
-    this.router.events.pipe(filter(e => e instanceof NavigationStart)).subscribe((e) => {
-      const event = e as NavigationStart;
+    this.router.events.pipe(filter(e => e instanceof NavigationStart)).subscribe(() => {
       if(this.platformService.isBrowser()) {
         this.saveScrollPosition(this.currentUrl);
       }
-      this.currentUrl = event.url;
     });
 
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e) => {
       const event = e as NavigationEnd;
+      this.currentUrl = event.urlAfterRedirects;
       setTimeout(() => {
         const saved = this.cacheScroll.get(event.urlAfterRedirects);
         saved ? this.restoreScrollPosition(event.urlAfterRedirects) : this.scrollTop();

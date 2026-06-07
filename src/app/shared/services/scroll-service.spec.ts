@@ -145,7 +145,7 @@ describe('ScrollService.', () => {
       jest.useRealTimers();
     });
 
-    it('Should save scroll position and update currentUrl on NavigationStart in browser.', () => {
+    it('Should save scroll position on NavigationStart in browser without changing currentUrl.', () => {
       platformServiceMock.isBrowser.mockReturnValue(true);
       documentMock.documentElement.scrollTop = 400;
       (scrollService as any).currentUrl = '/popular';
@@ -153,17 +153,41 @@ describe('ScrollService.', () => {
       routerEvents$.next(new NavigationStart(1, '/movie/123-title'));
 
       expect((scrollService as any).cacheScroll.get('/popular')).toBe(400);
-      expect((scrollService as any).currentUrl).toBe('/movie/123-title');
+      expect((scrollService as any).currentUrl).toBe('/popular');
     });
 
-    it('Should update currentUrl but not save position on NavigationStart outside browser.', () => {
+    it('Should neither save position nor change currentUrl on NavigationStart outside browser.', () => {
       platformServiceMock.isBrowser.mockReturnValue(false);
       (scrollService as any).currentUrl = '/popular';
 
       routerEvents$.next(new NavigationStart(1, '/trending'));
 
       expect((scrollService as any).cacheScroll.get('/popular')).toBeUndefined();
-      expect((scrollService as any).currentUrl).toBe('/trending');
+      expect((scrollService as any).currentUrl).toBe('/popular');
+    });
+
+    it('Should update currentUrl from urlAfterRedirects on NavigationEnd.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+
+      routerEvents$.next(new NavigationEnd(1, '/home', '/'));
+      jest.runAllTimers();
+
+      expect((scrollService as any).currentUrl).toBe('/');
+    });
+
+    it('Should use the resolved url as key for save and restore when navigation went through a redirect.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+
+      // Arrive at home through a redirect (/home -> /)
+      routerEvents$.next(new NavigationEnd(1, '/home', '/'));
+      jest.runAllTimers();
+
+      // Leave home: the scroll must be saved under the resolved key '/', not '/home'
+      documentMock.documentElement.scrollTop = 250;
+      routerEvents$.next(new NavigationStart(2, '/movie/5-title'));
+
+      expect((scrollService as any).cacheScroll.get('/')).toBe(250);
+      expect((scrollService as any).cacheScroll.get('/home')).toBeUndefined();
     });
 
     it('Should call restoreScrollPosition on NavigationEnd when a cached position exists.', () => {
