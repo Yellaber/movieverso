@@ -49,6 +49,7 @@ describe('SectionMovie', () => {
     expect(bannerHeroElement).toBeInTheDocument();
     expect(carouselMoviesElement).toBeInTheDocument();
     expect(component.carouselConfig().carouselTitle).toBe('Now Playing Movies');
+    expect(component.carouselConfig().cacheKey).toBe('home-now-playing');
   }))
 
   it('Should render the SectionMovie component when heroType is popular', fakeAsync(() => {
@@ -71,6 +72,7 @@ describe('SectionMovie', () => {
     expect(bannerHeroElement).toBeInTheDocument();
     expect(carouselMoviesElement).toBeInTheDocument();
     expect(component.carouselConfig().carouselTitle).toBe('Popular Movies');
+    expect(component.carouselConfig().cacheKey).toBe('home-popular');
   }))
 
   it('Should render the SectionMovie component when heroType is top-rated', fakeAsync(() => {
@@ -93,6 +95,7 @@ describe('SectionMovie', () => {
     expect(bannerHeroElement).toBeInTheDocument();
     expect(carouselMoviesElement).toBeInTheDocument();
     expect(component.carouselConfig().carouselTitle).toBe('Top Rated Movies');
+    expect(component.carouselConfig().cacheKey).toBe('home-top-rated');
   }))
 
   it('Should render the SectionMovie component when heroType is trending', fakeAsync(() => {
@@ -115,5 +118,6 @@ describe('SectionMovie', () => {
     expect(bannerHeroElement).toBeInTheDocument();
     expect(carouselMoviesElement).toBeInTheDocument();
     expect(component.carouselConfig().carouselTitle).toBe('Trending Movies');
+    expect(component.carouselConfig().cacheKey).toBe('home-trending');
   }))
 })

@@ -1,4 +1,4 @@
-import { Component, input, ResourceRef } from '@angular/core';
+import { Component, input, output, ResourceRef } from '@angular/core';
 import { CarouselConfig, Cast, DataSectionMovie, DetailMovie, Genre, Keyword, Movie, MovieCredit, PaginatedMovies, ProductionCompany, SpokenLanguage } from '@interfaces';
 
 @Component({
@@ -41,6 +41,7 @@ export class StubCarousel {
   totalCard = input.required<number>();
   widthCardContainer = input.required<number>();
   bgControl = input.required<string>();
+  cacheKey = input<string | undefined>(undefined);
 }
 
 @Component({
@@ -168,7 +169,9 @@ export class StubFilterSortBy {
   selector: 'form-filter',
   template: '<li>StubFormFilter</li>'
 })
-export class StubFormFilter {}
+export class StubFormFilter {
+  showResults = output<void>();
+}
 
 @Component({
   selector: 'categories',

@@ -11,10 +11,12 @@ export class SeoFriendlyService {
 
   setMetaTags(titlePage: string, content: string, image?: string) {
     this.title.setTitle(`${environment.appName} - ${titlePage}`);
-    this.meta.updateTag({ name:'description', content });
-    this.meta.updateTag({ name:'og:title', content: titlePage });
+    this.meta.updateTag({ name: 'description', content });
+    this.meta.updateTag({ property: 'og:title', content: titlePage });
+    this.meta.updateTag({ property: 'og:description', content });
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     if(image) {
-      this.meta.updateTag({ name:'og:image', content: image });
+      this.meta.updateTag({ property: 'og:image', content: image });
     }
   }
 }

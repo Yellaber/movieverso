@@ -70,6 +70,15 @@ describe('FormFilter.', () => {
       expect(spyNavigate).toHaveBeenCalled();
     });
 
+    it('Should emit showResults when the form is submitted with a valid form.', () => {
+      const spyShowResults = jest.spyOn(component.showResults, 'emit');
+      const buttonElements = fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
+      fireEvent.click(buttonElements[1]);
+      fixture.detectChanges();
+      expect(component.isInvalid()).toBe(false);
+      expect(spyShowResults).toHaveBeenCalled();
+    });
+
     describe('When the voteMinimum field is changed.', () => {
       it('Should display a error message when the voteMinimum is less than 1.', () => {
         const numberElement = fixture.nativeElement.querySelector('input[type="number"]') as HTMLInputElement;

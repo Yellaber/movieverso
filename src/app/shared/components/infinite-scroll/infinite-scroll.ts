@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, HostListener, OnInit, ResourceRef, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, HostListener, ResourceRef, inject, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PosterMovie } from '../poster-movie/poster-movie';
 import { Notification } from '@components/notification/notification';
@@ -32,7 +32,7 @@ import { Movie, PaginatedMovies } from '@interfaces';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfiniteScroll implements OnInit {
+export class InfiniteScroll {
   private scrollService = inject(ScrollService);
   private paginationUtils = new PaginationUtils();
   cardMoviesSkeleton = Array(20);
@@ -55,10 +55,6 @@ export class InfiniteScroll implements OnInit {
     if(this.scrollService.isAtBottom() && !this.paginatedMovies().isLoading()) {
       this.hasNextPage() && this.paginationUtils.next();
     }
-  }
-
-  ngOnInit() {
-    this.scrollService.scrollTop();
   }
 
   reset() {

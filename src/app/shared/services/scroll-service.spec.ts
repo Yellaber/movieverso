@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { ScrollService } from './scroll-service';
 import { PlatformService } from './platform-service';
 import { DOCUMENT } from '@angular/common';
@@ -10,13 +12,16 @@ describe('ScrollService.', () => {
     documentElement: { scrollTop: 0, clientHeight: 0, scrollHeight: 0, scrollTo: jest.fn() },
     querySelector: jest.fn().mockReturnValue({ classList: { add: jest.fn(), remove: jest.fn() } })
   };
+  const routerEvents$ = new Subject<NavigationStart | NavigationEnd>();
+  const routerMock = { events: routerEvents$.asObservable() };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ScrollService,
         { provide: PlatformService, useValue: platformServiceMock },
-        { provide: DOCUMENT, useValue: documentMock }
+        { provide: DOCUMENT, useValue: documentMock },
+        { provide: Router, useValue: routerMock }
       ],
     });
     scrollService = TestBed.inject(ScrollService);
@@ -128,5 +133,87 @@ describe('ScrollService.', () => {
     const setScrollToSpy = jest.spyOn(scrollService as any, 'setScrollTo');
     scrollService.scrollTop();
     expect(setScrollToSpy).toHaveBeenCalledWith(0, 'auto');
+  })
+
+  describe('initScrollTracking().', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+      scrollService.initScrollTracking();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('Should save scroll position on NavigationStart in browser without changing currentUrl.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+      documentMock.documentElement.scrollTop = 400;
+      (scrollService as any).currentUrl = '/popular';
+
+      routerEvents$.next(new NavigationStart(1, '/movie/123-title'));
+
+      expect((scrollService as any).cacheScroll.get('/popular')).toBe(400);
+      expect((scrollService as any).currentUrl).toBe('/popular');
+    });
+
+    it('Should neither save position nor change currentUrl on NavigationStart outside browser.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(false);
+      (scrollService as any).currentUrl = '/popular';
+
+      routerEvents$.next(new NavigationStart(1, '/trending'));
+
+      expect((scrollService as any).cacheScroll.get('/popular')).toBeUndefined();
+      expect((scrollService as any).currentUrl).toBe('/popular');
+    });
+
+    it('Should update currentUrl from urlAfterRedirects on NavigationEnd.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+
+      routerEvents$.next(new NavigationEnd(1, '/home', '/'));
+      jest.runAllTimers();
+
+      expect((scrollService as any).currentUrl).toBe('/');
+    });
+
+    it('Should use the resolved url as key for save and restore when navigation went through a redirect.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+
+      // Arrive at home through a redirect (/home -> /)
+      routerEvents$.next(new NavigationEnd(1, '/home', '/'));
+      jest.runAllTimers();
+
+      // Leave home: the scroll must be saved under the resolved key '/', not '/home'
+      documentMock.documentElement.scrollTop = 250;
+      routerEvents$.next(new NavigationStart(2, '/movie/5-title'));
+
+      expect((scrollService as any).cacheScroll.get('/')).toBe(250);
+      expect((scrollService as any).cacheScroll.get('/home')).toBeUndefined();
+    });
+
+    it('Should call restoreScrollPosition on NavigationEnd when a cached position exists.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+      documentMock.documentElement.scrollTop = 600;
+      scrollService.saveScrollPosition('/popular');
+      const restoreSpy = jest.spyOn(scrollService, 'restoreScrollPosition');
+      const scrollTopSpy = jest.spyOn(scrollService, 'scrollTop');
+
+      routerEvents$.next(new NavigationEnd(1, '/popular', '/popular'));
+      jest.runAllTimers();
+
+      expect(restoreSpy).toHaveBeenCalledWith('/popular');
+      expect(scrollTopSpy).not.toHaveBeenCalled();
+    });
+
+    it('Should call scrollTop on NavigationEnd when no cached position exists.', () => {
+      platformServiceMock.isBrowser.mockReturnValue(true);
+      const restoreSpy = jest.spyOn(scrollService, 'restoreScrollPosition');
+      const scrollTopSpy = jest.spyOn(scrollService, 'scrollTop');
+
+      routerEvents$.next(new NavigationEnd(1, '/upcoming', '/upcoming'));
+      jest.runAllTimers();
+
+      expect(scrollTopSpy).toHaveBeenCalled();
+      expect(restoreSpy).not.toHaveBeenCalled();
+    });
   })
 })

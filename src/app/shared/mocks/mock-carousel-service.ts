@@ -3,6 +3,7 @@ export class MockCarouselService {
   getScrollStep = jest.fn().mockReturnValue(0);
   hasPrevious = jest.fn().mockReturnValue(false);
   hasNext = jest.fn().mockReturnValue(true);
+  setScrollStep = jest.fn();
   next = jest.fn();
   previous = jest.fn();
 }

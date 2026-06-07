@@ -89,4 +89,28 @@ describe('UserGeolocationService', () => {
       expect(geolocationService['getUserLanguage']('fr-FR')).toEqual(['en-US']);
     })
   })
+
+  describe('userLanguage computed signal.', () => {
+    it('Should return the first language when geolocation is set.', () => {
+      geolocationService['geolocation'].set(mockGeolocation);
+      expect(geolocationService.userLanguage()).toBe('es-CO');
+    })
+
+    it('Should return empty string when geolocation is undefined.', () => {
+      geolocationService['geolocation'].set(undefined);
+      expect(geolocationService.userLanguage()).toBe('');
+    })
+  })
+
+  describe('userCountry computed signal.', () => {
+    it('Should return country_code2 when geolocation is set.', () => {
+      geolocationService['geolocation'].set(mockGeolocation);
+      expect(geolocationService.userCountry()).toBe('CO');
+    })
+
+    it('Should return empty string when geolocation is undefined.', () => {
+      geolocationService['geolocation'].set(undefined);
+      expect(geolocationService.userCountry()).toBe('');
+    })
+  })
 })

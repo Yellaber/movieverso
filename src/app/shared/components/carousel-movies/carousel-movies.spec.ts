@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { CarouselMovies } from './carousel-movies';
 import { Carousel } from '../carousel/carousel';
 import { CarouselTitle } from './carousel-title/carousel-title';
@@ -72,6 +73,18 @@ describe('CarouselMovies', () => {
       expect(carouselTitleElement).not.toBeInTheDocument();
       expect(carouselTextElement).not.toBeInTheDocument();
       expect(carouselElement).toBeInTheDocument();
+    })
+
+    it('Should pass cacheKey from carouselConfig to the carousel child.', () => {
+      const carouselInstance = fixture.debugElement.query(By.css('carousel'))?.componentInstance as StubCarousel;
+      expect(carouselInstance?.cacheKey()).toBe('mock-carousel');
+    })
+
+    it('Should pass undefined cacheKey when carouselConfig has no cacheKey.', () => {
+      fixture.componentRef.setInput('carouselConfig', { ...MockCarouselConfig, cacheKey: undefined });
+      fixture.detectChanges();
+      const carouselInstance = fixture.debugElement.query(By.css('carousel'))?.componentInstance as StubCarousel;
+      expect(carouselInstance?.cacheKey()).toBeUndefined();
     })
 
     it('If the movies is not provided', () => {

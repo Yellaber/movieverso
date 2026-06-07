@@ -1,0 +1,19 @@
+schema: spec-driven
+
+context: |
+  Tech stack: TypeScript, Angular, Tailwind CSS
+  Testing: Jest, Angular Testing Library
+  We use conventional commits
+  Domain: Aplicación frontend de catálogo de películas
+  API externa: TMDB (The Movie Database) — solo lectura, no hay backend propio
+  Tipo de proyecto: Brownfield — existe código previo, los cambios deben ser incrementales
+
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+    - Include rollback plan
+  specs:
+    - Use GIVEN-WHEN-THEN format for user stories
+  tasks:
+    - Break tasks into chunks of max 2 hours

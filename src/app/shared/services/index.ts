@@ -1,3 +1,5 @@
+export * from './cache-service';
+export * from './carousel-cache-service';
 export * from './carousel-service';
 export * from './carousel-movies-service';
 export * from './detail-service';

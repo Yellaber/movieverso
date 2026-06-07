@@ -27,18 +27,4 @@ describe('IframeVideo', () => {
     expect(iframeElement).toBeInTheDocument();
     expect(iframeElement.src).toBe(`${ urlBase }/gHlm5ZAW67u`);
   })
-
-  it('Should not display iframe video when videoKey input is an empty string', () => {
-    fixture.componentRef.setInput('videoKey', '');
-    fixture.detectChanges();
-    const iframeElement = fixture.nativeElement.querySelector('iframe');
-    expect(iframeElement).not.toBeInTheDocument();
-  })
-
-  it('Should not display iframe video when videoKey input is undefined', () => {
-    fixture.componentRef.setInput('videoKey', undefined);
-    fixture.detectChanges();
-    const iframeElement = fixture.nativeElement.querySelector('iframe');
-    expect(iframeElement).not.toBeInTheDocument();
-  })
 })

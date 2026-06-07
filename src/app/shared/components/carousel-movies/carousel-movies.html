@@ -5,7 +5,7 @@
   @if(carouselConfig().text) {
     <p class="text-xs lg:text-sm leading-relaxed pb-5">{{ carouselConfig().text }}</p>
   }
-  <carousel [totalCards]="getTotalMovies()" [widthCardContainer]="getWidthPosterContainer()" [bgControl]="getBgControl()">
+  <carousel [totalCards]="getTotalMovies()" [widthCardContainer]="getWidthPosterContainer()" [bgControl]="getBgControl()" [cacheKey]="carouselConfig().cacheKey">
     @for(movie of carouselConfig().movies; track movie.id) {
       <section class="relative flex flex-col shadow-md" #poster>
         <poster-movie [movie]="movie"/>

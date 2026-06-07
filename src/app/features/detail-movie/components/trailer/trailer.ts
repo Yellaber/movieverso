@@ -12,11 +12,13 @@ import { DetailService } from '@services';
   imports: [ CarouselTitle, IframeVideo, Notification, TranslatePipe ],
   template: `
     <carousel-title carouselTitle="Trailer"/>
-    @if(movieTrailers.hasValue() && movieTrailers.value()) {
-      <iframe-video [videoKey]="movieTrailers.value()[0].key"/>
-    } @else {
-      <notification [notificationTitle]="'detailMovie.movieList.trailer.notification.title' | translate"
-      [message]="'detailMovie.movieList.trailer.notification.message' | translate"/>
+    @if(!movieTrailers.isLoading()) {
+      @if(movieTrailers.hasValue() && movieTrailers.value()!.length > 0 && movieTrailers.value()![0].key) {
+        <iframe-video [videoKey]="movieTrailers.value()![0].key"/>
+      } @else {
+        <notification [notificationTitle]="'detailMovie.movieList.trailer.notification.title' | translate"
+        [message]="'detailMovie.movieList.trailer.notification.message' | translate"/>
+      }
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

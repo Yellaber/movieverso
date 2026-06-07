@@ -32,8 +32,9 @@ describe('HomeService.', () => {
 
   it('Should be created and set language/country from geolocation.', () => {
     expect(homeService).toBeTruthy();
-    expect(homeService['userLanguage']()).toBe('es-CO');
-    expect(homeService['userCountry']()).toBe('CO');
+    const geoService = TestBed.inject(UserGeolocationService);
+    expect(geoService.userLanguage()).toBe('es-CO');
+    expect(geoService.userCountry()).toBe('CO');
   })
 
   describe('getMovies().', () => {
@@ -74,8 +75,9 @@ describe('HomeService.', () => {
     })
 
     it('userLanguage and userCountry signals should be an empty string.', () => {
-      expect(homeService['userLanguage']()).toBe('');
-      expect(homeService['userCountry']()).toBe('');
+      const geoService = TestBed.inject(UserGeolocationService);
+      expect(geoService.userLanguage()).toBe('');
+      expect(geoService.userCountry()).toBe('');
     })
   })
 })

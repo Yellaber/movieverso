@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, output, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -20,6 +20,7 @@ export class FormFilter {
   private formBuilder = inject(FormBuilder);
   private queryParamService = inject(QueryParamsService);
   queryParams = computed<QueryParams>(() => this.queryParamService.getQueryParams());
+  showResults = output<void>();
   withGenres = signal<string>(this.queryParamService.getQueryParams().withGenres);
   sortBy = signal<TypeSort>(this.queryParamService.getQueryParams().sortBy);
   formUtils = FormUtils;
@@ -69,6 +70,7 @@ export class FormFilter {
       primaryReleaseDateLte: this.queryParams().primaryReleaseDateLte,
       sortBy: this.queryParams().sortBy
     }});
+    this.showResults.emit();
   }
 
   isInvalid(): boolean {

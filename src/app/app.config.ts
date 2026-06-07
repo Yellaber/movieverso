@@ -6,7 +6,7 @@ import { IMAGE_LOADER, ImageLoaderConfig } from '@angular/common';
 import { provideTranslateService } from "@ngx-translate/core";
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app-routes';
-import { UserGeolocationService } from '@services';
+import { ScrollService, UserGeolocationService } from '@services';
 import { environment } from '@environments/environment';
 
 export const tmdbImageLoader = (config: ImageLoaderConfig) => {
@@ -26,6 +26,9 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       const userGeolocationService = inject(UserGeolocationService);
       return userGeolocationService.loadUserLocation();
+    }),
+    provideAppInitializer(() => {
+      inject(ScrollService).initScrollTracking();
     }),
     provideTranslateService({
       loader: provideTranslateHttpLoader({

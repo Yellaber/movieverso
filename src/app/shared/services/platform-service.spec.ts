@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { DOCUMENT } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 import { PlatformService } from './platform-service';
 
 describe('PlatformService.', () => {
   let platformService: PlatformService;
 
-  describe('If document is in the browser.', () => {
+  describe('If platform is browser.', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [ PlatformService, { provide: DOCUMENT, useValue: {} as Document } ]
+        providers: [
+          PlatformService,
+          { provide: PLATFORM_ID, useValue: 'browser' }
+        ]
       });
-
       platformService = TestBed.inject(PlatformService);
-      (globalThis as any).window = {};
     });
 
     it('isBrowser() should return true.', () => {
@@ -20,14 +21,15 @@ describe('PlatformService.', () => {
     })
   })
 
-  describe('If document is not in the browser.', () => {
+  describe('If platform is server.', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [ PlatformService, { provide: DOCUMENT, useValue: {} } ]
+        providers: [
+          PlatformService,
+          { provide: PLATFORM_ID, useValue: 'server' }
+        ]
       });
-
       platformService = TestBed.inject(PlatformService);
-      delete (globalThis as any).window;
     })
 
     it('isBrowser() should return false.', () => {
@@ -35,17 +37,15 @@ describe('PlatformService.', () => {
     })
   })
 
-  describe('If document is null (server environment).', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [ PlatformService, { provide: DOCUMENT, useValue: {} } ]
-      });
-
-      platformService = TestBed.inject(PlatformService);
-    })
-
-    it('isBrowser() should return false.', () => {
-      expect(platformService.isBrowser()).toBe(false);
-    })
+  it('isBrowser() result should be consistent across multiple calls.', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        PlatformService,
+        { provide: PLATFORM_ID, useValue: 'browser' }
+      ]
+    });
+    platformService = TestBed.inject(PlatformService);
+    expect(platformService.isBrowser()).toBe(true);
+    expect(platformService.isBrowser()).toBe(true); // mismo resultado cacheado
   })
 })

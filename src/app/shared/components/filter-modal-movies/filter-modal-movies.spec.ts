@@ -1,4 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { fireEvent } from '@testing-library/angular';
 import { FilterModalMovies } from './filter-modal-movies';
@@ -64,6 +65,21 @@ describe('FilterModalMovies.', () => {
     tick(10);
     expect(spyBlockWindow).toHaveBeenCalledWith(true);
     expect(component.classModal()).toBe('w-[330px] lg:w-[430px] bg-stone-300 text-stone-700 rounded-md shadow-md transform transition-all duration-300 translate-y-0 opacity-100');
+  }))
+
+  it('Should close the modal when the form-filter emits showResults.', fakeAsync(() => {
+    const spyOnClose = jest.spyOn(component, 'onClose');
+    const spyBlockWindow = jest.spyOn(component['scrollService'], 'blockWindow');
+    fixture.componentRef.setInput('show', true);
+    fixture.detectChanges();
+    const formFilter = fixture.debugElement.query(By.directive(StubFormFilter)).componentInstance as StubFormFilter;
+    formFilter.showResults.emit();
+    fixture.detectChanges();
+    expect(spyOnClose).toHaveBeenCalled();
+    tick(300);
+    expect(component.show()).toBe(false);
+    expect(spyBlockWindow).toHaveBeenCalledWith(false);
+    expect(component.classOverlay()).toBe('fixed inset-0 bg-stone-900/60 items-center justify-center z-50 hidden');
   }))
 
   it('Should hide the filter modal movies.', fakeAsync(() => {

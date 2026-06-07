@@ -2,9 +2,7 @@ import { computed, Injectable, signal } from '@angular/core';
 
 const CARD_MOVIE_SIZE = 176; //160px(card size movie) + gap-4(16px)
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CarouselMoviesService {
   private totalMovies = signal<number>(0);
   private carouselContainerWidth = signal<number>(0);

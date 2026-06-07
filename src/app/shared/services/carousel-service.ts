@@ -2,9 +2,7 @@ import { computed, Injectable, signal } from '@angular/core';
 
 const GAP = 16;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CarouselService {
   private totalCards = signal<number>(0);
   private carouselContainerWidth = signal<number>(0);
@@ -23,6 +21,11 @@ export class CarouselService {
     this.carouselContainerWidth.set(carouselContainerWidth);
     this.cardContainerWidth.set(cardContainerWidth + GAP);
     this.totalCards.set(totalCards);
+  }
+
+  setScrollStep(step: number) {
+    const max = Math.max(0, this.getMax() - GAP);
+    this.scrollStep.set(Math.min(max, Math.max(0, step)));
   }
 
   next() {

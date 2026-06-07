@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CarouselCredits } from './carousel-credits/carousel-credits';
 import { CarouselCreditSkeleton } from "@components/carousel-credit-skeleton/carousel-credit-skeleton";
@@ -15,7 +15,10 @@ import { DetailService } from '@services';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col rounded-md shadow-md bg-stone-800 gap-2 px-5 lg:px-10 my-5 py-6 lg:py-11' }
+  host: {
+    class: 'flex flex-col rounded-md shadow-md bg-stone-800 gap-2 px-5 lg:px-10 my-5 py-6 lg:py-11',
+    '[style.display]': 'shouldShow() ? null : "none"'
+  }
 })
 export class Credits {
   private detailService = inject(DetailService);
@@ -24,4 +27,7 @@ export class Credits {
     params: this.idMovie,
     stream: ({ params }) => this.detailService.getMovieCredits(params)
   });
+  shouldShow = computed(() =>
+    this.credit.isLoading() || (this.credit.hasValue() && this.credit.value()!.cast.length > 0)
+  );
 }

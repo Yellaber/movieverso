@@ -79,6 +79,7 @@ export class SectionMovie {
     carouselTitle: this.section().carouselTitle,
     text: this.text(),
     movies: [ ...this.movies(), this.getCardSeeMore() ],
-    bgButtons: 'from-stone-900'
+    bgButtons: 'from-stone-900',
+    cacheKey: `home-${this.section().heroType}`
   }));
 }

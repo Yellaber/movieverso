@@ -39,11 +39,15 @@ export const mockGeolocation: UserGeolocation = {
 export class MockUserGeolocationService {
   private userGeolocation = signal<UserGeolocation | undefined>(mockGeolocation);
   getUserGeolocation = computed(() => this.userGeolocation());
+  readonly userLanguage = computed<string>(() => this.userGeolocation()?.country_metadata.languages[0] ?? '');
+  readonly userCountry = computed<string>(() => this.userGeolocation()?.location.country_code2 ?? '');
   loadUserLocation = jest.fn();
 };
 
 export class MockUserGeolocationServiceUndefined {
   private userGeolocation = signal<UserGeolocation | undefined>(undefined);
   getUserGeolocation = computed(() => this.userGeolocation());
+  readonly userLanguage = computed<string>(() => this.userGeolocation()?.country_metadata.languages[0] ?? '');
+  readonly userCountry = computed<string>(() => this.userGeolocation()?.location.country_code2 ?? '');
   loadUserLocation = jest.fn();
 };

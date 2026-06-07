@@ -2,10 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TmdbService } from './tmdb-service';
+import { DetailService } from './detail-service';
+import { CacheService } from './cache-service';
 import { UserGeolocationService } from './user-geolocation-service';
 import { environment } from '@environments/environment';
 import { Genre, PaginatedMovies, DetailMovie } from '@interfaces';
-import { mockDetailMovie, mockGenreMovies, mockPaginatedMovies, MockUserGeolocationService } from '@mocks';
+import { mockDetailMovie, mockGenreMovies, mockPaginatedMovies, MockUserGeolocationService, MockUserGeolocationServiceUndefined } from '@mocks';
 
 describe('TmdbService', () => {
   let service: TmdbService;
@@ -31,8 +33,9 @@ describe('TmdbService', () => {
 
   it('Should be created and set language/country from geolocation.', () => {
     expect(service).toBeTruthy();
-    expect((service as any).userLanguage()).toBe('es-CO');
-    expect((service as any).userCountry()).toBe('CO');
+    const geoService = TestBed.inject(UserGeolocationService);
+    expect(geoService.userLanguage()).toBe('es-CO');
+    expect(geoService.userCountry()).toBe('CO');
   })
 
   describe('getPaginatedMoviesByCategory().', () => {
@@ -205,17 +208,102 @@ describe('TmdbService', () => {
     })
   })
 
+  describe('State isolation between getPaginatedMoviesByCategory() and getPaginatedMoviesBasedIn().', () => {
+    it('Should return independent data for different URLs.', () => {
+      let popularMovies: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesByCategory('popular', 1).subscribe(r => { popularMovies = r; });
+      const req1 = httpMock.expectOne(`${environment.tmdbApiUrl}/popular?api_key=${environment.tmdbApiKey}&language=es-CO&region=CO&page=1`);
+      req1.flush(mockPaginatedMovies);
+
+      let recommendations: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesBasedIn('recommendations', 123, 1).subscribe(r => { recommendations = r; });
+      const req2 = httpMock.expectOne(`${environment.tmdbApiUrl}/movie/123/recommendations?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`);
+      req2.flush(mockPaginatedMovies);
+
+      expect(popularMovies).toHaveLength(1);
+      expect(recommendations).toHaveLength(1);
+    })
+  })
+
+  describe('Cache isolation between detail carousel and paginated list (regression: fix-related-movies-cache-collision).', () => {
+    let detailService: DetailService;
+    let cacheService: CacheService;
+    const basedIn = 'recommendations';
+    const movieId = 123;
+    const baseUrl = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
+    const detailReqUrl = `${baseUrl}?api_key=${environment.tmdbApiKey}&language=es-CO&page=1`;
+    const paginatedReqUrl = (page: number) => `${baseUrl}?api_key=${environment.tmdbApiKey}&language=es-CO&page=${page}`;
+
+    beforeEach(() => {
+      detailService = TestBed.inject(DetailService);
+      cacheService = TestBed.inject(CacheService);
+    })
+
+    it('Should not corrupt the paginated list when the detail carousel cached an object first (Bug #1).', () => {
+      // El carrusel del detalle cachea un único objeto PaginatedMovies bajo la URL base.
+      detailService.getRelatedMovies(basedIn, movieId).subscribe();
+      httpMock.expectOne(detailReqUrl).flush(mockPaginatedMovies);
+
+      // El listado paginado usa su propia clave: no reutiliza el objeto y no lanza "cached is not iterable".
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      expect(() =>
+        service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe(response => { paginatedMovies = response; })
+      ).not.toThrow();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+      expect(paginatedMovies).toEqual([mockPaginatedMovies]);
+    })
+
+    it('Should not corrupt the detail carousel when the paginated list cached an array first (Bug #2).', () => {
+      // El listado paginado cachea un array PaginatedMovies[] bajo su clave con sufijo.
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      // El carrusel del detalle obtiene un objeto PaginatedMovies válido con results definido,
+      // desde su propia entrada de caché (no el array del listado).
+      const detailResponse = mockPaginatedMovies[0];
+      let related: PaginatedMovies | undefined;
+      detailService.getRelatedMovies(basedIn, movieId).subscribe(response => { related = response; });
+      httpMock.expectOne(detailReqUrl).flush(detailResponse);
+      expect(related).toEqual(detailResponse);
+      expect(related?.results).toBeDefined();
+    })
+
+    it('Should store the paginated list under a key distinct from the detail base URL.', () => {
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      expect(cacheService.has(`${baseUrl}::paginated`)).toBe(true);
+      expect(cacheService.has(baseUrl)).toBe(false);
+
+      // Idempotencia: una segunda llamada con los mismos parámetros se sirve desde caché.
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe(response => { paginatedMovies = response; });
+      httpMock.expectNone(paginatedReqUrl(1));
+      expect(paginatedMovies).toHaveLength(1);
+    })
+
+    it('Should accumulate successive pages without iteration errors.', () => {
+      service.getPaginatedMoviesBasedIn(basedIn, movieId, 1).subscribe();
+      httpMock.expectOne(paginatedReqUrl(1)).flush(mockPaginatedMovies);
+
+      let paginatedMovies: PaginatedMovies[] | undefined;
+      expect(() =>
+        service.getPaginatedMoviesBasedIn(basedIn, movieId, 2).subscribe(response => { paginatedMovies = response; })
+      ).not.toThrow();
+      httpMock.expectOne(paginatedReqUrl(2)).flush(mockPaginatedMovies);
+      expect(paginatedMovies).toHaveLength(2);
+    })
+  })
+
   describe('If geolocation is not available.', () => {
     beforeEach(() => {
-      const userGeolocationServiceMock = { getUserGeolocation: jest.fn().mockReturnValue(undefined) };
-
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
           provideHttpClient(),
           provideHttpClientTesting(),
           TmdbService,
-          { provide: UserGeolocationService, useValue: userGeolocationServiceMock }
+          { provide: UserGeolocationService, useClass: MockUserGeolocationServiceUndefined }
         ]
       });
       service = TestBed.inject(TmdbService);
@@ -223,8 +311,9 @@ describe('TmdbService', () => {
     })
 
     it('userLanguage and userCountry signals should be an empty string.', () => {
-      expect(service['userLanguage']()).toBe('');
-      expect(service['userCountry']()).toBe('');
+      const geoService = TestBed.inject(UserGeolocationService);
+      expect(geoService.userLanguage()).toBe('');
+      expect(geoService.userCountry()).toBe('');
     })
   })
 })
