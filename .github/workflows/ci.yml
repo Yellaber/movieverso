@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   test:
-    name: Test
+    name: Lint & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,6 +29,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # El lint es analisis estatico y no necesita los environments, asi que
+      # se ejecuta antes para fallar rapido ante errores de estilo.
+      - name: Lint
+        run: npm run lint
 
       # Los archivos de environment estan gitignored y se generan desde .env.
       # En CI se usan valores placeholder: los tests mockean el HTTP, asi que
