@@ -23,7 +23,9 @@ export class FilterModalMovies implements AfterViewInit {
   classModal = signal<string>(CLASS_MODAL);
 
   ngAfterViewInit() {
-    this.show() && this.onShow();
+    if(this.show()) {
+      this.onShow();
+    }
   }
 
   private setClassOverlay(oldClass: string, newClass: string) {

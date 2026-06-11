@@ -1,5 +1,4 @@
 import { computed, signal } from '@angular/core';
-import { of } from 'rxjs';
 import { UserGeolocation } from '@shared/interfaces';
 
 export const mockGeolocation: UserGeolocation = {

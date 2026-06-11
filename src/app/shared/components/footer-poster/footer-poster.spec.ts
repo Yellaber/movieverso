@@ -4,7 +4,6 @@ import { Rating } from '../rating/rating';
 import { mockMovies, StubRating } from '@mocks';
 
 describe('FooterPoster', () => {
-  let component: FooterPoster;
   let fixture: ComponentFixture<FooterPoster>;
 
   beforeEach(() => {
@@ -18,7 +17,6 @@ describe('FooterPoster', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(FooterPoster);
-    component = fixture.componentInstance;
     fixture.componentRef.setInput('movie', mockMovies[0]);
     fixture.detectChanges();
   });

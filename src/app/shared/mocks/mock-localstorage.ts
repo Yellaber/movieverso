@@ -1,5 +1,5 @@
 export const mockLocalStorage = (() => {
-  let store: { [key: string]: string } = {};
+  let store: Record<string, string> = {};
 
   return {
     getItem: jest.fn((key: string) => {

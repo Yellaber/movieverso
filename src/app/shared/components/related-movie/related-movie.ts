@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal, OnInit } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -15,7 +15,7 @@ const menuItems = ['upcoming', 'now-playing', 'popular', 'top-rated', 'trending'
   templateUrl: './related-movie.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RelatedMovie {
+export class RelatedMovie implements OnInit {
   private route = inject(ActivatedRoute);
   private seoFriendlyService = inject(SeoFriendlyService);
   private tmdbService = inject(TmdbService);

@@ -5,9 +5,7 @@ import { MockDomSanitizer } from '@mocks';
 const urlBase = 'https://www.youtube.com/embed';
 
 describe('IframeVideo', () => {
-  let component: IframeVideo;
   let fixture: ComponentFixture<IframeVideo>;
-  let mockDomSanitizer: MockDomSanitizer;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,8 +14,6 @@ describe('IframeVideo', () => {
     });
 
     fixture = TestBed.createComponent(IframeVideo);
-    mockDomSanitizer = TestBed.inject(MockDomSanitizer);
-    component = fixture.componentInstance;
   })
 
   it('Should display iframe video when videoKey input is provided and safeUrl signal contain a valid url', () => {

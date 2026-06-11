@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { MockTranslateService } from '@mocks';
 
 describe('ContentCategory', () => {
-  let component: ContentCategory;
   let fixture: ComponentFixture<ContentCategory>;
 
   beforeEach(() => {
@@ -14,7 +13,6 @@ describe('ContentCategory', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContentCategory);
-    component = fixture.componentInstance;
     fixture.componentRef.setInput('title', 'TEST_TITLE_KEY');
     fixture.componentRef.setInput('paragraph', 'TEST_PARAGRAPH_KEY');
     fixture.detectChanges();

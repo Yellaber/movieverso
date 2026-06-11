@@ -13,7 +13,7 @@ export class ScrollService {
   private cacheScroll = new Map<string, number>();
   private currentUrl = '';
 
-  isAtBottom(offset: number = 300): boolean {
+  isAtBottom(offset = 300): boolean {
     if(this.platformService.isBrowser()) {
       const { scrollTop, clientHeight, scrollHeight } = this.document.documentElement;
       return scrollTop + clientHeight + offset >= scrollHeight;
@@ -61,15 +61,22 @@ export class ScrollService {
       this.currentUrl = event.urlAfterRedirects;
       setTimeout(() => {
         const saved = this.cacheScroll.get(event.urlAfterRedirects);
-        saved ? this.restoreScrollPosition(event.urlAfterRedirects) : this.scrollTop();
+        if(saved) {
+          this.restoreScrollPosition(event.urlAfterRedirects);
+        } else {
+          this.scrollTop();
+        }
       }, 0);
     });
   }
 
   blockWindow(isBlocked: boolean) {
     if(this.platformService.isBrowser()) {
-      isBlocked? this.document.querySelector('body')?.classList.add('overflow-hidden'):
-      this.document.querySelector('body')?.classList.remove('overflow-hidden');
+      if(isBlocked) {
+        this.document.querySelector('body')?.classList.add('overflow-hidden');
+      } else {
+        this.document.querySelector('body')?.classList.remove('overflow-hidden');
+      }
     }
   }
 }

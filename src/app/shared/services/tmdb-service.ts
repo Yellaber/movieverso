@@ -4,13 +4,12 @@ import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService } from './user-geolocation-service';
 import { CacheService } from './cache-service';
-import { Movie, PaginatedMovies, Genre, GenreMovies, DetailMovie } from '@interfaces';
+import { PaginatedMovies, Genre, GenreMovies, DetailMovie } from '@interfaces';
 
 const TTL_GENRES    = 86_400_000; // 24 h
 const TTL_DETAIL    = 1_800_000;  // 30 min
 const TTL_PAGINATED = 300_000;    // 5 min
 
-type TypeQuery = DetailMovie | PaginatedMovies[] | Movie[] | Genre[];
 interface Params {
   api_key: string;
   language: string;
@@ -54,13 +53,13 @@ export class TmdbService {
     );
   }
 
-  getPaginatedMoviesByCategory(category: string, page: number = 1): Observable<PaginatedMovies[]> {
+  getPaginatedMoviesByCategory(category: string, page = 1): Observable<PaginatedMovies[]> {
     const url = `${environment.tmdbApiUrl}/${category}`;
     const { api_key, language, region } = this.params;
     return this.getPaginatedMovies(url, { api_key, language, region, page });
   }
 
-  getPaginatedMoviesBasedIn(basedIn: string, movieId: number, page: number = 1): Observable<PaginatedMovies[]> {
+  getPaginatedMoviesBasedIn(basedIn: string, movieId: number, page = 1): Observable<PaginatedMovies[]> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/${basedIn}`;
     const { api_key, language } = this.params;
     return this.getPaginatedMovies(url, { api_key, language, page });
