@@ -10,7 +10,6 @@ const makeParamMap = (data: Record<string, string>) => ({
 
 describe('QueryParamsService', () => {
   let service: QueryParamsService;
-  let route: ActivatedRoute;
 
   describe('When active route contain query params.', () => {
     beforeEach(() => {
@@ -21,7 +20,6 @@ describe('QueryParamsService', () => {
         ]
       });
       service = TestBed.inject(QueryParamsService);
-      route = TestBed.inject(ActivatedRoute);
     })
 
     afterEach(() => {
@@ -43,7 +41,6 @@ describe('QueryParamsService', () => {
         ]
       });
       service = TestBed.inject(QueryParamsService);
-      route = TestBed.inject(ActivatedRoute);
     })
 
     afterEach(() => {

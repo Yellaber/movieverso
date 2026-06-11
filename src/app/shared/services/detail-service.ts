@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '@environments/environment';
 import { UserGeolocationService, CacheService } from '@services';
-import { DetailMovie, Keyword, MovieCollection, MovieKeyword, PaginatedMovies, MovieCredit, MovieTrailer, Trailer } from '@interfaces';
+import { Keyword, MovieCollection, MovieKeyword, PaginatedMovies, MovieCredit, MovieTrailer, Trailer } from '@interfaces';
 
 const TTL_DETAIL = 1_800_000; // 30 min
 
@@ -56,7 +56,7 @@ export class DetailService {
     }).pipe(tap(movieCredits => this.cacheService.set(url, movieCredits, TTL_DETAIL)));
   }
 
-  getRelatedMovies(relation: string, movieId: number, page: number = 1): Observable<PaginatedMovies> {
+  getRelatedMovies(relation: string, movieId: number, page = 1): Observable<PaginatedMovies> {
     const url = `${environment.tmdbApiUrl}/movie/${movieId}/${relation}`;
     const cached = this.cacheService.get<PaginatedMovies>(url);
     if(cached !== null) return of(cached);

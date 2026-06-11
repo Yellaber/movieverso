@@ -53,7 +53,9 @@ export class InfiniteScroll {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     if(this.scrollService.isAtBottom() && !this.paginatedMovies().isLoading()) {
-      this.hasNextPage() && this.paginationUtils.next();
+      if(this.hasNextPage()) {
+        this.paginationUtils.next();
+      }
     }
   }
 

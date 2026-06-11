@@ -21,7 +21,6 @@ const mockCast: Cast = {
 }
 
 describe('CastProfile', () => {
-  let component: CastProfile;
   let fixture: ComponentFixture<CastProfile>;
 
   beforeEach(() => {
@@ -32,7 +31,6 @@ describe('CastProfile', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(CastProfile);
-    component = fixture.componentInstance;
   });
 
   afterEach(() => {

@@ -3,17 +3,17 @@
   <form class="flex flex-col w-full gap-8" autocomplete="off" [formGroup]="form" (ngSubmit)="isInvalid()">
     <div class="flex flex-col gap-3">
       <div class="flex justify-between items-center gap-4">
-        <label class="text-sm font-bold">{{ 'filter.voteAverageLabel' | translate }}</label>
+        <label for="voteAverageMinimum" class="text-sm font-bold">{{ 'filter.voteAverageLabel' | translate }}</label>
         <div class="rounded-md bg-stone-700 px-3 py-1">
           <rating type="vote_average" [value]="form.controls['voteAverageMinimum'].value"/>
         </div>
       </div>
-      <input type="range" min="0" max="10" step="0" formControlName="voteAverageMinimum"
+      <input id="voteAverageMinimum" type="range" min="0" max="10" step="0" formControlName="voteAverageMinimum"
       class="w-full h-2 bg-stone-400 rounded-md appearance-none cursor-pointer accent-yellow-600">
     </div>
     <div class="flex flex-col gap-3">
-      <label class="text-sm font-bold">{{ 'filter.voteCountLabel' | translate }}</label>
-      <input type="number" formControlName="voteMinimum" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4"
+      <label for="voteMinimum" class="text-sm font-bold">{{ 'filter.voteCountLabel' | translate }}</label>
+      <input id="voteMinimum" type="number" formControlName="voteMinimum" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4"
       [placeholder]="'filter.message.placeholder' | translate">
       @if(formUtils.isValidField(form, 'voteMinimum')) {
         <small class="text-xs text-red-700">{{ 'filter.message.value' | translate }}</small>
@@ -21,15 +21,15 @@
     </div>
     <div class="flex flex-col lg:flex-row gap-8">
       <div class="flex flex-col w-full lg:w-1/2 gap-3">
-        <label class="text-sm font-bold">{{ 'filter.releaseDateGteLabel' | translate }}</label>
-        <input type="date" formControlName="primaryReleaseDateGte" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4">
+        <label for="primaryReleaseDateGte" class="text-sm font-bold">{{ 'filter.releaseDateGteLabel' | translate }}</label>
+        <input id="primaryReleaseDateGte" type="date" formControlName="primaryReleaseDateGte" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4">
         @if(formUtils.isValidField(form, 'primaryReleaseDateGte')) {
           <small class="text-xs text-red-700">{{ 'filter.message.invalidDate' | translate }}</small>
         }
       </div>
       <div class="flex flex-col w-full lg:w-1/2 gap-3">
-        <label class="text-sm font-bold">{{ 'filter.releaseDateLteLabel' | translate }}</label>
-        <input type="date" formControlName="primaryReleaseDateLte" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4">
+        <label for="primaryReleaseDateLte" class="text-sm font-bold">{{ 'filter.releaseDateLteLabel' | translate }}</label>
+        <input id="primaryReleaseDateLte" type="date" formControlName="primaryReleaseDateLte" class="w-full h-8 bg-stone-100 text-xs lg:text-sm rounded-full outline-0 px-4">
         @if(formUtils.isValidField(form, 'primaryReleaseDateLte')) {
           <small class="text-xs text-red-700">{{ 'filter.message.invalidDate' | translate }}</small>
         }

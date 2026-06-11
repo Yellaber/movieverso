@@ -34,6 +34,10 @@ export class Control {
   );
 
   onClick() {
-    (this.getLabel() === 'next')? this.carouselService.next(): this.carouselService.previous();
+    if(this.getLabel() === 'next') {
+      this.carouselService.next();
+    } else {
+      this.carouselService.previous();
+    }
   }
 }

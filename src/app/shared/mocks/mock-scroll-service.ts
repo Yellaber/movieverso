@@ -1,5 +1,5 @@
 export class MockScrollService {
-  isAtBottom = jest.fn().mockImplementation((offset: number = 300) => {
+  isAtBottom = jest.fn().mockImplementation((offset = 300) => {
     return 1000 + offset >= 1200;
   });
   getScrollTop = jest.fn().mockReturnValue(0);
