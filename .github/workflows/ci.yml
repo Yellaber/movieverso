@@ -30,5 +30,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Los archivos de environment estan gitignored y se generan desde .env.
+      # En CI se usan valores placeholder: los tests mockean el HTTP, asi que
+      # las claves no necesitan ser reales, solo deben existir para resolver
+      # el import '@environments/environment'.
+      - name: Generate environment files
+        run: npm run set:envs
+        env:
+          API_URL_TMDB: https://api.example.com
+          API_KEY_TMDB: ci-dummy-key
+          API_URL_IMAGE_TMDB: https://image.example.com
+          API_URL_IPGEOLOCATION: https://geo.example.com
+          API_KEY_IPGEOLOCATION: ci-dummy-key
+
       - name: Test
         run: npm test
